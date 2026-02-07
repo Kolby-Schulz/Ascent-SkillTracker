@@ -2,7 +2,7 @@ import apiClient from './api';
 
 /**
  * Register a new user
- * @param {Object} userData - { email, password }
+ * @param {Object} userData - { username, email, password }
  * @returns {Promise} API response
  */
 export const register = async (userData) => {
@@ -12,7 +12,7 @@ export const register = async (userData) => {
 
 /**
  * Login user
- * @param {Object} credentials - { email, password }
+ * @param {Object} credentials - { username, password }
  * @returns {Promise} API response
  */
 export const login = async (credentials) => {

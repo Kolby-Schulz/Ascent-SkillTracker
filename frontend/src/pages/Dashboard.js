@@ -27,9 +27,12 @@ const Dashboard = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <h2>Hello, {user?.email}!</h2>
+          <h2>Hello, {user?.username || user?.email}!</h2>
           <p>Your skill roadmap journey starts here.</p>
           <div className="user-info">
+            <p>
+              <strong>Username:</strong> {user?.username}
+            </p>
             <p>
               <strong>Email:</strong> {user?.email}
             </p>

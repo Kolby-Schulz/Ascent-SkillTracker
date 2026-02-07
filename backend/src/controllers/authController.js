@@ -15,18 +15,24 @@ exports.register = async (req, res, next) => {
     return next(new ErrorResponse(errors.array()[0].msg, 400));
   }
 
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
-    // Check if user already exists
-    const userExists = await User.findOne({ email });
+    // Check if user already exists (username or email)
+    const userExists = await User.findOne({
+      $or: [{ username }, { email }],
+    });
 
     if (userExists) {
-      return next(new ErrorResponse('User already exists', 400));
+      if (userExists.username === username) {
+        return next(new ErrorResponse('Username already taken', 400));
+      }
+      return next(new ErrorResponse('Email already registered', 400));
     }
 
     // Create user
     const user = await User.create({
+      username,
       email,
       passwordHash: password, // Will be hashed by pre-save hook
     });
@@ -40,6 +46,7 @@ exports.register = async (req, res, next) => {
         token,
         user: {
           id: user._id,
+          username: user.username,
           email: user.email,
           roles: user.roles,
         },
@@ -62,11 +69,11 @@ exports.login = async (req, res, next) => {
     return next(new ErrorResponse(errors.array()[0].msg, 400));
   }
 
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    // Check for user (include password for comparison)
-    const user = await User.findOne({ email }).select('+passwordHash');
+    // Check for user by username (include password for comparison)
+    const user = await User.findOne({ username }).select('+passwordHash');
 
     if (!user) {
       return next(new ErrorResponse('Invalid credentials', 401));
@@ -88,6 +95,7 @@ exports.login = async (req, res, next) => {
         token,
         user: {
           id: user._id,
+          username: user.username,
           email: user.email,
           roles: user.roles,
         },
@@ -112,6 +120,7 @@ exports.getMe = async (req, res, next) => {
       data: {
         user: {
           id: user._id,
+          username: user.username,
           email: user.email,
           roles: user.roles,
           createdAt: user.createdAt,
