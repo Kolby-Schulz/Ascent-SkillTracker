@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './FlyingBirds.css';
 
 const FlyingBirds = () => {
   const [birdKey, setBirdKey] = useState(0);
+  // Store random values in a ref so they don't change on re-renders
+  const birdStylesRef = useRef(
+    [...Array(5)].map((_, index) => ({
+      '--delay': `${index * 0.15}s`,
+      '--duration': `${15 + Math.random() * 3}s`,
+      '--start-y': `${20 + Math.random() * 30}%`,
+    }))
+  );
 
   useEffect(() => {
     // Show birds immediately on mount
@@ -19,15 +27,11 @@ const FlyingBirds = () => {
 
   return (
     <div className="flying-birds-container">
-      {[...Array(5)].map((_, index) => (
+      {birdStylesRef.current.map((style, index) => (
         <div
           key={`${birdKey}-${index}`}
           className="bird"
-          style={{
-            '--delay': `${index * 0.15}s`,
-            '--duration': `${15 + Math.random() * 3}s`,
-            '--start-y': `${20 + Math.random() * 30}%`,
-          }}
+          style={style}
         >
           <svg
             viewBox="0 0 60 30"
