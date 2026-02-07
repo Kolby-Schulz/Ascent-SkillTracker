@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import './Home.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import "./Home.css";
 
 const Home = () => {
   return (
@@ -64,7 +64,9 @@ const Home = () => {
       >
         <div className="feature-card">
           <h3>📚 Structured Learning</h3>
-          <p>Follow step-by-step roadmaps designed to help you master any skill</p>
+          <p>
+            Follow step-by-step roadmaps designed to help you master any skill
+          </p>
         </div>
         <div className="feature-card">
           <h3>🎯 Track Progress</h3>
