@@ -162,6 +162,20 @@
   cursor: not-allowed;
 }
 
+/* DEMO BUTTON REMOVE BEFORE DEVPOST */
+.auth-button.demo-button {
+  margin-top: 12px;
+  background: rgba(100, 120, 160, 0.9);
+  border-color: rgba(100, 120, 160, 0.9);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.auth-button.demo-button:hover {
+  background: rgba(80, 100, 140, 0.95);
+  border-color: rgba(80, 100, 140, 0.95);
+}
+
 .auth-footer {
   text-align: center;
   margin-top: 24px;
