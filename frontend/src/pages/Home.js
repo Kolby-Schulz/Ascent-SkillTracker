@@ -1,16 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import "./Home.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import FlyingBirds from '../components/FlyingBirds';
+import DriftingClouds from '../components/DriftingClouds';
+import WindEffect from '../components/WindEffect';
+import './Home.css';
 
 const Home = () => {
+  const backgroundImage = process.env.PUBLIC_URL + '/images/6229869.jpg';
+
   return (
-    <motion.div
-      className="home-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <>
+      <DriftingClouds />
+      <WindEffect />
+      <FlyingBirds />
+      <motion.div
+        className="home-container"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
       <div className="hero-section">
         <motion.h1
           className="hero-title"
@@ -18,7 +28,7 @@ const Home = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Skill Roadmap Platform
+          Ascent
         </motion.h1>
         <motion.p
           className="hero-subtitle"
@@ -26,7 +36,7 @@ const Home = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          Master any skill with structured, visual roadmaps
+          Reach New Heights
         </motion.p>
 
         <motion.div
@@ -78,6 +88,7 @@ const Home = () => {
         </div>
       </motion.div>
     </motion.div>
+    </>
   );
 };
 
