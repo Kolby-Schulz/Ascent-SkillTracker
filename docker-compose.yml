@@ -29,7 +29,7 @@ services:
       - NODE_ENV=development
       - MONGO_URI=mongodb://mongodb:27017/skill-roadmap
     ports:
-      - "5000:5000"
+      - "5001:5000"
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -48,7 +48,7 @@ services:
     container_name: skill-roadmap-frontend
     restart: unless-stopped
     environment:
-      - REACT_APP_API_URL=http://localhost:5000/api/v1
+      - REACT_APP_API_URL=http://localhost:5001/api/v1
     ports:
       - "3000:3000"
     volumes:
