@@ -3,6 +3,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { login as loginService } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
+import FlyingBirds from '../components/FlyingBirds';
+import DriftingClouds from '../components/DriftingClouds';
+import WindEffect from '../components/WindEffect';
 import './Auth.css';
 
 const Login = () => {
@@ -40,15 +43,22 @@ const Login = () => {
     }
   };
 
+  const backgroundImage = process.env.PUBLIC_URL + '/images/6229869.jpg';
+
   return (
-    <motion.div
-      className="auth-container"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="auth-card">
+    <>
+      <DriftingClouds />
+      <WindEffect />
+      <FlyingBirds />
+      <motion.div
+        className="auth-container"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="auth-card">
         <h1 className="auth-title">Welcome Back</h1>
         <p className="auth-subtitle">Sign in to continue your learning journey</p>
 
@@ -111,6 +121,7 @@ const Login = () => {
         </p>
       </div>
     </motion.div>
+    </>
   );
 };
 

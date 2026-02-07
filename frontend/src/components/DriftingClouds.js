@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './DriftingClouds.css';
 
 const DriftingClouds = () => {
+  // Store random values in a ref so they don't change on re-renders
+  const cloudStylesRef = useRef(
+    [...Array(4)].map((_, index) => ({
+      '--delay': `${index * 3}s`,
+      '--duration': `${60 + Math.random() * 40}s`,
+      '--start-x': `${-20 + Math.random() * 20}%`,
+      '--start-y': `${10 + Math.random() * 20}%`,
+      '--size': `${150 + Math.random() * 100}px`,
+    }))
+  );
+
   return (
     <div className="clouds-container">
-      {[...Array(4)].map((_, index) => (
+      {cloudStylesRef.current.map((style, index) => (
         <div
           key={index}
           className="cloud"
-          style={{
-            '--delay': `${index * 3}s`,
-            '--duration': `${60 + Math.random() * 40}s`,
-            '--start-x': `${-20 + Math.random() * 20}%`,
-            '--start-y': `${10 + Math.random() * 20}%`,
-            '--size': `${150 + Math.random() * 100}px`,
-          }}
+          style={style}
         >
           <svg viewBox="0 0 200 100" fill="rgba(255, 255, 255, 0.5)" className="cloud-shape">
             {/* Fluffy cloud shape with multiple overlapping circles */}
