@@ -1,7 +1,31 @@
 .home-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: white;
+  position: relative;
+}
+
+.home-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  z-index: 0;
+}
+
+.home-container > * {
+  position: relative;
+  z-index: 2;
 }
 
 .hero-section {
@@ -18,7 +42,9 @@
   font-size: 56px;
   font-weight: 800;
   margin-bottom: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  will-change: transform;
 }
 
 .hero-subtitle {
@@ -26,6 +52,8 @@
   font-weight: 400;
   margin-bottom: 40px;
   opacity: 0.95;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  will-change: transform;
 }
 
 .cta-buttons {
@@ -42,17 +70,30 @@
   cursor: pointer;
   transition: all 0.2s;
   text-decoration: none;
+  will-change: transform;
 }
 
 .cta-button.primary {
+  background: rgba(255, 255, 255, 0.95);
+  color: #2c3e50;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button.primary:hover {
   background: white;
-  color: #667eea;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .cta-button.secondary {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
   color: white;
-  border: 2px solid white;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.cta-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
 }
 
 .features-section {
@@ -65,17 +106,19 @@
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 16px;
   padding: 30px;
   transition: all 0.3s;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .feature-card h3 {
