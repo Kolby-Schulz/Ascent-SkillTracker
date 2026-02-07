@@ -1,69 +1,176 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import './Dashboard.css';
 
+const SIDEBAR_ITEMS = [
+  { id: 'dashboard', label: 'Dashboard', icon: 'grid' },
+  { id: 'learnc', label: 'Learnc', icon: 'book' },
+  { id: 'saved', label: 'Saved', icon: 'bookmark' },
+  { id: 'feed', label: 'Feed', icon: 'feed' },
+  { id: 'settings', label: 'Settings', icon: 'settings' },
+];
+
+const INITIAL_SKILLS = ['Guitar', 'Fishing', 'Singing'];
+
+const SUGGESTED_SKILLS_POOL = [
+  'Cooking', 'Photography', 'Spanish', 'Woodworking', 'Chess',
+  'Piano', 'Drawing', 'Running', 'Meditation', 'Baking',
+  'Gardening', 'Sewing', 'Knitting', 'Calligraphy', 'Hiking',
+];
+
+const getRandomSuggestedSkills = (count = 5) => {
+  const shuffled = [...SUGGESTED_SKILLS_POOL].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+};
+
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const [activeNav, setActiveNav] = useState('dashboard');
+  const [skills, setSkills] = useState(INITIAL_SKILLS);
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [suggestedSkills] = useState(() => getRandomSuggestedSkills());
+  const profileRef = useRef(null);
+
+  const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleDragStart = useCallback((e, index) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index);
+    e.target.style.opacity = '0.5';
+  }, []);
+
+  const handleDragEnd = useCallback((e) => {
+    e.target.style.opacity = '1';
+    setDraggedIndex(null);
+  }, []);
+
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const handleDrop = useCallback((e, dropIndex) => {
+    e.preventDefault();
+    const dragIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
+    if (dragIndex === dropIndex || isNaN(dragIndex)) return;
+
+    setSkills((prev) => {
+      const newSkills = [...prev];
+      const [removed] = newSkills.splice(dragIndex, 1);
+      newSkills.splice(dropIndex, 0, removed);
+      return newSkills;
+    });
+  }, []);
 
   return (
-    <motion.div
-      className="dashboard-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      <div className="dashboard-header">
-        <h1>Welcome to Your Dashboard</h1>
-        <button onClick={logout} className="logout-button">
-          Logout
-        </button>
-      </div>
-
-      <div className="dashboard-content">
-        <motion.div
-          className="welcome-card"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <h2>Hello, {user?.username || user?.email}!</h2>
-          <p>Your skill roadmap journey starts here.</p>
-          <div className="user-info">
-            <p>
-              <strong>Username:</strong> {user?.username}
-            </p>
-            <p>
-              <strong>Email:</strong> {user?.email}
-            </p>
-            <p>
-              <strong>Role:</strong> {user?.roles?.join(', ')}
-            </p>
-            <p>
-              <strong>Member since:</strong>{' '}
-              {user?.createdAt
-                ? new Date(user.createdAt).toLocaleDateString()
-                : 'N/A'}
-            </p>
+    <div className="dashboard-layout">
+      {/* Left Sidebar */}
+      <aside className="dashboard-sidebar">
+        <div className="sidebar-logo">
+          <div className="logo-shapes">
+            <span className="logo-square" />
+            <span className="logo-circle" />
+            <span className="logo-triangle" />
           </div>
-        </motion.div>
+        </div>
+        <nav className="sidebar-nav">
+          {SIDEBAR_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              className={`sidebar-nav-item ${activeNav === item.id ? 'active' : ''}`}
+              onClick={() => setActiveNav(item.id)}
+            >
+              <span className="nav-icon">{item.label.charAt(0)}</span>
+              <span className="nav-label">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </aside>
 
-        <motion.div
-          className="coming-soon-card"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <h3>Coming Soon</h3>
-          <ul>
-            <li>Browse skill roadmaps</li>
-            <li>Track your progress</li>
-            <li>Create custom roadmaps</li>
-            <li>Collaborate with others</li>
+      {/* Main Content */}
+      <main className="dashboard-main">
+        <div className="main-header">
+          <h1 className="greeting">Hello, {userDisplayName}</h1>
+        </div>
+
+        <div className="skills-section">
+          <h2 className="skills-title">Your Skills</h2>
+          <div className="skills-grid">
+            {skills.map((skill, index) => (
+              <motion.div
+                key={`${skill}-${index}`}
+                className={`skill-card ${draggedIndex === index ? 'dragging' : ''}`}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragEnd={handleDragEnd}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, index)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="skill-card-content">
+                  <span className="skill-icon">🎯</span>
+                  <span className="skill-name">{skill}</span>
+                  <span className="skill-drag-hint">Drag to reorder</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </main>
+
+      {/* Right Sidebar */}
+      <aside className="dashboard-right-sidebar">
+        <div className="profile-area" ref={profileRef}>
+          <div className="profile-wrapper">
+            <button
+              className="profile-avatar"
+              onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+              aria-label="Open settings"
+            >
+              <div className="avatar-placeholder">
+                {userDisplayName.charAt(0).toUpperCase()}
+              </div>
+            </button>
+            {profileMenuOpen && (
+              <div className="profile-dropdown glass-panel">
+                <button className="dropdown-item">Settings</button>
+                <button className="dropdown-item" onClick={logout}>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="suggested-skills-panel glass-panel">
+          <h3 className="panel-title">Suggested Related Skills</h3>
+          <ul className="suggested-skills-list">
+            {suggestedSkills.map((skill, index) => (
+              <li key={skill} className="suggested-skill-item">
+                <span className="skill-dot" style={{ background: `hsl(${(index * 60) % 360}, 60%, 55%)` }} />
+                <span>{skill}</span>
+              </li>
+            ))}
           </ul>
-        </motion.div>
-      </div>
-    </motion.div>
+        </div>
+      </aside>
+    </div>
   );
 };
 
