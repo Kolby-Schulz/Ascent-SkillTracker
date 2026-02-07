@@ -9,6 +9,7 @@ const Register = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -16,7 +17,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { email, password, confirmPassword } = formData;
+  const { username, email, password, confirmPassword } = formData;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,10 +40,20 @@ const Register = () => {
       return;
     }
 
+    // Validate username
+    if (!username || username.trim().length < 2) {
+      setError('Username must be at least 2 characters');
+      return;
+    }
+    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+      setError('Username can only contain letters, numbers, underscore and hyphen');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await registerService({ email, password });
+      const response = await registerService({ username: username.trim().toLowerCase(), email, password });
       login(response.data.token, response.data.user);
       navigate('/dashboard');
     } catch (err) {
@@ -77,6 +88,21 @@ const Register = () => {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={handleChange}
+              placeholder="Choose a username (letters, numbers, _ or -)"
+              required
+              autoComplete="username"
+              minLength="2"
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input

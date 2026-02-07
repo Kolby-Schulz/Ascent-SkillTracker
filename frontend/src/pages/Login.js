@@ -9,13 +9,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { email, password } = formData;
+  const { username, password } = formData;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,7 +28,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await loginService({ email, password });
+      const response = await loginService({ username: username.trim().toLowerCase(), password });
       login(response.data.token, response.data.user);
       navigate('/dashboard');
     } catch (err) {
@@ -64,16 +64,16 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="username">Username</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
+              type="text"
+              id="username"
+              name="username"
+              value={username}
               onChange={handleChange}
-              placeholder="your.email@example.com"
+              placeholder="Enter your username"
               required
-              autoComplete="email"
+              autoComplete="username"
             />
           </div>
 
