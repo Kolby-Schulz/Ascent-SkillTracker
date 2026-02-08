@@ -16,6 +16,9 @@ const postRoutes = require('./routes/postRoutes');
 
 const app = express();
 
+// Trust proxy (dev server forwards requests with X-Forwarded-For)
+app.set('trust proxy', 1);
+
 // CORS (supports single origin or array) - must be before other middleware
 app.use(
   cors({

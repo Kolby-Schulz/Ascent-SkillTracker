@@ -8,6 +8,7 @@ If you see this error when trying to log in, the frontend cannot reach the backe
 
 - **Frontend** (port 3001) expects the backend at `localhost:5000`
 - If the backend is on a different port (e.g. Docker on 5001) or not running, login fails with 500
+- **Trust proxy:** When the dev server proxies requests, it sends `X-Forwarded-For`. The backend must have `trust proxy` enabled or rate limiting can throw 500 errors (this is now fixed in `app.js`)
 
 ---
 
@@ -110,6 +111,23 @@ Then run the frontend again.
 4. Terminal 1: `cd backend` → `npm start` (wait for "Server running...")
 5. Terminal 2: `cd frontend` → `npm start`
 6. Open http://localhost:3001 and log in
+
+---
+
+## Recommended: Use the Start Script
+
+**Windows:**
+```bash
+scripts\start-local-dev.bat
+```
+
+**Mac/Linux:**
+```bash
+chmod +x scripts/start-local-dev.sh
+./scripts/start-local-dev.sh
+```
+
+This script stops the Docker backend, starts MongoDB, and runs the backend locally. Open a second terminal for the frontend.
 
 ---
 
