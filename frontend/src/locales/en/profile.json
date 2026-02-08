@@ -46,20 +46,22 @@
     "deleteTitle": "Delete roadmap"
   },
   "empty": {
-    "noRoadmaps": "You haven't created any roadmaps yet",
+    "noRoadmaps": "You haven't created any guides yet",
     "noFiltered": "No",
     "roadmaps": "roadmaps",
     "description": "Start creating custom learning paths to help others learn new skills",
     "descriptionFiltered": "You don't have any",
     "roadmapsAtMoment": "roadmaps at the moment",
-    "createFirst": "Create Your First Roadmap"
+    "createFirst": "Create Your First Guide"
   },
   "loading": "Loading your roadmaps...",
   "messages": {
     "shareCaption": "Add a caption (optional):",
     "shared": "Roadmap shared to feed!",
     "shareError": "Failed to share roadmap. Make sure it is published.",
-    "deleteConfirm": "Are you sure you want to delete this roadmap?",
+    "deleteConfirmTitle": "Delete guide?",
+    "deleteConfirm": "Are you sure you want to delete this guide? This cannot be undone.",
+    "deleteConfirmButton": "Delete",
     "deleted": "Roadmap deleted successfully!",
     "deleteError": "Failed to delete roadmap. Please try again."
   }
