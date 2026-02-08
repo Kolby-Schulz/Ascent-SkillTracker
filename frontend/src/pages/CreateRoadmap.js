@@ -291,15 +291,6 @@ const CreateRoadmap = () => {
           <button onClick={() => navigate('/dashboard')} className="back-button">
             ← Back
           </button>
-          <button 
-            className={`learner-view-toggle ${isLearnerView ? 'active' : ''}`}
-            onClick={() => {
-              setIsLearnerView(!isLearnerView);
-              setIsFlipped(false);
-            }}
-          >
-            {isLearnerView ? '👨‍🏫 Creator View' : '👨‍🎓 Learner\'s View'}
-          </button>
           <motion.div
             className="create-title-section"
             initial={{ y: -50, opacity: 0 }}
