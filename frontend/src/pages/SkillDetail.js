@@ -138,13 +138,19 @@ const SkillDetail = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  
+  // Track completed sub-skills (stored in localStorage per skill)
+  const [completedSteps, setCompletedSteps] = useState(() => {
+    const saved = localStorage.getItem(`skill-progress-${skillId}`);
+    return saved ? JSON.parse(saved) : {};
+  });
 
   const skill = skillsData[skillId];
 
   if (!skill) {
     return (
       <div className="skill-detail-container">
-        <div className="skill-not-found">
+        <div className="skill-not-found glass-panel">
           <h2>Skill not found</h2>
           <button onClick={() => navigate('/dashboard')} className="back-button">
             Back to Dashboard
@@ -155,6 +161,22 @@ const SkillDetail = () => {
   }
 
   const { name, description, subSkills } = skill;
+  
+  // Calculate progress
+  const completedCount = Object.values(completedSteps).filter(Boolean).length;
+  const totalSteps = subSkills.length;
+  const progressPercentage = (completedCount / totalSteps) * 100;
+  const isSkillMastered = completedCount === totalSteps;
+
+  // Toggle step completion
+  const toggleStepCompletion = (stepId) => {
+    const newCompletedSteps = {
+      ...completedSteps,
+      [stepId]: !completedSteps[stepId]
+    };
+    setCompletedSteps(newCompletedSteps);
+    localStorage.setItem(`skill-progress-${skillId}`, JSON.stringify(newCompletedSteps));
+  };
 
   const nextSlide = () => {
     setDirection(1);
@@ -209,14 +231,41 @@ const SkillDetail = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <h1 className="skill-title">{name}</h1>
+          <h1 className="skill-title">
+            {name}
+            {isSkillMastered && <span className="mastered-badge">✓ Mastered!</span>}
+          </h1>
           <p className="skill-description">{description}</p>
+        </motion.div>
+        
+        {/* Progress Bar */}
+        <motion.div
+          className="progress-bar-container"
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="progress-bar-header">
+            <span className="progress-label">Overall Progress</span>
+            <span className="progress-percentage">{Math.round(progressPercentage)}%</span>
+          </div>
+          <div className="progress-bar-track">
+            <motion.div
+              className="progress-bar-fill"
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPercentage}%` }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            />
+          </div>
+          <div className="progress-stats">
+            <span>{completedCount} of {totalSteps} steps completed</span>
+          </div>
         </motion.div>
       </div>
 
       {/* Sub-skills Carousel */}
       <motion.div
-        className="carousel-section"
+        className="carousel-section glass-panel"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
@@ -250,7 +299,7 @@ const SkillDetail = () => {
                   x: { type: 'spring', stiffness: 300, damping: 30 },
                   opacity: { duration: 0.2 }
                 }}
-                className="carousel-card"
+                className={`carousel-card ${completedSteps[subSkills[currentIndex].id] ? 'completed' : ''}`}
               >
                 <div className="carousel-card-header">
                   <span className="sub-skill-number">
@@ -266,6 +315,21 @@ const SkillDetail = () => {
                 <p className="sub-skill-description">
                   {subSkills[currentIndex].description}
                 </p>
+                
+                {/* Checkbox to mark as complete */}
+                <div className="step-completion">
+                  <label className="completion-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={completedSteps[subSkills[currentIndex].id] || false}
+                      onChange={() => toggleStepCompletion(subSkills[currentIndex].id)}
+                    />
+                    <span className="checkbox-custom"></span>
+                    <span className="checkbox-label">
+                      {completedSteps[subSkills[currentIndex].id] ? 'Completed ✓' : 'Mark as complete'}
+                    </span>
+                  </label>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -281,12 +345,13 @@ const SkillDetail = () => {
 
         {/* Carousel Indicators */}
         <div className="carousel-indicators">
-          {subSkills.map((_, index) => (
+          {subSkills.map((subSkill, index) => (
             <button
               key={index}
-              className={`indicator ${index === currentIndex ? 'active' : ''}`}
+              className={`indicator ${index === currentIndex ? 'active' : ''} ${completedSteps[subSkill.id] ? 'completed' : ''}`}
               onClick={() => goToSlide(index)}
               aria-label={`Go to sub-skill ${index + 1}`}
+              title={completedSteps[subSkill.id] ? 'Completed' : 'Not completed'}
             />
           ))}
         </div>
