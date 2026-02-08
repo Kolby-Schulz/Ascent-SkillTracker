@@ -132,7 +132,7 @@
 /* Main Content - explicit column 2 */
 .dashboard-main {
   grid-column: 2;
-  padding: 32px 40px;
+  padding: 12px 40px 32px 40px;
   overflow-y: auto;
 }
 
