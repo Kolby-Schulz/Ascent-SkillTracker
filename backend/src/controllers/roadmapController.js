@@ -127,6 +127,41 @@ exports.getMyRoadmaps = async (req, res, next) => {
 };
 
 /**
+ * @desc    Get own roadmap for view (owner only, for drafts)
+ * @route   GET /api/roadmaps/user/view/:id
+ * @access  Private
+ */
+exports.getMyRoadmapForView = async (req, res, next) => {
+  try {
+    const roadmap = await Roadmap.findById(req.params.id)
+      .populate('creator', 'username email')
+      .lean();
+
+    if (!roadmap) {
+      return next(new ErrorResponse('Roadmap not found', 404));
+    }
+
+    if (roadmap.creator?._id?.toString() !== req.user._id.toString()) {
+      return next(new ErrorResponse('Not authorized to access this roadmap', 403));
+    }
+
+    const userId = req.user._id.toString();
+    const responseData = {
+      ...roadmap,
+      likesCount: roadmap.likedBy?.length ?? 0,
+      isLiked: (roadmap.likedBy || []).some((id) => id.toString() === userId),
+    };
+
+    res.status(200).json({
+      success: true,
+      data: responseData,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc    Get single roadmap by ID
  * @route   GET /api/roadmaps/:id
  * @access  Public
@@ -143,7 +178,8 @@ exports.getRoadmapById = async (req, res, next) => {
 
     // Check if user has access (published/public or owner)
     if (roadmap.status === 'draft' || roadmap.visibility === 'private') {
-      if (!req.user || roadmap.creator._id.toString() !== req.user._id.toString()) {
+      const creatorId = roadmap.creator?._id?.toString?.() || roadmap.creator?.toString?.();
+      if (!req.user || !creatorId || creatorId !== req.user._id.toString()) {
         return next(new ErrorResponse('Not authorized to access this roadmap', 403));
       }
     }

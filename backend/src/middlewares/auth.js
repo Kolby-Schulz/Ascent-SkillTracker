@@ -40,6 +40,32 @@ exports.protect = async (req, res, next) => {
 };
 
 /**
+ * Optional auth - set req.user if token present, but don't require it
+ */
+exports.optionalProtect = async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = jwt.verify(token, config.jwtSecret);
+    req.user = await User.findById(decoded.id).select('-passwordHash');
+  } catch (err) {
+    // Ignore invalid/expired token - treat as unauthenticated
+  }
+  next();
+};
+
+/**
  * Grant access to specific roles
  */
 exports.authorize = (...roles) => {
