@@ -7,6 +7,7 @@ import './DashboardLayout.css';
 
 const SIDEBAR_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', path: '/dashboard' },
+  { id: 'create', label: 'Create', path: '/dashboard/create', icon: '➕' },
   { id: 'learn-skill', label: 'Learn Skill', path: '/dashboard/learn-skill' },
   { id: 'saved', label: 'Saved', path: '/dashboard/saved' },
   { id: 'feed', label: 'Feed', path: '/dashboard/feed' },
@@ -43,8 +44,10 @@ const DashboardLayout = () => {
     navigate(path);
   };
 
+  const isCreatePage = location.pathname.includes('/create');
+
   return (
-    <div className="dashboard-layout" style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div className={`dashboard-layout ${isCreatePage ? 'layout-create' : ''}`} style={{ backgroundImage: `url(${backgroundImage})` }}>
       <DayNightCycle />
       {/* Left Sidebar */}
       <aside className="dashboard-sidebar">
@@ -62,7 +65,7 @@ const DashboardLayout = () => {
               className={`sidebar-nav-item ${getActiveNav() === item.id ? 'active' : ''}`}
               onClick={() => handleNavClick(item.path)}
             >
-              <span className="nav-icon">{item.label.charAt(0)}</span>
+              <span className="nav-icon">{item.icon || item.label.charAt(0)}</span>
               <span className="nav-label">{item.label}</span>
             </button>
           ))}
@@ -74,8 +77,8 @@ const DashboardLayout = () => {
         <Outlet />
       </main>
 
-      {/* Right Sidebar */}
-      <aside className="dashboard-right-sidebar">
+      {/* Right Sidebar - floats on Create page, normal on others */}
+      <aside className={`dashboard-right-sidebar ${isCreatePage ? 'profile-float' : ''}`}>
         <div className="profile-area" ref={profileRef}>
           <div className="profile-wrapper">
             <button
@@ -89,7 +92,12 @@ const DashboardLayout = () => {
             </button>
             {profileMenuOpen && (
               <div className="profile-dropdown glass-panel">
-                <button className="dropdown-item">Settings</button>
+                <button className="dropdown-item" onClick={() => navigate('/dashboard/profile')}>
+                  Profile
+                </button>
+                <button className="dropdown-item" onClick={() => navigate('/dashboard/settings')}>
+                  Settings
+                </button>
                 <button className="dropdown-item" onClick={logout}>
                   Logout
                 </button>

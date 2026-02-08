@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const guideRoutes = require('./routes/guideRoutes');
 const metricsRoutes = require('./routes/metricsRoutes');
 const userSkillProgressRoutes = require('./routes/userSkillProgressRoutes');
+const roadmapRoutes = require('./routes/roadmapRoutes');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/guides', guideRoutes);
 app.use('/api/v1/metrics', metricsRoutes);
 app.use('/api/v1/user-skills', userSkillProgressRoutes);
+app.use('/api/v1/roadmaps', roadmapRoutes);
 
 // 404 handler
 app.use((req, res) => {

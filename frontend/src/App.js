@@ -10,6 +10,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import LearnSkill from './pages/LearnSkill';
 import SkillDetail from './pages/SkillDetail';
+import CreateRoadmap from './pages/CreateRoadmap';
+import Profile from './pages/Profile';
 import './App.css';
 
 function App() {
@@ -31,7 +33,9 @@ function App() {
                 }
               >
                 <Route index element={<Dashboard />} />
+                <Route path="create" element={<CreateRoadmap />} />
                 <Route path="learn-skill" element={<LearnSkill />} />
+                <Route path="profile" element={<Profile />} />
               </Route>
               <Route
                 path="/skill/:skillId"
