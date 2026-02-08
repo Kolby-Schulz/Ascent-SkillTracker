@@ -288,6 +288,37 @@
   margin-top: 4px;
 }
 
+/* Friends on this path - avatars on skill card */
+.skill-card-friends {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  min-width: 0;
+}
+
+.skill-card-friend-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.skill-card-friend-more {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
 /* Status badges on skill cards */
 .skill-card-badge {
   display: inline-block;

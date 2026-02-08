@@ -18,7 +18,8 @@
   "search": {
     "placeholder": "Search by username or email...",
     "search": "Search",
-    "noResults": "No users found",
+    "hint": "Enter at least 2 characters to find users by username or email, then add them as friends.",
+    "noResults": "No users found. Try a different search.",
     "addFriend": "Add Friend",
     "requestSent": "Request Sent",
     "friends": "Friends",
@@ -29,6 +30,7 @@
     "requestAccepted": "Friend request accepted!",
     "friendRemoved": "Friend removed",
     "removeConfirm": "Are you sure you want to remove this friend?",
-    "searchError": "Please enter at least 2 characters to search"
+    "searchError": "Please enter at least 2 characters to search",
+    "requestFailed": "Could not send friend request. Please try again."
   }
 }

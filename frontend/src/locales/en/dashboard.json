@@ -9,5 +9,6 @@
   "completed": "Completed!",
   "inProgress": "In progress",
   "clickToView": "Click to view",
-  "removeSkillTitle": "Remove skill"
+  "removeSkillTitle": "Remove skill",
+  "friendsOnPath": "{{count}} friend(s) on this path"
 }
