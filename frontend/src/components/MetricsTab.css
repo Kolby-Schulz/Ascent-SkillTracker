@@ -1,0 +1,248 @@
+/* Metrics Tab - Color palette: 254c5d, 011c2f, d9bba3, aea79d, 546672 */
+.metrics-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metrics-tab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.metrics-tab-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #d9bba3;
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(217, 187, 163, 0.3);
+  flex: 1;
+}
+
+.metrics-refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: rgba(217, 187, 163, 0.15);
+  border: 1px solid rgba(217, 187, 163, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.metrics-refresh-btn:hover:not(:disabled) {
+  background: rgba(217, 187, 163, 0.25);
+  border-color: rgba(217, 187, 163, 0.5);
+}
+
+.metrics-refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.metrics-refresh-icon {
+  font-size: 18px;
+  color: #d9bba3;
+}
+
+.metrics-refresh-icon.spinning {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.metrics-last-updated {
+  font-size: 11px;
+  color: #aea79d;
+  margin: -12px 0 0 0;
+}
+
+/* Skeleton loading */
+.metrics-stat-cards-skeleton {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.metric-stat-skeleton {
+  height: 70px;
+  background: linear-gradient(
+    90deg,
+    rgba(217, 187, 163, 0.06) 25%,
+    rgba(217, 187, 163, 0.12) 50%,
+    rgba(217, 187, 163, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  border-radius: 12px;
+}
+
+.metric-skeleton-line {
+  height: 14px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(217, 187, 163, 0.06) 25%,
+    rgba(217, 187, 163, 0.1) 50%,
+    rgba(217, 187, 163, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.metrics-error-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 10px;
+}
+
+.metrics-error {
+  font-size: 13px;
+  color: #fca5a5;
+  flex: 1;
+}
+
+.metrics-retry {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: #546672;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.metrics-retry:hover {
+  background: #254c5d;
+}
+
+/* Classic Stat Cards */
+.metrics-stat-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.metrics-stat-card {
+  background: rgba(37, 76, 93, 0.4);
+  border: 1px solid rgba(217, 187, 163, 0.2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: all 0.2s;
+}
+
+.metrics-stat-card:hover {
+  background: rgba(37, 76, 93, 0.5);
+  border-color: rgba(217, 187, 163, 0.3);
+}
+
+.metrics-stat-icon {
+  font-size: 16px;
+  opacity: 0.9;
+  margin-bottom: 2px;
+}
+
+.metrics-stat-icon.icon-red {
+  color: #ef4444;
+}
+
+.metrics-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #d9bba3;
+}
+
+.metrics-stat-label {
+  font-size: 12px;
+  color: #aea79d;
+}
+
+.metrics-stat-micro {
+  font-size: 10px;
+  color: #546672;
+  margin-top: 2px;
+}
+
+/* Learning Progress Bar */
+.metrics-progress-section {
+  padding: 14px 16px;
+  background: rgba(37, 76, 93, 0.4);
+  border: 1px solid rgba(217, 187, 163, 0.2);
+  border-radius: 12px;
+}
+
+.metrics-progress-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d9bba3;
+  margin: 0 0 10px 0;
+}
+
+.metrics-progress-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metrics-progress-bar {
+  height: 8px;
+  background: rgba(1, 28, 47, 0.6);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.metrics-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #254c5d, #d9bba3);
+  border-radius: 4px;
+  min-width: 4px;
+}
+
+.metrics-progress-text {
+  font-size: 12px;
+  color: #aea79d;
+  margin: 0;
+}
+
+.metrics-progress-sub {
+  font-size: 11px;
+  color: #546672;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .metrics-stat-cards {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .metrics-stat-value {
+    font-size: 20px;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import MetricsTab from './MetricsTab';
 import './DashboardLayout.css';
 
 const SIDEBAR_ITEMS = [
@@ -93,6 +94,7 @@ const DashboardLayout = () => {
             )}
           </div>
         </div>
+        <MetricsTab />
       </aside>
     </div>
   );
