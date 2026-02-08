@@ -1,18 +1,19 @@
-kez/* Create Roadmap - Centered layout with flip animation */
+/* Create Roadmap - Match SkillDetail theme (dark glass) */
 .create-roadmap-wrapper {
   width: 100%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 1rem;
+  padding: 20px;
+  background: transparent;
 }
 
 .create-roadmap-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  color: #e8e8e8;
+  color: #fff;
 }
 
 /* Header Section */
@@ -27,18 +28,21 @@ kez/* Create Roadmap - Centered layout with flip animation */
 
 .back-button {
   background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.9);
+  color: white;
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   transition: all 0.2s ease;
+  margin-bottom: 8px;
 }
 
 .back-button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateX(-5px);
 }
 
@@ -59,8 +63,8 @@ kez/* Create Roadmap - Centered layout with flip animation */
 }
 
 .learner-view-toggle.active {
-  background: rgba(168, 85, 247, 0.4);
-  border-color: #a855f7;
+  background: rgba(217, 187, 163, 0.35);
+  border-color: #D9BBA3;
   color: white;
 }
 
@@ -92,7 +96,7 @@ kez/* Create Roadmap - Centered layout with flip animation */
 }
 
 .skill-name-input:focus {
-  border-bottom-color: #a855f7;
+  border-bottom-color: #D9BBA3;
 }
 
 .skill-name-input.error {
@@ -122,29 +126,30 @@ kez/* Create Roadmap - Centered layout with flip animation */
 /* Carousel Section - Glass panel */
 .carousel-section {
   width: 100%;
-  margin: 0.5rem auto;
-  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-title {
-  font-size: 1.5rem;
+  font-size: 28px;
   font-weight: 700;
   text-align: center;
   color: #fff;
-  margin-bottom: 0.25rem;
+  margin-bottom: 8px;
 }
 
 .carousel-subtitle {
   text-align: center;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  margin-bottom: 40px;
 }
 
 .resources-progress {
@@ -182,8 +187,8 @@ kez/* Create Roadmap - Centered layout with flip animation */
 }
 
 .carousel-button:hover {
-  background: rgba(168, 85, 247, 0.5);
-  border-color: #a855f7;
+  background: rgba(217, 187, 163, 0.3);
+  border-color: #D9BBA3;
   transform: scale(1.1);
 }
 
@@ -213,9 +218,10 @@ kez/* Create Roadmap - Centered layout with flip animation */
 }
 
 .flip-card-front {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   backface-visibility: hidden;
 }
 
@@ -288,15 +294,21 @@ kez/* Create Roadmap - Centered layout with flip animation */
   gap: 0.5rem;
 }
 
+.carousel-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 .sub-skill-number {
-  background: rgba(255, 255, 255, 0.25);
-  color: white;
-  padding: 0.5rem 1.25rem;
-  border-radius: 20px;
+  font-size: 12px;
   font-weight: 700;
-  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  background: #D9BBA3;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
 }
 
 .sub-skill-total {
@@ -305,12 +317,32 @@ kez/* Create Roadmap - Centered layout with flip animation */
 }
 
 .resource-count-badge {
-  background: rgba(168, 85, 247, 0.9);
+  background: rgba(217, 187, 163, 0.5);
+  border: 1px solid rgba(217, 187, 163, 0.6);
   color: white;
   padding: 0.35rem 0.75rem;
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+.resources-header-button {
+  background: linear-gradient(135deg, #D9BBA3 0%, #c9a893 100%);
+  border: none;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(217, 187, 163, 0.35);
+  flex-shrink: 0;
+}
+
+.resources-header-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(217, 187, 163, 0.45);
 }
 
 /* Creator View - Editable Inputs */
@@ -507,11 +539,11 @@ kez/* Create Roadmap - Centered layout with flip animation */
   cursor: not-allowed;
 }
 
-/* RESOURCES PAGE (Back Side) - #4E5359, scrollable */
+/* RESOURCES PAGE (Back Side) - translucent gray panel */
 .resources-page {
   width: 100%;
   min-height: 100%;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   background: #4E5359;
   color: rgba(255, 255, 255, 0.95);
   display: flex;
@@ -544,6 +576,7 @@ kez/* Create Roadmap - Centered layout with flip animation */
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+/* Back side: only Free Resources + add resource inputs + link list */
 .back-to-content-button {
   background: transparent;
   border: none;
@@ -655,9 +688,9 @@ kez/* Create Roadmap - Centered layout with flip animation */
 
 .resource-url-input-main:focus,
 .resource-title-input-main:focus {
-  border-color: #a855f7;
+  border-color: #D9BBA3;
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+  box-shadow: 0 0 0 2px rgba(217, 187, 163, 0.25);
 }
 
 .add-resource-button-main {
