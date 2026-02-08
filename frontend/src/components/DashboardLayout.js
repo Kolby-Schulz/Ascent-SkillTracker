@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import DayNightCycle from './DayNightCycle';
 import './DashboardLayout.css';
 
 const SIDEBAR_ITEMS = [
@@ -19,6 +20,7 @@ const DashboardLayout = () => {
   const profileRef = useRef(null);
 
   const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
+  const backgroundImage = process.env.PUBLIC_URL + '/images/6229893.jpg';
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -41,7 +43,8 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="dashboard-layout">
+    <div className="dashboard-layout" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <DayNightCycle />
       {/* Left Sidebar */}
       <aside className="dashboard-sidebar">
         <div className="sidebar-logo">
