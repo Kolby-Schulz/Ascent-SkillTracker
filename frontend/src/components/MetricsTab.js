@@ -1,14 +1,27 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { getMyMetrics } from '../services/metricsService';
-import { useSkills } from '../context/SkillsContext';
-import { getSkillsProgressCounts, getTotalCompletedCount, getSkillOrRoadmapStatus, getSkillId, recordCompletedSkill, recordCompletedRoadmap } from '../utils/skillProgress';
-import './MetricsTab.css';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
+import { getMyMetrics } from "../services/metricsService";
+import { useSkills } from "../context/SkillsContext";
+import {
+  getSkillsProgressCounts,
+  getTotalCompletedCount,
+  getSkillOrRoadmapStatus,
+  getSkillId,
+  recordCompletedSkill,
+  recordCompletedRoadmap,
+} from "../utils/skillProgress";
+import "./MetricsTab.css";
 
 // Color palette: 254c5d, 011c2f, d9bba3, aea79d, 546672
 const STAT_CARDS = [
-  { key: 'guidesUploaded', label: 'Guides Created', icon: '📝', micro: '' },
-  { key: 'totalLikes', label: 'Total Likes', icon: '👍', iconClass: 'icon-white', micro: '' },
+  { key: "guidesUploaded", label: "Guides Created", icon: "📝", micro: "" },
+  {
+    key: "totalLikes",
+    label: "Total Likes",
+    icon: "👍",
+    iconClass: "icon-white",
+    micro: "",
+  },
 ];
 
 const MetricsTab = () => {
@@ -21,8 +34,9 @@ const MetricsTab = () => {
   // Backfill: ensure any currently completed skill/roadmap is in the persistent list (so existing completions count)
   (skills || []).forEach((name) => {
     const status = getSkillOrRoadmapStatus(name, getRoadmapId);
-    if (status === 'completed') {
-      const roadmapId = typeof getRoadmapId === 'function' ? getRoadmapId(name) : null;
+    if (status === "completed") {
+      const roadmapId =
+        typeof getRoadmapId === "function" ? getRoadmapId(name) : null;
       if (roadmapId) recordCompletedRoadmap(roadmapId);
       else recordCompletedSkill(getSkillId(name));
     }
@@ -30,11 +44,14 @@ const MetricsTab = () => {
   // Persistent total completed (never decreases when cards are removed)
   const totalCompleted = getTotalCompletedCount();
   // In-progress count from current dashboard list only
-  const { inProgress: localSkillsInProgress } = getSkillsProgressCounts(skills, getRoadmapId);
+  const { inProgress: localSkillsInProgress } = getSkillsProgressCounts(
+    skills,
+    getRoadmapId,
+  );
 
   const fetchMetrics = useCallback(async () => {
-    const token = localStorage.getItem('token')?.trim();
-    if (token === 'demo-bypass-token') {
+    const token = localStorage.getItem("token")?.trim();
+    if (token === "demo-bypass-token") {
       setMetrics({
         skillsLearned: 0,
         skillsInProgress: 0,
@@ -67,23 +84,27 @@ const MetricsTab = () => {
       if (res?.fromFallback && res?.error) {
         const e = res.error;
         const isBlocked =
-          e?.code === 'ERR_NETWORK' ||
-          e?.code === 'ERR_BLOCKED_BY_CLIENT' ||
-          (e?.message && typeof e.message === 'string' && e.message.toLowerCase().includes('blocked'));
+          e?.code === "ERR_NETWORK" ||
+          e?.code === "ERR_BLOCKED_BY_CLIENT" ||
+          (e?.message &&
+            typeof e.message === "string" &&
+            e.message.toLowerCase().includes("blocked"));
         setError(
           isBlocked
-            ? 'Request blocked. Disable ad blocker or privacy extensions for this site and retry.'
+            ? "Request blocked. Disable ad blocker or privacy extensions for this site and retry."
             : e?.response?.status === 401
-              ? 'Please log in again'
-              : e?.response?.data?.error || 'Failed to load metrics'
+              ? "Please log in again"
+              : e?.response?.data?.error || "Failed to load metrics",
         );
       }
     } catch (err) {
       const msg =
         err?.response?.status === 401
-          ? 'Please log in again'
+          ? "Please log in again"
           : err?.response?.data?.error ||
-            (err?.code === 'ERR_NETWORK' ? 'Backend not reachable' : 'Failed to load metrics');
+            (err?.code === "ERR_NETWORK"
+              ? "Backend not reachable"
+              : "Failed to load metrics");
       setError(msg);
       setMetrics({
         skillsLearned: 0,
@@ -104,8 +125,8 @@ const MetricsTab = () => {
   }, [fetchMetrics]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token')?.trim();
-    if (token === 'demo-bypass-token') return;
+    const token = localStorage.getItem("token")?.trim();
+    if (token === "demo-bypass-token") return;
     const interval = setInterval(fetchMetrics, 60000);
     return () => clearInterval(interval);
   }, [fetchMetrics]);
@@ -114,17 +135,18 @@ const MetricsTab = () => {
     if (!d) return null;
     const now = new Date();
     const diff = Math.floor((now - d) / 1000);
-    if (diff < 60) return 'Just now';
+    if (diff < 60) return "Just now";
     if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   // Learning Progress: completed = persistent total; in progress = current list only
   const skillsLearned = totalCompleted;
   const skillsInProgress = localSkillsInProgress ?? 0;
   const totalForBar = skillsLearned + skillsInProgress;
-  const learnedPercent = totalForBar > 0 ? Math.round((skillsLearned / totalForBar) * 100) : 0;
+  const learnedPercent =
+    totalForBar > 0 ? Math.round((skillsLearned / totalForBar) * 100) : 0;
 
   if (loading) {
     return (
@@ -148,7 +170,9 @@ const MetricsTab = () => {
         <h3 className="metrics-tab-title">Metrics</h3>
       </div>
       {lastUpdated && !error && (
-        <p className="metrics-last-updated">Updated {formatLastUpdated(lastUpdated)}</p>
+        <p className="metrics-last-updated">
+          Updated {formatLastUpdated(lastUpdated)}
+        </p>
       )}
 
       {/* Stat Cards: Guides Created, Total Likes */}
@@ -161,8 +185,12 @@ const MetricsTab = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
           >
-            <div className={`metrics-stat-icon ${card.iconClass || ''}`}>{card.icon}</div>
-            <span className="metrics-stat-value">{metrics?.[card.key] ?? 0}</span>
+            <div className={`metrics-stat-icon ${card.iconClass || ""}`}>
+              {card.icon}
+            </div>
+            <span className="metrics-stat-value">
+              {metrics?.[card.key] ?? 0}
+            </span>
             <span className="metrics-stat-label">{card.label}</span>
             {card.micro && (
               <span className="metrics-stat-micro">{card.micro}</span>
@@ -185,13 +213,16 @@ const MetricsTab = () => {
               className="metrics-progress-fill"
               initial={{ width: 0 }}
               animate={{ width: `${learnedPercent}%` }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             />
           </div>
           <p className="metrics-progress-text">
-            {skillsLearned} skill{skillsLearned !== 1 ? 's' : ''} completed
+            {skillsLearned} skill{skillsLearned !== 1 ? "s" : ""} completed
           </p>
-          <p className="metrics-progress-sub">{skillsInProgress} skill{skillsInProgress !== 1 ? 's' : ''} in progress</p>
+          <p className="metrics-progress-sub">
+            {skillsInProgress} skill{skillsInProgress !== 1 ? "s" : ""} in
+            progress
+          </p>
         </div>
       </motion.div>
 
