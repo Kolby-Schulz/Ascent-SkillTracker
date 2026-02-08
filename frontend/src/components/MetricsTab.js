@@ -12,14 +12,17 @@ const STAT_CARDS = [
 ];
 
 const MetricsTab = () => {
-  const { skills } = useSkills();
+  const { skills, getRoadmapId } = useSkills();
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  // Local progress from localStorage for Learning Progress section only
-  const { learned: localSkillsLearned, inProgress: localSkillsInProgress } = getSkillsProgressCounts(skills);
+  // Local progress from localStorage: built-in skills + user-created roadmaps (both count towards Learning Progress)
+  const { learned: localSkillsLearned, inProgress: localSkillsInProgress } = getSkillsProgressCounts(
+    skills,
+    getRoadmapId
+  );
 
   const fetchMetrics = useCallback(async () => {
     const token = localStorage.getItem('token')?.trim();
