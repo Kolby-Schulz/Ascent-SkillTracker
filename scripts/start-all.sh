@@ -16,6 +16,13 @@ docker start skill-roadmap-mongodb 2>/dev/null || docker run -d -p 27017:27017 -
 echo "[OK] MongoDB running"
 
 echo ""
+echo "Installing dependencies (in case you just pulled)..."
+cd "$(dirname "$0")/../backend" && npm install
+cd "$(dirname "$0")/../frontend" && npm install
+cd "$(dirname "$0")/.."
+echo "[OK] Dependencies ready"
+
+echo ""
 echo "Starting backend in background..."
 cd "$(dirname "$0")/../backend"
 npm start &

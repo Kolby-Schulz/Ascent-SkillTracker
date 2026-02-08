@@ -20,6 +20,15 @@ if %errorlevel% neq 0 (
 echo [OK] MongoDB running
 
 echo.
+echo Installing dependencies (in case you just pulled)...
+cd /d "%~dp0..\backend"
+call npm install
+cd "%~dp0..\frontend"
+call npm install
+cd /d "%~dp0.."
+echo [OK] Dependencies ready
+
+echo.
 echo Starting backend in new window...
 start "Backend (port 5000)" cmd /k "cd /d "%~dp0..\backend" && npm start"
 
