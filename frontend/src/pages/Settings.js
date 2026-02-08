@@ -9,6 +9,10 @@ const Settings = () => {
   const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('account');
   
+  // Edit mode states
+  const [isEditingAccount, setIsEditingAccount] = useState(false);
+  const [isEditingSecurity, setIsEditingSecurity] = useState(false);
+  
   // Form states
   const [username, setUsername] = useState(user?.username || '');
   const [email, setEmail] = useState(user?.email || '');
@@ -22,10 +26,26 @@ const Settings = () => {
     setEmail(user?.email || '');
   }, [user]);
 
+  const handleEditAccount = () => {
+    setIsEditingAccount(true);
+  };
+
   const handleSaveAccount = (e) => {
     e.preventDefault();
     // TODO: Implement account update API call
     console.log('Saving account settings:', { username, email });
+    setIsEditingAccount(false);
+  };
+
+  const handleCancelAccount = () => {
+    // Reset to original values
+    setUsername(user?.username || '');
+    setEmail(user?.email || '');
+    setIsEditingAccount(false);
+  };
+
+  const handleEditSecurity = () => {
+    setIsEditingSecurity(true);
   };
 
   const handleChangePassword = (e) => {
@@ -39,6 +59,15 @@ const Settings = () => {
     setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
+    setIsEditingSecurity(false);
+  };
+
+  const handleCancelSecurity = () => {
+    // Clear password fields
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setIsEditingSecurity(false);
   };
 
 
@@ -94,6 +123,7 @@ const Settings = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Enter your username"
+                    disabled={!isEditingAccount}
                   />
                 </div>
                 <div className="form-group">
@@ -104,11 +134,25 @@ const Settings = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
+                    disabled={!isEditingAccount}
                   />
                 </div>
-                <button type="submit" className="settings-button">
-                  Save Changes
-                </button>
+                <div className="form-actions">
+                  {!isEditingAccount ? (
+                    <button type="button" onClick={handleEditAccount} className="settings-button-edit">
+                      Edit
+                    </button>
+                  ) : (
+                    <>
+                      <button type="button" onClick={handleCancelAccount} className="settings-button-cancel">
+                        Cancel
+                      </button>
+                      <button type="submit" className="settings-button settings-button-purple">
+                        Save Changes
+                      </button>
+                    </>
+                  )}
+                </div>
               </form>
             </motion.div>
           )}
@@ -131,6 +175,7 @@ const Settings = () => {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="Enter current password"
+                    disabled={!isEditingSecurity}
                   />
                 </div>
                 <div className="form-group">
@@ -141,6 +186,7 @@ const Settings = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Enter new password"
+                    disabled={!isEditingSecurity}
                   />
                 </div>
                 <div className="form-group">
@@ -151,11 +197,25 @@ const Settings = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm new password"
+                    disabled={!isEditingSecurity}
                   />
                 </div>
-                <button type="submit" className="settings-button">
-                  Update Password
-                </button>
+                <div className="form-actions">
+                  {!isEditingSecurity ? (
+                    <button type="button" onClick={handleEditSecurity} className="settings-button-edit">
+                      Edit
+                    </button>
+                  ) : (
+                    <>
+                      <button type="button" onClick={handleCancelSecurity} className="settings-button-cancel">
+                        Cancel
+                      </button>
+                      <button type="submit" className="settings-button settings-button-purple">
+                        Update Password
+                      </button>
+                    </>
+                  )}
+                </div>
               </form>
             </motion.div>
           )}

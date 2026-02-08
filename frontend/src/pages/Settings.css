@@ -134,6 +134,12 @@
   box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
 }
 
+.form-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .settings-select {
   cursor: pointer;
 }
@@ -177,6 +183,12 @@
 }
 
 /* Buttons */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .settings-button {
   padding: 0.75rem 2rem;
   background: #D9BBA3;
@@ -187,7 +199,6 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  align-self: flex-start;
   box-shadow: 0 2px 8px rgba(217, 187, 163, 0.3);
 }
 
@@ -199,6 +210,58 @@
 
 .settings-button:active {
   transform: translateY(0);
+}
+
+.settings-button-purple {
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
+}
+
+.settings-button-purple:hover {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+}
+
+.settings-button-edit {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
+}
+
+.settings-button-edit:hover {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+}
+
+.settings-button-edit:active {
+  transform: translateY(0);
+}
+
+.settings-button-cancel {
+  padding: 0.75rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-button-cancel:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Glass Panel (shared with DashboardLayout) */
