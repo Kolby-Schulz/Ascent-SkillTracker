@@ -26,6 +26,7 @@ const DashboardLayout = () => {
     { id: 'feed', label: t('navigation:feed'), path: '/dashboard/feed' },
     { id: 'friends', label: t('navigation:friends'), path: '/dashboard/friends' },
     { id: 'leaderboard', label: t('navigation:leaderboard'), path: '/dashboard/leaderboard' },
+    { id: 'analytics', label: t('navigation:analytics'), path: '/dashboard/analytics' },
     { id: 'settings', label: t('navigation:settings'), path: '/dashboard/settings' },
   ];
 

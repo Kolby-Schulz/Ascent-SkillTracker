@@ -240,6 +240,19 @@ const RoadmapView = () => {
     }
   };
 
+  const resetProgress = () => {
+    if (!isInMySkills || !id) return;
+    
+    // Clear all completed steps
+    setCompletedSteps({});
+    
+    // Clear localStorage
+    localStorage.removeItem(`roadmap-progress-${id}`);
+    
+    // Reset current index to first step
+    setCurrentIndex(0);
+  };
+
   if (sortedSubSkills.length === 0) {
     return (
       <div className="skill-detail-container">
@@ -306,30 +319,6 @@ const RoadmapView = () => {
               {isInMySkills ? 'In My Skills' : 'Add to My Skills'}
             </motion.button>
           </div>
-
-          {/* Progress Bar - same as SkillDetail */}
-          <motion.div
-            className="progress-bar-container"
-            initial={{ y: -30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="progress-bar-header">
-              <span className="progress-label">Overall Progress</span>
-              <span className="progress-percentage">{Math.round(progressPercentage)}%</span>
-            </div>
-            <div className="progress-bar-track">
-              <motion.div
-                className="progress-bar-fill"
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercentage}%` }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-              />
-            </div>
-            <div className="progress-stats">
-              <span>{completedCount} of {totalSteps} steps completed</span>
-            </div>
-          </motion.div>
         </div>
 
         <motion.div
@@ -352,6 +341,7 @@ const RoadmapView = () => {
             onStepComplete={(index) => {
               toggleStepCompletion(index);
             }}
+            onResetProgress={isInMySkills ? resetProgress : null}
           />
           
           {/* Step detail view */}
@@ -362,6 +352,15 @@ const RoadmapView = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6 }}
             >
+              {isInMySkills && (
+                <button
+                  className="reset-progress-button"
+                  onClick={resetProgress}
+                  title="Reset all progress for this skill path"
+                >
+                  ↻
+                </button>
+              )}
               <div className="step-detail-header">
                 <span className="step-detail-number">
                   Step {sortedSubSkills[currentIndex].order || currentIndex + 1} of {sortedSubSkills.length}

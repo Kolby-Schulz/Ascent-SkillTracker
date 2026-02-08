@@ -14,6 +14,7 @@ const roadmapRoutes = require('./routes/roadmapRoutes');
 const friendRoutes = require('./routes/friendRoutes');
 const postRoutes = require('./routes/postRoutes');
 const leaderboardRoutes = require('./routes/leaderboardRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use('/api/v1/friends', friendRoutes);
 app.use('/api/v1/posts', postRoutes);
 app.use('/api/v1/progress', require('./routes/progressRoutes'));
 app.use('/api/v1/leaderboard', leaderboardRoutes);
+app.use('/api/v1/analytics', analyticsRoutes);
 
 // 404 handler
 app.use((req, res) => {

@@ -2,7 +2,7 @@
 
 This folder contains one-off and utility scripts for local development, testing, and database setup. **Run all commands from the `backend` directory** unless noted.
 
-**Prerequisites:** MongoDB running (e.g. `docker start skill-roadmap-mongodb`), and `backend/.env` with a valid `MONGO_URI`.
+**Prerequisites:** MongoDB running (e.g. `docker start skill-roadmap-mongodb`), and `backend/.env` with a valid `MONGO_URI`. Node.js and dependencies (`npm install` in `backend`) are required.
 
 ---
 
@@ -15,7 +15,7 @@ This folder contains one-off and utility scripts for local development, testing,
 | [seedFakeUsers.js](#seedfakeusersjs) | Create 3 fake test users |
 | [seedFakeUserSkills.js](#seedfakeuserskillsjs) | Give fake users skills so they appear on dashboard cards |
 | [acceptAllFriendRequests.js](#acceptallfriendrequestsjs) | Accept all pending friend requests for a user |
-| [compareUsers.js](#compareusersjs) | Compare two users’ attributes in the DB |
+| [compareUsers.js](#compareusersjs) | Compare two users' attributes in the DB |
 | [seedSkillTracks.js](#seedskilltracksjs) | Seed published skill-track roadmaps (Learn Skill) |
 
 ---
@@ -38,7 +38,7 @@ node src/scripts/listUsers.js
 
 ## loginAsUser.js
 
-**What it does:** Generates a JWT and user payload for a given username so you can “force login” as that user in the browser without their password. With **`--open`**, opens the frontend and logs you in automatically (no copy/paste).
+**What it does:** Generates a JWT and user payload for a given username so you can "force login" as that user in the browser without their password. With **`--open`**, opens the frontend and logs you in automatically (no copy/paste).
 
 **When to use:** Testing as another user (e.g. jordan_lee, katsudom), debugging friend features, or demos.
 
@@ -71,9 +71,9 @@ node src/scripts/loginAsUser.js jordan_lee --open
 
 ## seedFakeUsers.js
 
-**What it does:** Creates 3 test users in the database if they don’t already exist: `jordan_lee`, `sam-rivera`, `alex_chen`. All use password **`password123`**.
+**What it does:** Creates 3 test users in the database if they don't already exist: `jordan_lee`, `sam-rivera`, `alex_chen`. All use password **`password123`**.
 
-**When to use:** First-time setup or reset when you need extra users for testing friends, feed, or dashboard “friends on this skill” avatars.
+**When to use:** First-time setup or reset when you need extra users for testing friends, feed, or dashboard "friends on this skill" avatars.
 
 **Command:**
 ```bash
@@ -87,9 +87,9 @@ node src/scripts/seedFakeUsers.js
 
 ## seedFakeUserSkills.js
 
-**What it does:** Sets **UserSkillProgress** for the 3 fake users (`jordan_lee`, `sam-rivera`, `alex_chen`) so they have the skills “Guitar”, “Web Development”, and “Photography” in progress.
+**What it does:** Sets **UserSkillProgress** for the 3 fake users (`jordan_lee`, `sam-rivera`, `alex_chen`) so they have the skills "Guitar", "Web Development", and "Photography" in progress.
 
-**When to use:** After running `seedFakeUsers.js`, when you want those users to appear on dashboard skill cards as “also learning” for those skills (and they are your friends).
+**When to use:** After running `seedFakeUsers.js`, when you want those users to appear on dashboard skill cards as "also learning" for those skills (and they are your friends).
 
 **Command:**
 ```bash
@@ -143,9 +143,9 @@ node src/scripts/compareUsers.js katsudom jordan_lee
 
 ## seedSkillTracks.js
 
-**What it does:** Seeds the database with **published skill-track roadmaps** from `backend/src/data/skillTracksSeed.json`. Creates or reuses a `demo_creator` user and only adds roadmaps that don’t already exist.
+**What it does:** Seeds the database with **published skill-track roadmaps** from `backend/src/data/skillTracksSeed.json`. Creates or reuses a `demo_creator` user and only adds roadmaps that don't already exist.
 
-**When to use:** First-time setup or when you want the “Learn Skill” section to show the predefined tracks (e.g. JavaScript, Spanish, Guitar, Cooking, etc.).
+**When to use:** First-time setup or when you want the "Learn Skill" section to show the predefined tracks (e.g. JavaScript, Spanish, Guitar, Cooking, etc.).
 
 **Command:**
 ```bash
@@ -165,7 +165,7 @@ node src/scripts/seedSkillTracks.js
 ## Quick reference
 
 | Goal | Command |
-|------|--------|
+|------|---------|
 | See all users | `node src/scripts/listUsers.js` |
 | Log in as a user | `node src/scripts/loginAsUser.js <username>` or add `--open` to open browser and log in |
 | Add 3 fake users | `node src/scripts/seedFakeUsers.js` |
@@ -175,3 +175,43 @@ node src/scripts/seedSkillTracks.js
 | Seed Learn Skill roadmaps | `npm run seed` |
 
 All of the above assume you are in the **`backend`** directory and that **MongoDB is running** (e.g. via Docker).
+
+---
+
+## Quick setup for teammates
+
+```bash
+cd backend
+npm run seed
+node src/scripts/seedFakeUsers.js
+node src/scripts/seedFakeUserSkills.js
+```
+
+---
+
+## Troubleshooting
+
+**Script fails with "Cannot find module"**
+- Make sure you're in the `backend` directory
+- Run `npm install` to install dependencies
+
+**Database connection error**
+- Check your `.env` file has `MONGO_URI` set correctly
+- Ensure MongoDB is running
+
+**User not found errors**
+- Use `listUsers.js` to see available usernames
+- Usernames are case-sensitive and must match exactly
+
+**Script hangs or doesn't exit**
+- Some scripts may need manual exit (Ctrl+C)
+- Check database connection is properly closed
+
+---
+
+## Notes
+
+- All scripts are idempotent (safe to run multiple times)
+- Scripts that create data will skip existing entries
+- Always run scripts from the `backend` directory
+- Make sure your `.env` file is properly configured before running scripts

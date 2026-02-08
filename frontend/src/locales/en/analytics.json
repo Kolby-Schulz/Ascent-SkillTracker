@@ -1,0 +1,22 @@
+{
+  "title": "Progress Analytics",
+  "subtitle": "Climb higher and track your ascent to new peaks of knowledge",
+  "loading": "Loading analytics...",
+  "skillsCompleted": "Skills Completed",
+  "skillsInProgress": "Skills In Progress",
+  "totalTimeSpent": "Total Time Spent",
+  "avgDaysToComplete": "Avg Days to Complete",
+  "timeSpentPerSkill": "Time Spent Per Skill",
+  "learningVelocity": "Learning Velocity",
+  "thirtyDayTrend": "30-Day Completion Trend",
+  "additionalInsights": "Additional Insights",
+  "fastestSkill": "Fastest Completion",
+  "slowestSkill": "Slowest Completion",
+  "topCategory": "Top Category",
+  "days": "days",
+  "steps": "steps",
+  "skills": "skills",
+  "noTimeData": "No time tracking data available yet",
+  "noVelocityData": "No completion data available yet",
+  "noTrendData": "No trend data available yet"
+}

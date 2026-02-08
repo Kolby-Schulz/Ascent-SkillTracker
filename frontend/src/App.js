@@ -20,6 +20,7 @@ import Friends from './pages/Friends';
 import Leaderboard from './pages/Leaderboard';
 import RoadmapView from './pages/RoadmapView';
 import DevLogin from './pages/DevLogin';
+import Analytics from './pages/Analytics';
 import './App.css';
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
                 <Route path="feed" element={<Feed />} />
                 <Route path="friends" element={<Friends />} />
                 <Route path="leaderboard" element={<Leaderboard />} />
+                <Route path="analytics" element={<Analytics />} />
               </Route>
               <Route
                 path="/skill/:skillId"
