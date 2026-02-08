@@ -49,7 +49,7 @@ exports.createRoadmap = async (req, res, next) => {
  */
 exports.getRoadmaps = async (req, res, next) => {
   try {
-    const { status, creator, category, search } = req.query;
+    const { status, creator, category, search, tag } = req.query;
     
     const filter = {};
     
@@ -70,6 +70,11 @@ exports.getRoadmaps = async (req, res, next) => {
     // Filter by category
     if (category) {
       filter.category = category;
+    }
+    
+    // Filter by tag (roadmap must have this tag in its tags array)
+    if (tag && String(tag).trim()) {
+      filter.tags = String(tag).trim();
     }
     
     // Search in name and description

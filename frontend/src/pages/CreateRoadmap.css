@@ -137,23 +137,51 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.carousel-title {
-  font-size: 28px;
-  font-weight: 700;
+.carousel-title-section {
   text-align: center;
+  margin-bottom: 2rem;
+}
+
+.carousel-title-section .skill-name-input {
+  margin-bottom: 0.25rem;
+}
+
+.skill-tag-select {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 0.75rem auto 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  text-align: center;
+  text-align-last: center;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+}
+
+.skill-tag-select:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.skill-tag-select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.skill-tag-select.error {
+  border-color: #ef4444;
+}
+
+.skill-tag-select option {
+  background: #2a2a2a;
   color: #fff;
-  margin-bottom: 8px;
-}
-
-.carousel-subtitle {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  margin-bottom: 40px;
-}
-
-.resources-progress {
-  opacity: 0.9;
 }
 
 /* Carousel Container */
@@ -218,18 +246,23 @@
 }
 
 .flip-card-front {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   backface-visibility: hidden;
 }
 
 .flip-card-back {
-  background: #4E5359;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   backface-visibility: hidden;
+  box-sizing: border-box;
+  padding-top: 1.5rem; /* back side only: increase to move contents down further */
 }
 
 /* Hazy backdrop around resources window - darkens everything for focus */
@@ -257,7 +290,7 @@
 .resources-page-scroll {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 100%;
+  height: 100%;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
@@ -544,11 +577,12 @@
   width: 100%;
   min-height: 100%;
   padding: 1.25rem 1.5rem;
-  background: #4E5359;
+  background: transparent;
   color: rgba(255, 255, 255, 0.95);
   display: flex;
   flex-direction: column;
   position: relative;
+  box-sizing: border-box;
 }
 
 .resources-exit-button {
@@ -576,24 +610,23 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Back side: only Free Resources + add resource inputs + link list */
-.back-to-content-button {
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 0.75rem;
-  display: inline-flex;
+/* Back side: Resources + add resource inputs + link list */
+.resources-back-add-row {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  transition: all 0.2s ease;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
-.back-to-content-button:hover {
-  transform: translateX(-5px);
-  color: #D9BBA3;
+.resources-back-add-row .back-to-content-button {
+  margin-bottom: 0;
+}
+
+.back-to-content-button {
+  margin-bottom: 0.75rem;
+  width: fit-content;
+  min-width: 0;
 }
 
 /* Intro: Title + description */

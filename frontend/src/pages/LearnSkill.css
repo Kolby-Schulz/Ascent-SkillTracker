@@ -84,6 +84,42 @@
   box-shadow: 0 4px 12px rgba(217, 187, 163, 0.3);
 }
 
+.tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 16px;
+}
+
+.tag-filters-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tag-filter {
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tag-filter:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tag-filter.active {
+  background: rgba(217, 187, 163, 0.35);
+  border-color: rgba(217, 187, 163, 0.6);
+  color: white;
+}
+
 .skills-grid-container {
   margin-top: 24px;
 }
@@ -147,14 +183,28 @@
   margin-bottom: 12px;
 }
 
+.learn-skill-name-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .learn-skill-name {
   font-size: 22px;
   font-weight: 700;
   color: white;
   margin: 0;
-  flex: 1;
-  min-width: 0;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.learn-skill-tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: #D9BBA3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .learn-skill-meta {

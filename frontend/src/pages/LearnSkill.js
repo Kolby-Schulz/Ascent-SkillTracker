@@ -5,8 +5,7 @@ import { useSkills } from '../context/SkillsContext';
 import roadmapService from '../services/roadmapService';
 import './LearnSkill.css';
 
-const INTEREST_CATEGORIES = [
-  'All',
+const TAG_OPTIONS = [
   'Music',
   'Sports',
   'Arts & Crafts',
@@ -24,7 +23,7 @@ const INTEREST_CATEGORIES = [
 const LearnSkill = () => {
   const { addSkill } = useSkills();
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedTag, setSelectedTag] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [publishedRoadmaps, setPublishedRoadmaps] = useState([]);
   const [loadingRoadmaps, setLoadingRoadmaps] = useState(true);
@@ -40,6 +39,7 @@ const LearnSkill = () => {
             id: r._id,
             name: r.name,
             category: r.category || 'General',
+            tag: (r.tags && r.tags[0]) ? r.tags[0] : '',
             creator: r.creator?.email?.split('@')[0] || r.creator?.username || 'Community',
             difficulty: 'Beginner',
             likesCount: r.likesCount ?? 0,
@@ -56,9 +56,9 @@ const LearnSkill = () => {
   }, []);
 
   const filteredSkills = publishedRoadmaps.filter((skill) => {
-    const matchesCategory = selectedCategory === 'All' || skill.category === selectedCategory;
+    const matchesTag = selectedTag === 'All' || skill.tag === selectedTag;
     const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesTag && matchesSearch;
   });
 
   const handleViewSkill = (skill) => {
@@ -109,14 +109,21 @@ const LearnSkill = () => {
           />
         </div>
 
-        <div className="category-filters">
-          {INTEREST_CATEGORIES.map((category) => (
+        <div className="tag-filters">
+          <span className="tag-filters-label">Tag:</span>
+          <button
+            className={`tag-filter ${selectedTag === 'All' ? 'active' : ''}`}
+            onClick={() => setSelectedTag('All')}
+          >
+            All
+          </button>
+          {TAG_OPTIONS.map((t) => (
             <button
-              key={category}
-              className={`category-filter ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
+              key={t}
+              className={`tag-filter ${selectedTag === t ? 'active' : ''}`}
+              onClick={() => setSelectedTag(t)}
             >
-              {category}
+              {t}
             </button>
           ))}
         </div>
@@ -147,7 +154,12 @@ const LearnSkill = () => {
               style={{ cursor: 'pointer' }}
             >
               <div className="learn-skill-card-header">
-                <h3 className="learn-skill-name">{skill.name}</h3>
+                <div className="learn-skill-name-wrap">
+                  <h3 className="learn-skill-name">{skill.name}</h3>
+                  {skill.tag && (
+                    <span className="learn-skill-tag">{skill.tag}</span>
+                  )}
+                </div>
                 <button
                   type="button"
                   className={`learn-skill-like-btn ${skill.isLiked ? 'liked' : ''}`}
