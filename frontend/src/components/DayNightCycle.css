@@ -1,9 +1,9 @@
 .day-night-cycle {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
     z-index: 1;
     overflow: hidden;
@@ -34,205 +34,205 @@
       top: 80%;
     }
     2% {
-      left: 0%;
+      left: 0vw;
       top: 78%;
     }
     4% {
-      left: 2%;
+      left: 2vw;
       top: 76%;
     }
     6% {
-      left: 4%;
+      left: 4vw;
       top: 72%;
     }
     8% {
-      left: 6%;
+      left: 6vw;
       top: 68%;
     }
     10% {
-      left: 8%;
+      left: 8vw;
       top: 64%;
     }
     12% {
-      left: 10%;
+      left: 10vw;
       top: 60%;
     }
     14% {
-      left: 12%;
+      left: 12vw;
       top: 56%;
     }
     16% {
-      left: 14%;
+      left: 14vw;
       top: 52%;
     }
     18% {
-      left: 16%;
+      left: 16vw;
       top: 48%;
     }
     20% {
-      left: 18%;
+      left: 18vw;
       top: 44%;
     }
     22% {
-      left: 20%;
+      left: 20vw;
       top: 40%;
     }
     24% {
-      left: 22%;
+      left: 22vw;
       top: 36%;
     }
     26% {
-      left: 24%;
+      left: 24vw;
       top: 32%;
     }
     28% {
-      left: 26%;
+      left: 26vw;
       top: 28%;
     }
     30% {
-      left: 28%;
+      left: 28vw;
       top: 24%;
     }
     32% {
-      left: 30%;
+      left: 30vw;
       top: 21%;
     }
     34% {
-      left: 32%;
+      left: 32vw;
       top: 18%;
     }
     36% {
-      left: 34%;
+      left: 34vw;
       top: 16%;
     }
     38% {
-      left: 36%;
+      left: 36vw;
       top: 14%;
     }
     40% {
-      left: 38%;
+      left: 38vw;
       top: 12%;
     }
     42% {
-      left: 40%;
+      left: 40vw;
       top: 11%;
     }
     44% {
-      left: 42%;
+      left: 42vw;
       top: 10.5%;
     }
     46% {
-      left: 44%;
+      left: 44vw;
       top: 10.2%;
     }
     48% {
-      left: 46%;
+      left: 46vw;
       top: 10.1%;
     }
     50% {
       /* Noon - sun at top center */
-      left: 50%;
+      left: 50vw;
       top: 10%;
     }
     52% {
-      left: 52%;
+      left: 52vw;
       top: 10.1%;
     }
     54% {
-      left: 54%;
+      left: 54vw;
       top: 10.2%;
     }
     56% {
-      left: 56%;
+      left: 56vw;
       top: 10.5%;
     }
     58% {
-      left: 58%;
+      left: 58vw;
       top: 11%;
     }
     60% {
-      left: 60%;
+      left: 60vw;
       top: 12%;
     }
     62% {
-      left: 62%;
+      left: 62vw;
       top: 14%;
     }
     64% {
-      left: 64%;
+      left: 64vw;
       top: 16%;
     }
     66% {
-      left: 66%;
+      left: 66vw;
       top: 18%;
     }
     68% {
-      left: 68%;
+      left: 68vw;
       top: 21%;
     }
     70% {
-      left: 70%;
+      left: 70vw;
       top: 24%;
     }
     72% {
-      left: 72%;
+      left: 72vw;
       top: 28%;
     }
     74% {
-      left: 74%;
+      left: 74vw;
       top: 32%;
     }
     76% {
-      left: 76%;
+      left: 76vw;
       top: 36%;
     }
     78% {
-      left: 78%;
+      left: 78vw;
       top: 40%;
     }
     80% {
-      left: 80%;
+      left: 80vw;
       top: 44%;
     }
     82% {
-      left: 82%;
+      left: 82vw;
       top: 48%;
     }
     84% {
-      left: 84%;
+      left: 84vw;
       top: 52%;
     }
     86% {
-      left: 86%;
+      left: 86vw;
       top: 56%;
     }
     88% {
-      left: 88%;
+      left: 88vw;
       top: 60%;
     }
     90% {
-      left: 90%;
+      left: 90vw;
       top: 64%;
     }
     92% {
-      left: 92%;
+      left: 92vw;
       top: 68%;
     }
     94% {
-      left: 94%;
+      left: 94vw;
       top: 72%;
     }
     96% {
-      left: 96%;
+      left: 96vw;
       top: 74%;
     }
     98% {
-      left: 98%;
+      left: 98vw;
       top: 77%;
     }
     100% {
       /* Sunset/Night - sun setting on right, becomes moon */
-      left: calc(100% + 60px);
+      left: calc(100vw + 60px);
       top: 80%;
     }
   }

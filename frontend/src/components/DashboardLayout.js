@@ -11,7 +11,6 @@ const SIDEBAR_ITEMS = [
   { id: 'learn-skill', label: 'Learn Skill', path: '/dashboard/learn-skill' },
   { id: 'feed', label: 'Feed', path: '/dashboard/feed' },
   { id: 'friends', label: 'Friends', path: '/dashboard/friends' },
-  { id: 'saved', label: 'Saved', path: '/dashboard/saved' },
   { id: 'settings', label: 'Settings', path: '/dashboard/settings' },
 ];
 
