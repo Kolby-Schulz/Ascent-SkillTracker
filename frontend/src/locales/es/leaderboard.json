@@ -1,0 +1,16 @@
+{
+  "title": "Clasificación",
+  "subtitle": "¿Quién subirá más alto en las clasificaciones?",
+  "scope": "Ver",
+  "allUsers": "Todos los Usuarios",
+  "friends": "Amigos",
+  "category": "Categoría",
+  "tag": "Etiqueta",
+  "allCategories": "Todas las Categorías",
+  "allTags": "Todas las Etiquetas",
+  "rank": "Rango",
+  "user": "Usuario",
+  "skillsCompleted": "Habilidades Completadas",
+  "avgTime": "Tiempo Promedio",
+  "noRankings": "No hay clasificaciones disponibles todavía. ¡Completa algunas habilidades para ver tu rango!"
+}
