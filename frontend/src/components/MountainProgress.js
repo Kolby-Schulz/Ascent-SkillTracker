@@ -7,7 +7,8 @@ const MountainProgress = ({
   completedSteps = {}, 
   currentStepIndex = 0,
   onStepClick = () => {},
-  onStepComplete = () => {}
+  onStepComplete = () => {},
+  friendProgress = []
 }) => {
   const totalSteps = steps.length;
   const completedCount = Object.values(completedSteps).filter(Boolean).length;
@@ -138,6 +139,77 @@ const MountainProgress = ({
             </motion.div>
           )}
         </motion.div>
+
+        {/* Friend ghosts */}
+        {friendProgress.map((friend, friendIndex) => {
+          if (friend.currentStepIndex < 0) return null; // Friend hasn't started
+          
+          const friendProgressRatio = (friend.currentStepIndex + 1) / totalSteps;
+          const friendX = 15 + friendProgressRatio * 70;
+          const friendCurveFactor = Math.sin(friendProgressRatio * Math.PI / 2);
+          const friendY = 75 - friendCurveFactor * 60;
+          
+          // Stable offset based on friend index to prevent overlap
+          const offsetX = (friendIndex % 3 - 1) * 2.5; // -2.5%, 0%, 2.5%
+          const offsetY = Math.floor(friendIndex / 3) * 2.5; // Stagger vertically
+          
+          // Format last activity time
+          const formatTimeAgo = (date) => {
+            if (!date) return 'Unknown';
+            const now = new Date();
+            const then = new Date(date);
+            const diffMs = now - then;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins}m ago`;
+            if (diffHours < 24) return `${diffHours}h ago`;
+            if (diffDays < 7) return `${diffDays}d ago`;
+            return then.toLocaleDateString();
+          };
+
+          return (
+            <motion.div
+              key={friend.userId}
+              className="mountain-friend-ghost"
+              style={{
+                left: `${friendX + offsetX}%`,
+                top: `${friendY + offsetY}%`,
+              }}
+              initial={{ x: '-50%', y: '-50%', scale: 0, opacity: 0 }}
+              animate={{ 
+                x: '-50%', 
+                y: '-50%', 
+                scale: 1,
+                opacity: 0.8
+              }}
+              transition={{ 
+                duration: 0.8,
+                delay: 0.5 + friendIndex * 0.1
+              }}
+            >
+              <div className="friend-ghost-icon">👻</div>
+              <div className="friend-ghost-tooltip">
+                <div className="friend-ghost-tooltip-name">{friend.username}</div>
+                <div className="friend-ghost-tooltip-info">
+                  Step {friend.currentStepIndex + 1} of {totalSteps}
+                </div>
+                {friend.lastActivity && (
+                  <div className="friend-ghost-tooltip-time">
+                    {formatTimeAgo(friend.lastActivity)}
+                  </div>
+                )}
+                {friend.totalCompleted > 0 && (
+                  <div className="friend-ghost-tooltip-progress">
+                    {friend.totalCompleted} completed
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
 
         {/* Hint for hover interaction */}
         <motion.div

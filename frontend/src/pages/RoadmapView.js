@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import PeakReached from '../components/PeakReached';
 import MountainProgress from '../components/MountainProgress';
 import roadmapService from '../services/roadmapService';
+import progressService from '../services/progressService';
 import { recordCompletedRoadmap } from '../utils/skillProgress';
 import './SkillDetail.css';
 
@@ -16,6 +17,7 @@ const RoadmapView = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [friendProgress, setFriendProgress] = useState([]);
   const wasCompletedRef = useRef(false);
 
   // Step completion (persisted per roadmap in localStorage)
@@ -99,6 +101,70 @@ const RoadmapView = () => {
     }
   }, [id, totalSteps]);
 
+  // Fetch friend progress when roadmap loads
+  useEffect(() => {
+    const fetchFriendProgress = async () => {
+      if (!id) return;
+      try {
+        const response = await progressService.getFriendProgress(id);
+        const friendData = response.data?.data?.friendProgress || response.data?.friendProgress || [];
+        
+        // Add fake friend for testing (remove in production)
+        const currentTotalSteps = sortedSubSkills.length;
+        if (currentTotalSteps > 0) {
+          const fakeFriend = {
+            userId: 'fake-friend-123',
+            username: 'TestFriend',
+            currentStepIndex: Math.max(0, Math.floor(currentTotalSteps * 0.4) - 1), // 40% through (0-indexed)
+            lastActivity: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+            totalCompleted: Math.floor(currentTotalSteps * 0.4),
+          };
+          
+          setFriendProgress([...friendData, fakeFriend]);
+        } else {
+          setFriendProgress(friendData);
+        }
+      } catch (error) {
+        console.error('Error fetching friend progress:', error);
+        // Add fake friend even if API fails (for testing)
+        const currentTotalSteps = sortedSubSkills.length;
+        if (currentTotalSteps > 0) {
+          const fakeFriend = {
+            userId: 'fake-friend-123',
+            username: 'TestFriend',
+            currentStepIndex: Math.max(0, Math.floor(currentTotalSteps * 0.4) - 1), // 40% through (0-indexed)
+            lastActivity: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+            totalCompleted: Math.floor(currentTotalSteps * 0.4),
+          };
+          setFriendProgress([fakeFriend]);
+        }
+      }
+    };
+    
+    if (roadmap && sortedSubSkills.length > 0) {
+      fetchFriendProgress();
+    }
+  }, [roadmap, id, sortedSubSkills.length]);
+
+  // Track when user views/starts a step
+  useEffect(() => {
+    const trackStepStart = async () => {
+      if (!id || !roadmap || currentIndex === undefined) return;
+      
+      // Check if step is already completed
+      if (completedSteps[String(currentIndex)]) return;
+      
+      try {
+        await progressService.startStep(id, currentIndex);
+      } catch (error) {
+        console.error('Error tracking step start:', error);
+        // Continue even if tracking fails
+      }
+    };
+    
+    trackStepStart();
+  }, [id, currentIndex, roadmap, completedSteps]);
+
   if (loading) {
     return (
       <div className="skill-detail-container">
@@ -125,11 +191,25 @@ const RoadmapView = () => {
     );
   }
 
-  const toggleStepCompletion = (stepIndex) => {
+  const toggleStepCompletion = async (stepIndex) => {
     const key = String(stepIndex);
-    const next = { ...completedSteps, [key]: !completedSteps[key] };
+    const wasCompleted = completedSteps[key];
+    const next = { ...completedSteps, [key]: !wasCompleted };
     setCompletedSteps(next);
-    if (id) localStorage.setItem(`roadmap-progress-${id}`, JSON.stringify(next));
+    if (id) {
+      localStorage.setItem(`roadmap-progress-${id}`, JSON.stringify(next));
+      
+      // Track progress in backend
+      try {
+        if (!wasCompleted) {
+          // Marking as complete
+          await progressService.completeStep(id, stepIndex);
+        }
+      } catch (error) {
+        console.error('Error tracking step completion:', error);
+        // Continue even if tracking fails
+      }
+    }
   };
 
   if (sortedSubSkills.length === 0) {
@@ -187,6 +267,7 @@ const RoadmapView = () => {
             }))}
             completedSteps={completedSteps}
             currentStepIndex={currentIndex}
+            friendProgress={friendProgress}
             onStepClick={(index) => {
               setCurrentIndex(index);
               setDirection(index > currentIndex ? 1 : -1);
@@ -247,6 +328,46 @@ const RoadmapView = () => {
                     {completedSteps[String(currentIndex)] ? 'Completed ✓' : 'Mark as complete'}
                   </span>
                 </label>
+              </div>
+            </motion.div>
+          )}
+          
+          {/* Friends on this path */}
+          {friendProgress.length > 0 && (
+            <motion.div
+              className="friends-on-path glass-panel"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              <h3 className="friends-on-path-title">
+                👥 Friends on this path ({friendProgress.length})
+              </h3>
+              <div className="friends-on-path-list">
+                {friendProgress.map((friend) => (
+                  <div key={friend.userId} className="friend-on-path-item">
+                    <span className="friend-on-path-ghost">👻</span>
+                    <div className="friend-on-path-info">
+                      <span className="friend-on-path-name">{friend.username}</span>
+                      <span className="friend-on-path-step">
+                        Step {friend.currentStepIndex + 1} of {totalSteps}
+                      </span>
+                    </div>
+                    {friend.lastActivity && (
+                      <span className="friend-on-path-time">
+                        {(() => {
+                          const now = new Date();
+                          const then = new Date(friend.lastActivity);
+                          const diffMins = Math.floor((now - then) / 60000);
+                          const diffHours = Math.floor((now - then) / 3600000);
+                          if (diffMins < 60) return `${diffMins}m ago`;
+                          if (diffHours < 24) return `${diffHours}h ago`;
+                          return `${Math.floor((now - then) / 86400000)}d ago`;
+                        })()}
+                      </span>
+                    )}
+                  </div>
+                ))}
               </div>
             </motion.div>
           )}

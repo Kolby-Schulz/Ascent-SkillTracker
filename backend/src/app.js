@@ -63,6 +63,7 @@ app.use('/api/v1/user-skills', userSkillProgressRoutes);
 app.use('/api/v1/roadmaps', roadmapRoutes);
 app.use('/api/v1/friends', friendRoutes);
 app.use('/api/v1/posts', postRoutes);
+app.use('/api/v1/progress', require('./routes/progressRoutes'));
 
 // 404 handler
 app.use((req, res) => {
