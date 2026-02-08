@@ -123,6 +123,58 @@ exports.getMe = async (req, res, next) => {
           username: user.username,
           email: user.email,
           roles: user.roles,
+          privacy: user.privacy,
+          bio: user.bio,
+          profilePicture: user.profilePicture,
+          createdAt: user.createdAt,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Update user profile
+ * @route   PUT /api/v1/auth/profile
+ * @access  Private
+ */
+exports.updateProfile = async (req, res, next) => {
+  try {
+    const { privacy, bio, profilePicture } = req.body;
+    const userId = req.user.id;
+
+    const updateData = {};
+    if (privacy !== undefined) {
+      if (!['public', 'private'].includes(privacy)) {
+        return next(new ErrorResponse('Privacy must be "public" or "private"', 400));
+      }
+      updateData.privacy = privacy;
+    }
+    if (bio !== undefined) {
+      updateData.bio = bio;
+    }
+    if (profilePicture !== undefined) {
+      updateData.profilePicture = profilePicture;
+    }
+
+    const user = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          roles: user.roles,
+          privacy: user.privacy,
+          bio: user.bio,
+          profilePicture: user.profilePicture,
           createdAt: user.createdAt,
         },
       },

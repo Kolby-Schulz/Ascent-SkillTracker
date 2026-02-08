@@ -30,6 +30,16 @@ export const getMe = async () => {
 };
 
 /**
+ * Update user profile
+ * @param {Object} profileData - { privacy, bio, profilePicture }
+ * @returns {Promise} API response
+ */
+export const updateProfile = async (profileData) => {
+  const response = await apiClient.put('/auth/profile', profileData);
+  return response.data;
+};
+
+/**
  * Logout user (client-side)
  */
 export const logout = () => {

@@ -14,6 +14,8 @@ import SkillDetail from './pages/SkillDetail';
 import CreateRoadmap from './pages/CreateRoadmap';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import Feed from './pages/Feed';
+import Friends from './pages/Friends';
 import RoadmapView from './pages/RoadmapView';
 import './App.css';
 
@@ -41,6 +43,8 @@ function App() {
                 <Route path="learn-skill" element={<LearnSkill />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="feed" element={<Feed />} />
+                <Route path="friends" element={<Friends />} />
               </Route>
               <Route
                 path="/skill/:skillId"
