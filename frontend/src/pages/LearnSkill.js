@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSkills } from '../context/SkillsContext';
 import roadmapService from '../services/roadmapService';
+import userSkillService from '../services/userSkillService';
 import './LearnSkill.css';
 
 const TAG_OPTIONS = [
@@ -70,6 +71,7 @@ const LearnSkill = () => {
     addSkill(skill.name, skill.id);
     try {
       await roadmapService.addLearner(skill.id);
+      await userSkillService.upsertSkill(skill.name, 'in_progress');
     } catch {
       // e.g. not logged in or already a learner; local add still applies
     }

@@ -5,6 +5,7 @@ import PeakReached from '../components/PeakReached';
 import MountainProgress from '../components/MountainProgress';
 import roadmapService from '../services/roadmapService';
 import progressService from '../services/progressService';
+import userSkillService from '../services/userSkillService';
 import { recordCompletedRoadmap } from '../utils/skillProgress';
 import { useSkills } from '../context/SkillsContext';
 import './SkillDetail.css';
@@ -268,6 +269,7 @@ const RoadmapView = () => {
                 addSkill(roadmap.name, id);
                 try {
                   await roadmapService.addLearner(id);
+                  await userSkillService.upsertSkill(roadmap.name, 'in_progress');
                 } catch {
                   // e.g. not logged in or already a learner
                 }

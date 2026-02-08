@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSkills } from '../context/SkillsContext';
 import { sortSkillsWithCompletedAtEnd, getSkillOrRoadmapStatus } from '../utils/skillProgress';
+import progressService from '../services/progressService';
+import userSkillService from '../services/userSkillService';
 import './Dashboard.css';
 
 // Map skill names to their URL-friendly IDs
@@ -33,6 +35,69 @@ const Dashboard = () => {
   const { user } = useAuth();
   const { skills, removeSkill, getRoadmapId } = useSkills();
   const navigate = useNavigate();
+  const [friendProgressByRoadmapId, setFriendProgressByRoadmapId] = useState({});
+  const [usersLearningBySkillName, setUsersLearningBySkillName] = useState({});
+
+  const roadmapIds = useMemo(
+    () => skills.map((s) => getRoadmapId(s)).filter(Boolean),
+    [skills, getRoadmapId]
+  );
+
+  useEffect(() => {
+    if (roadmapIds.length === 0) return;
+    const abort = new AbortController();
+    const fetchAll = async () => {
+      const results = await Promise.allSettled(
+        roadmapIds.map((rid) => progressService.getFriendProgress(rid))
+      );
+      const next = {};
+      results.forEach((result, i) => {
+        const rid = roadmapIds[i];
+        if (result.status === 'fulfilled' && result.value?.data?.data?.friendProgress) {
+          next[rid] = result.value.data.data.friendProgress;
+        } else {
+          next[rid] = [];
+        }
+      });
+      if (!abort.signal.aborted) setFriendProgressByRoadmapId(next);
+    };
+    fetchAll();
+    return () => abort.abort();
+  }, [roadmapIds.join(',')]);
+
+  // Sync current user's skills to backend; fetch friends learning each skill (refetched on tab focus so removals by friends show up)
+  const fetchUsersLearningBySkill = useCallback(async () => {
+    if (!skills.length) return;
+    const skillNames = [...new Set(skills)];
+    await Promise.allSettled(
+      skillNames.map((name) => userSkillService.upsertSkill(name, 'in_progress'))
+    );
+    const results = await Promise.allSettled(
+      skillNames.map((name) => userSkillService.getUsersLearningSkill(name))
+    );
+    const next = {};
+    results.forEach((result, i) => {
+      const name = skillNames[i];
+      if (result.status === 'fulfilled' && result.value?.data?.data?.users) {
+        next[name] = result.value.data.data.users;
+      } else {
+        next[name] = [];
+      }
+    });
+    setUsersLearningBySkillName(next);
+  }, [skills.join(',')]);
+
+  useEffect(() => {
+    fetchUsersLearningBySkill();
+  }, [fetchUsersLearningBySkill]);
+
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') fetchUsersLearningBySkill();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, [fetchUsersLearningBySkill]);
 
   const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
 
@@ -46,9 +111,14 @@ const Dashboard = () => {
     navigate(`/skill/${skillId}`);
   };
 
-  const handleRemoveSkill = (skillToRemove, e) => {
+  const handleRemoveSkill = async (skillToRemove, e) => {
     e.stopPropagation();
     removeSkill(skillToRemove);
+    try {
+      await userSkillService.removeSkill(skillToRemove);
+    } catch {
+      // e.g. not logged in or offline; local remove already applied
+    }
   };
 
   // Completed skills at end; order: not-started, in-progress, completed (includes roadmaps)
@@ -68,6 +138,27 @@ const Dashboard = () => {
             {sortedSkills.map((skill, index) => {
               const status = getSkillOrRoadmapStatus(skill, getRoadmapId);
               const originalIndex = skills.indexOf(skill);
+              const roadmapId = getRoadmapId(skill);
+              const friendsOnPath = (roadmapId && friendProgressByRoadmapId[roadmapId]) || [];
+              const usersBySkill = usersLearningBySkillName[skill] || [];
+              const merged = [];
+              const seen = new Set();
+              for (const f of friendsOnPath) {
+                const id = f.userId?.toString?.() || f.userId;
+                if (id && !seen.has(id)) {
+                  seen.add(id);
+                  merged.push({ userId: id, username: f.username });
+                }
+              }
+              for (const u of usersBySkill) {
+                const id = u.userId?.toString?.() || u.userId;
+                if (id && !seen.has(id)) {
+                  seen.add(id);
+                  merged.push({ userId: id, username: u.username });
+                }
+              }
+              const displayFriends = merged.slice(0, 3);
+              const hasMoreFriends = merged.length > 3;
               return (
                 <motion.div
                   key={`${skill}-${originalIndex}`}
@@ -87,6 +178,20 @@ const Dashboard = () => {
                     )}
                     {status === 'in-progress' && (
                       <span className="skill-card-badge skill-card-badge--in-progress">{t('dashboard:inProgress')}</span>
+                    )}
+                    {displayFriends.length > 0 && (
+                      <div className="skill-card-friends" title={t('dashboard:friendsOnPath', { count: merged.length })}>
+                        {displayFriends.map((friend) => (
+                          <div
+                            key={friend.userId}
+                            className="skill-card-friend-avatar"
+                            title={friend.username}
+                          >
+                            {friend.username ? friend.username.charAt(0).toUpperCase() : '?'}
+                          </div>
+                        ))}
+                        {hasMoreFriends && <span className="skill-card-friend-more">…</span>}
+                      </div>
                     )}
                     <div className="skill-actions">
                       <span className="skill-drag-hint">{t('dashboard:clickToView')}</span>

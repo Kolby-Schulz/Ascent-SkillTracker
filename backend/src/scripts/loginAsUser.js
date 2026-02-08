@@ -45,12 +45,14 @@ async function run() {
     };
 
     console.log('--- Log in as:', user.username, '---');
-    console.log('User:', JSON.stringify(userPayload, null, 2));
     console.log('');
-    console.log('Token (copy for Authorization header or localStorage):');
+    console.log('Token (copy to localStorage key "token"):');
     console.log(token);
     console.log('');
-    console.log('Browser: In DevTools -> Application -> Local Storage, set "token" to the value above, then refresh.');
+    console.log('User (copy to localStorage key "user"):');
+    console.log(JSON.stringify(userPayload));
+    console.log('');
+    console.log('Browser: DevTools -> Application -> Local Storage -> set BOTH "token" and "user" to the values above, then refresh.');
   } catch (err) {
     console.error('Error:', err.message);
     process.exit(1);
