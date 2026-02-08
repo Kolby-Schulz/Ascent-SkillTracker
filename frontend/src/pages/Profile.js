@@ -24,19 +24,19 @@ const Profile = () => {
     setLoading(true);
     try {
       const response = await roadmapService.getMyRoadmaps();
-      const roadmapsData = response.data.map(roadmap => ({
+      const list = Array.isArray(response.data) ? response.data : [];
+      const roadmapsData = list.map((roadmap) => ({
         id: roadmap._id,
         name: roadmap.name,
-        status: roadmap.status,
+        status: roadmap.status || 'draft',
         subSkillCount: roadmap.subSkills?.length || 0,
-        studentsCount: roadmap.studentsCount || 0,
+        studentsCount: roadmap.studentsCount ?? 0,
         createdAt: roadmap.createdAt,
-        updatedAt: roadmap.updatedAt
+        updatedAt: roadmap.updatedAt,
       }));
       setRoadmaps(roadmapsData);
     } catch (error) {
       console.error('Error fetching roadmaps:', error);
-      // If there's an error, set empty array
       setRoadmaps([]);
     } finally {
       setLoading(false);

@@ -40,20 +40,35 @@ const MetricsTab = () => {
       setLoading(true);
       setError(null);
       const res = await getMyMetrics();
-      setMetrics(res?.metrics || {
+      const metricsData = res?.metrics ?? {
         skillsLearned: 0,
         skillsInProgress: 0,
         guidesUploaded: 0,
         totalGuideViews: 0,
         totalGuideLikes: 0,
-      });
-      setLastUpdated(new Date());
+      };
+      setMetrics(metricsData);
+      if (!res?.fromFallback) setLastUpdated(new Date());
+      if (res?.fromFallback && res?.error) {
+        const e = res.error;
+        const isBlocked =
+          e?.code === 'ERR_NETWORK' ||
+          e?.code === 'ERR_BLOCKED_BY_CLIENT' ||
+          (e?.message && typeof e.message === 'string' && e.message.toLowerCase().includes('blocked'));
+        setError(
+          isBlocked
+            ? 'Request blocked. Disable ad blocker or privacy extensions for this site and retry.'
+            : e?.response?.status === 401
+              ? 'Please log in again'
+              : e?.response?.data?.error || 'Failed to load metrics'
+        );
+      }
     } catch (err) {
       const msg =
-        err.response?.status === 401
+        err?.response?.status === 401
           ? 'Please log in again'
-          : err.response?.data?.error ||
-            (err.code === 'ERR_NETWORK' ? 'Backend not reachable' : 'Failed to load metrics');
+          : err?.response?.data?.error ||
+            (err?.code === 'ERR_NETWORK' ? 'Backend not reachable' : 'Failed to load metrics');
       setError(msg);
       setMetrics({
         skillsLearned: 0,

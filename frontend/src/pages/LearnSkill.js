@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSkills } from '../context/SkillsContext';
+import roadmapService from '../services/roadmapService';
 import './LearnSkill.css';
 
 const INTEREST_CATEGORIES = [
@@ -17,21 +18,22 @@ const INTEREST_CATEGORIES = [
   'Writing',
   'Business',
   'Science',
+  'General',
 ];
 
 const MOCK_SKILL_PATHS = [
-  { id: 1, name: 'Learn Guitar', category: 'Music', creator: 'Ascent Team', difficulty: 'Beginner', students: 1250 },
-  { id: 2, name: 'Master Spanish', category: 'Languages', creator: 'Maria G.', difficulty: 'Intermediate', students: 890 },
-  { id: 3, name: 'Web Development', category: 'Technology', creator: 'Ascent Team', difficulty: 'Beginner', students: 2100 },
-  { id: 4, name: 'Photography Basics', category: 'Photography', creator: 'John D.', difficulty: 'Beginner', students: 650 },
-  { id: 5, name: 'Yoga Fundamentals', category: 'Fitness', creator: 'Ascent Team', difficulty: 'Beginner', students: 430 },
-  { id: 6, name: 'Creative Writing', category: 'Writing', creator: 'Sarah L.', difficulty: 'Intermediate', students: 320 },
-  { id: 7, name: 'Italian Language', category: 'Languages', creator: 'Ascent Team', difficulty: 'Beginner', students: 560 },
-  { id: 8, name: 'Data Science', category: 'Technology', creator: 'Tech Pro', difficulty: 'Advanced', students: 780 },
-  { id: 9, name: 'Baking Mastery', category: 'Cooking', creator: 'Chef Mike', difficulty: 'Intermediate', students: 450 },
-  { id: 10, name: 'Digital Art', category: 'Arts & Crafts', creator: 'Ascent Team', difficulty: 'Beginner', students: 920 },
-  { id: 11, name: 'Running 5K', category: 'Fitness', creator: 'Coach Alex', difficulty: 'Beginner', students: 670 },
-  { id: 12, name: 'Business Strategy', category: 'Business', creator: 'Ascent Team', difficulty: 'Advanced', students: 340 },
+  { id: 'mock-1', name: 'Learn Guitar', category: 'Music', creator: 'Ascent Team', difficulty: 'Beginner', students: 1250, isMock: true },
+  { id: 'mock-2', name: 'Master Spanish', category: 'Languages', creator: 'Maria G.', difficulty: 'Intermediate', students: 890, isMock: true },
+  { id: 'mock-3', name: 'Web Development', category: 'Technology', creator: 'Ascent Team', difficulty: 'Beginner', students: 2100, isMock: true },
+  { id: 'mock-4', name: 'Photography Basics', category: 'Photography', creator: 'John D.', difficulty: 'Beginner', students: 650, isMock: true },
+  { id: 'mock-5', name: 'Yoga Fundamentals', category: 'Fitness', creator: 'Ascent Team', difficulty: 'Beginner', students: 430, isMock: true },
+  { id: 'mock-6', name: 'Creative Writing', category: 'Writing', creator: 'Sarah L.', difficulty: 'Intermediate', students: 320, isMock: true },
+  { id: 'mock-7', name: 'Italian Language', category: 'Languages', creator: 'Ascent Team', difficulty: 'Beginner', students: 560, isMock: true },
+  { id: 'mock-8', name: 'Data Science', category: 'Technology', creator: 'Tech Pro', difficulty: 'Advanced', students: 780, isMock: true },
+  { id: 'mock-9', name: 'Baking Mastery', category: 'Cooking', creator: 'Chef Mike', difficulty: 'Intermediate', students: 450, isMock: true },
+  { id: 'mock-10', name: 'Digital Art', category: 'Arts & Crafts', creator: 'Ascent Team', difficulty: 'Beginner', students: 920, isMock: true },
+  { id: 'mock-11', name: 'Running 5K', category: 'Fitness', creator: 'Coach Alex', difficulty: 'Beginner', students: 670, isMock: true },
+  { id: 'mock-12', name: 'Business Strategy', category: 'Business', creator: 'Ascent Team', difficulty: 'Advanced', students: 340, isMock: true },
 ];
 
 const LearnSkill = () => {
@@ -39,16 +41,53 @@ const LearnSkill = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [publishedRoadmaps, setPublishedRoadmaps] = useState([]);
+  const [loadingRoadmaps, setLoadingRoadmaps] = useState(true);
 
-  const filteredSkills = MOCK_SKILL_PATHS.filter(skill => {
+  useEffect(() => {
+    const fetchPublished = async () => {
+      setLoadingRoadmaps(true);
+      try {
+        const res = await roadmapService.getRoadmaps({});
+        const list = Array.isArray(res.data) ? res.data : [];
+        setPublishedRoadmaps(
+          list.map((r) => ({
+            id: r._id,
+            name: r.name,
+            category: r.category || 'General',
+            creator: r.creator?.email?.split('@')[0] || r.creator?.username || 'Community',
+            difficulty: 'Beginner',
+            students: r.studentsCount ?? 0,
+            isMock: false,
+          }))
+        );
+      } catch {
+        setPublishedRoadmaps([]);
+      } finally {
+        setLoadingRoadmaps(false);
+      }
+    };
+    fetchPublished();
+  }, []);
+
+  const allSkillPaths = [...publishedRoadmaps];
+  const namesFromApi = new Set(publishedRoadmaps.map((s) => s.name));
+  MOCK_SKILL_PATHS.forEach((s) => {
+    if (!namesFromApi.has(s.name)) allSkillPaths.push(s);
+  });
+
+  const filteredSkills = allSkillPaths.filter((skill) => {
     const matchesCategory = selectedCategory === 'All' || skill.category === selectedCategory;
     const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   const handleAddSkill = (skill) => {
-    addSkill(skill.name);
-    // Navigate back to dashboard after adding
+    if (skill.isMock) {
+      addSkill(skill.name);
+    } else {
+      addSkill(skill.name, skill.id);
+    }
     navigate('/dashboard');
   };
 

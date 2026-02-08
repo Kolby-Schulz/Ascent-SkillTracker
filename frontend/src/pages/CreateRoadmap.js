@@ -171,34 +171,62 @@ const CreateRoadmap = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const buildRoadmapPayload = () => {
+    return {
+      name: skillName.trim(),
+      description: '',
+      subSkills: subSkills.map((skill, index) => {
+        const order = typeof skill.order === 'number' ? skill.order : index + 1;
+        const resources = (skill.resources || [])
+          .filter((r) => r.url && isValidUrl(r.url))
+          .map((r, i) => ({
+            url: r.url.trim(),
+            title: r.title?.trim() || undefined,
+            type: r.type || 'other',
+            order: typeof r.order === 'number' ? r.order : i,
+          }));
+        return {
+          title: (skill.title || '').trim(),
+          description: (skill.description || '').trim(),
+          order,
+          customContent: (skill.customContent || '').trim() || undefined,
+          resources,
+        };
+      }),
+      status: 'draft',
+    };
+  };
+
+  const getErrorMessage = (error) => {
+    if (!error) return 'Something went wrong. Please try again.';
+    if (typeof error === 'string') return error;
+    if (error.error) return error.error;
+    if (error.errors && Array.isArray(error.errors) && error.errors[0]?.msg) {
+      return error.errors[0].msg;
+    }
+    if (error.message) return error.message;
+    if (error.response?.data?.error) return error.response.data.error;
+    if (error.response?.data?.errors?.[0]?.msg) return error.response.data.errors[0].msg;
+    if (error.response?.status === 401) return 'Please log in again.';
+    if (error.response?.status === 404) return 'API not found. Is the backend running?';
+    if (error.code === 'ERR_NETWORK') return 'Cannot reach the server. Is the backend running at ' + (process.env.REACT_APP_API_URL || 'http://localhost:5000') + '?';
+    return 'Something went wrong. Please try again.';
+  };
+
   const handleSaveDraft = async () => {
     if (!validateRoadmap()) {
       alert('Please fill in all required fields');
       return;
     }
-    
+
     try {
-      const roadmapData = {
-        name: skillName,
-        subSkills: subSkills.map(({ id, ...rest }) => ({
-          ...rest,
-          customContent: rest.customContent || '',
-          resources: (rest.resources || []).map(({ url, title, type, order }) => ({
-            url,
-            title: title || undefined,
-            type: type || 'other',
-            order
-          }))
-        })),
-        status: 'draft',
-      };
-      
+      const roadmapData = { ...buildRoadmapPayload(), status: 'draft' };
       await roadmapService.createRoadmap(roadmapData);
       alert('Draft saved successfully!');
       navigate('/dashboard/profile');
     } catch (error) {
       console.error('Error saving draft:', error);
-      alert(error.error || 'Failed to save draft. Please try again.');
+      alert(getErrorMessage(error));
     }
   };
 
@@ -207,29 +235,15 @@ const CreateRoadmap = () => {
       alert('Please fill in all required fields');
       return;
     }
-    
+
     try {
-      const roadmapData = {
-        name: skillName,
-        subSkills: subSkills.map(({ id, ...rest }) => ({
-          ...rest,
-          customContent: rest.customContent || '',
-          resources: (rest.resources || []).map(({ url, title, type, order }) => ({
-            url,
-            title: title || undefined,
-            type: type || 'other',
-            order
-          }))
-        })),
-        status: 'published',
-      };
-      
+      const roadmapData = { ...buildRoadmapPayload(), status: 'published' };
       await roadmapService.createRoadmap(roadmapData);
       alert('Roadmap published successfully!');
       navigate('/dashboard/profile');
     } catch (error) {
       console.error('Error publishing roadmap:', error);
-      alert(error.error || 'Failed to publish roadmap. Please try again.');
+      alert(getErrorMessage(error));
     }
   };
 

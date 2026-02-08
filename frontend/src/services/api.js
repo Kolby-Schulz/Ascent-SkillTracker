@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1';
+// Use env URL (Docker: localhost:5001) or relative path so dev server proxy can forward to backend (localhost:5000)
+const API_BASE_URL = process.env.REACT_APP_API_URL || '/api/v1';
 
 // Create axios instance
 const apiClient = axios.create({

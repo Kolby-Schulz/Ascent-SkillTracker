@@ -14,6 +14,7 @@ import SkillDetail from './pages/SkillDetail';
 import CreateRoadmap from './pages/CreateRoadmap';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import RoadmapView from './pages/RoadmapView';
 import './App.css';
 
 function App() {
@@ -46,6 +47,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <SkillDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/roadmap/:id"
+                element={
+                  <ProtectedRoute>
+                    <RoadmapView />
                   </ProtectedRoute>
                 }
               />
