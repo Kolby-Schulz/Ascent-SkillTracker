@@ -267,6 +267,42 @@
   justify-content: flex-end;
 }
 
+/* Leaderboard layout - span both main and right sidebar */
+.dashboard-layout.layout-leaderboard {
+  grid-template-columns: 220px 1fr;
+}
+
+.dashboard-layout.layout-leaderboard .dashboard-main {
+  grid-column: 2;
+  max-width: none;
+}
+
+.dashboard-layout.layout-leaderboard .dashboard-right-sidebar.profile-float {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 100;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  width: auto;
+  min-width: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dashboard-layout.layout-leaderboard .profile-area {
+  justify-content: flex-end;
+  background: transparent;
+  padding: 0;
+}
+
 /* Blur sidebars when modal is open */
 body.modal-open .dashboard-sidebar,
 body.modal-open .dashboard-right-sidebar {

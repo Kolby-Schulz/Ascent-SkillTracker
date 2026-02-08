@@ -12,6 +12,7 @@ import enFriends from '../locales/en/friends.json';
 import enNavigation from '../locales/en/navigation.json';
 import enProfile from '../locales/en/profile.json';
 import enAchievements from '../locales/en/achievements.json';
+import enLeaderboard from '../locales/en/leaderboard.json';
 
 // Import Spanish translations
 import esCommon from '../locales/es/common.json';
@@ -23,6 +24,7 @@ import esFriends from '../locales/es/friends.json';
 import esNavigation from '../locales/es/navigation.json';
 import esProfile from '../locales/es/profile.json';
 import esAchievements from '../locales/es/achievements.json';
+import esLeaderboard from '../locales/es/leaderboard.json';
 
 i18n
   .use(LanguageDetector) // Detects user's browser language
@@ -39,6 +41,7 @@ i18n
         navigation: enNavigation,
         profile: enProfile,
         achievements: enAchievements,
+        leaderboard: enLeaderboard,
       },
       es: {
         common: esCommon,
@@ -50,11 +53,12 @@ i18n
         navigation: esNavigation,
         profile: esProfile,
         achievements: esAchievements,
+        leaderboard: esLeaderboard,
       },
     },
     fallbackLng: 'en', // Default language
     defaultNS: 'common', // Default namespace
-    ns: ['common', 'home', 'auth', 'dashboard', 'settings', 'friends', 'navigation', 'profile', 'achievements'],
+    ns: ['common', 'home', 'auth', 'dashboard', 'settings', 'friends', 'navigation', 'profile', 'achievements', 'leaderboard'],
     interpolation: {
       escapeValue: false, // React already escapes values
     },

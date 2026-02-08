@@ -17,6 +17,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Feed from './pages/Feed';
 import Friends from './pages/Friends';
+import Leaderboard from './pages/Leaderboard';
 import RoadmapView from './pages/RoadmapView';
 import './App.css';
 
@@ -43,9 +44,11 @@ function App() {
                 <Route path="create" element={<CreateRoadmap />} />
                 <Route path="learn-skill" element={<LearnSkill />} />
                 <Route path="profile" element={<Profile />} />
+                <Route path="profile/:userId" element={<Profile />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="feed" element={<Feed />} />
                 <Route path="friends" element={<Friends />} />
+                <Route path="leaderboard" element={<Leaderboard />} />
               </Route>
               <Route
                 path="/skill/:skillId"

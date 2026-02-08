@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import roadmapService from '../services/roadmapService';
 import postService from '../services/postService';
+import userService from '../services/userService';
 import Achievements from '../components/Achievements';
 import SkillTimeline from '../components/SkillTimeline';
 import './Profile.css';
@@ -12,19 +13,44 @@ import './Profile.css';
 const Profile = () => {
   const { t } = useTranslation(['profile', 'common']);
   const navigate = useNavigate();
+  const { userId } = useParams();
   const { user } = useAuth();
+  const [profileUser, setProfileUser] = useState(null);
   const [roadmaps, setRoadmaps] = useState([]);
   const [filter, setFilter] = useState('all'); // all, published, draft
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('roadmaps'); // roadmaps, achievements, timeline
+  const [error, setError] = useState(null);
 
-  const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
+  // Determine if viewing own profile or another user's
+  const isOwnProfile = !userId || (userId === (user?.id || user?._id)?.toString());
+  const displayUser = isOwnProfile ? user : profileUser;
+  const userDisplayName = displayUser?.username || displayUser?.email?.split('@')[0] || 'User';
 
   useEffect(() => {
-    // TODO: Fetch user's roadmaps from API
-    // For now, using mock data
-    fetchRoadmaps();
-  }, []);
+    // Fetch profile user if viewing another user's profile
+    if (!isOwnProfile && userId) {
+      const fetchProfileUser = async () => {
+        try {
+          const response = await userService.getUserProfile(userId);
+          setProfileUser(response.data?.user);
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+          if (error.response?.status === 403) {
+            setError('This profile is private');
+          } else {
+            setError('User not found');
+          }
+        }
+      };
+      fetchProfileUser();
+    }
+    
+    // Fetch roadmaps (only for own profile or if we have access)
+    if (isOwnProfile) {
+      fetchRoadmaps();
+    }
+  }, [userId, isOwnProfile]);
 
   const fetchRoadmaps = async () => {
     setLoading(true);
@@ -104,6 +130,31 @@ const Profile = () => {
     });
   };
 
+  // Show error if profile is private or not found
+  if (error) {
+    return (
+      <div className="profile-page">
+        <div className="profile-error" style={{ padding: '3rem', textAlign: 'center' }}>
+          <h2 style={{ color: '#fff', marginBottom: '1rem' }}>{error}</h2>
+          <button onClick={() => navigate('/dashboard')} className="back-button">
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading if fetching another user's profile
+  if (!isOwnProfile && !profileUser && !error) {
+    return (
+      <div className="profile-page">
+        <div style={{ padding: '3rem', textAlign: 'center', color: '#fff' }}>
+          Loading profile...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="profile-page">
       <motion.div
@@ -117,39 +168,45 @@ const Profile = () => {
           </div>
           <div className="profile-info">
             <h1 className="profile-username">{userDisplayName}</h1>
-            <p className="profile-stats">
-              {roadmaps.length} {roadmaps.length !== 1 ? t('profile:stats.guidesCreatedPlural') : t('profile:stats.guidesCreated')} {t('profile:stats.created')}
-            </p>
+            {isOwnProfile && (
+              <p className="profile-stats">
+                {roadmaps.length} {roadmaps.length !== 1 ? t('profile:stats.guidesCreatedPlural') : t('profile:stats.guidesCreated')} {t('profile:stats.created')}
+              </p>
+            )}
           </div>
         </div>
-        <button className="create-new-button" onClick={handleCreateNew}>
-          {t('profile:createNewRoadmap')}
-        </button>
+        {isOwnProfile && (
+          <button className="create-new-button" onClick={handleCreateNew}>
+            {t('profile:createNewRoadmap')}
+          </button>
+        )}
       </motion.div>
 
-      {/* Tabs */}
-      <div className="profile-tabs">
-        <button
-          className={`profile-tab ${activeTab === 'roadmaps' ? 'active' : ''}`}
-          onClick={() => setActiveTab('roadmaps')}
-        >
-          {t('profile:myRoadmaps')}
-        </button>
-        <button
-          className={`profile-tab ${activeTab === 'achievements' ? 'active' : ''}`}
-          onClick={() => setActiveTab('achievements')}
-        >
-          {t('profile:achievements')}
-        </button>
-        <button
-          className={`profile-tab ${activeTab === 'timeline' ? 'active' : ''}`}
-          onClick={() => setActiveTab('timeline')}
-        >
-          {t('profile:timeline.tab')}
-        </button>
-      </div>
+      {/* Tabs - only show for own profile */}
+      {isOwnProfile && (
+        <div className="profile-tabs">
+          <button
+            className={`profile-tab ${activeTab === 'roadmaps' ? 'active' : ''}`}
+            onClick={() => setActiveTab('roadmaps')}
+          >
+            {t('profile:myRoadmaps')}
+          </button>
+          <button
+            className={`profile-tab ${activeTab === 'achievements' ? 'active' : ''}`}
+            onClick={() => setActiveTab('achievements')}
+          >
+            {t('profile:achievements')}
+          </button>
+          <button
+            className={`profile-tab ${activeTab === 'timeline' ? 'active' : ''}`}
+            onClick={() => setActiveTab('timeline')}
+          >
+            {t('profile:timeline.tab')}
+          </button>
+        </div>
+      )}
 
-      {activeTab === 'roadmaps' && (
+      {isOwnProfile && activeTab === 'roadmaps' && (
       <div className="roadmaps-section">
         <div className="section-header">
           <h2 className="section-title">{t('profile:myRoadmaps')}</h2>
@@ -281,15 +338,24 @@ const Profile = () => {
       </div>
       )}
 
-      {activeTab === 'achievements' && (
+      {isOwnProfile && activeTab === 'achievements' && (
         <div className="achievements-section">
           <Achievements />
         </div>
       )}
 
-      {activeTab === 'timeline' && (
+      {isOwnProfile && activeTab === 'timeline' && (
         <div className="timeline-section">
           <SkillTimeline />
+        </div>
+      )}
+
+      {!isOwnProfile && (
+        <div className="profile-view-only" style={{ padding: '3rem', textAlign: 'center', color: 'rgba(255, 255, 255, 0.7)' }}>
+          <p>Viewing {displayUser?.username || 'user'}'s profile</p>
+          {displayUser?.bio && (
+            <p style={{ marginTop: '1rem', fontStyle: 'italic' }}>{displayUser.bio}</p>
+          )}
         </div>
       )}
     </div>

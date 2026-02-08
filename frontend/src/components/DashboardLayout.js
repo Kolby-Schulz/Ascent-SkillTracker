@@ -25,6 +25,7 @@ const DashboardLayout = () => {
     { id: 'learn-skill', label: t('navigation:learnSkill'), path: '/dashboard/learn-skill' },
     { id: 'feed', label: t('navigation:feed'), path: '/dashboard/feed' },
     { id: 'friends', label: t('navigation:friends'), path: '/dashboard/friends' },
+    { id: 'leaderboard', label: t('navigation:leaderboard'), path: '/dashboard/leaderboard' },
     { id: 'settings', label: t('navigation:settings'), path: '/dashboard/settings' },
   ];
 
@@ -49,9 +50,10 @@ const DashboardLayout = () => {
   };
 
   const isCreatePage = location.pathname.includes('/create');
+  const isLeaderboardPage = location.pathname === '/dashboard/leaderboard';
 
   return (
-    <div className={`dashboard-layout ${isCreatePage ? 'layout-create' : ''}`} style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div className={`dashboard-layout ${isCreatePage ? 'layout-create' : ''} ${isLeaderboardPage ? 'layout-leaderboard' : ''}`} style={{ backgroundImage: `url(${backgroundImage})` }}>
       <DayNightCycle />
       <FloatingParticles />
       {/* Left Sidebar */}
@@ -85,8 +87,8 @@ const DashboardLayout = () => {
         <Outlet />
       </main>
 
-      {/* Right Sidebar - floats on Create page, normal on others */}
-      <aside className={`dashboard-right-sidebar ${isCreatePage ? 'profile-float' : ''}`}>
+      {/* Right Sidebar - floats on Create and Leaderboard pages, normal on others */}
+      <aside className={`dashboard-right-sidebar ${isCreatePage || isLeaderboardPage ? 'profile-float' : ''}`}>
         <div className="profile-area" ref={profileRef}>
           <div className="profile-wrapper">
             <button
@@ -113,7 +115,7 @@ const DashboardLayout = () => {
             )}
           </div>
         </div>
-        {!isCreatePage && <MetricsTab />}
+        {!isCreatePage && !isLeaderboardPage && <MetricsTab />}
       </aside>
     </div>
   );

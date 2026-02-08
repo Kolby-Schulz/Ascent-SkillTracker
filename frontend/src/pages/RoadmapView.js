@@ -5,6 +5,7 @@ import PeakReached from '../components/PeakReached';
 import MountainProgress from '../components/MountainProgress';
 import roadmapService from '../services/roadmapService';
 import progressService from '../services/progressService';
+import leaderboardService from '../services/leaderboardService';
 import { recordCompletedRoadmap } from '../utils/skillProgress';
 import { useSkills } from '../context/SkillsContext';
 import './SkillDetail.css';
@@ -88,13 +89,35 @@ const RoadmapView = () => {
   }, []);
 
   useEffect(() => {
-    if (roadmap && totalSteps > 0 && isSkillMastered && !wasCompletedRef.current) {
-      wasCompletedRef.current = true;
-      setShowCelebration(true);
-      recordCompletedRoadmap(id);
-    } else if (roadmap && totalSteps > 0 && !isSkillMastered) {
-      wasCompletedRef.current = false;
-    }
+    const recordCompletion = async () => {
+      if (roadmap && totalSteps > 0 && isSkillMastered && !wasCompletedRef.current) {
+        wasCompletedRef.current = true;
+        setShowCelebration(true);
+        recordCompletedRoadmap(id);
+        
+        // Record completion in backend for leaderboard
+        try {
+          // Get earliest start time from step progress (if available)
+          // For now, use roadmap creation date or current date as fallback
+          const startedAt = roadmap.createdAt ? new Date(roadmap.createdAt) : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // Default to 7 days ago if no date
+          
+          await leaderboardService.recordCompletion(
+            id,
+            roadmap.name,
+            roadmap.category || null,
+            roadmap.tags || [],
+            startedAt
+          );
+        } catch (error) {
+          console.error('Error recording completion for leaderboard:', error);
+          // Continue even if leaderboard recording fails
+        }
+      } else if (roadmap && totalSteps > 0 && !isSkillMastered) {
+        wasCompletedRef.current = false;
+      }
+    };
+    
+    recordCompletion();
   }, [isSkillMastered, roadmap, totalSteps, id]);
 
   // Persist roadmap step count so metrics can count completed roadmaps
