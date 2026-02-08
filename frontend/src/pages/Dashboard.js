@@ -29,12 +29,17 @@ const getRandomSuggestedSkills = (count = 5) => {
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { skills, removeSkill } = useSkills();
+  const { skills, removeSkill, getRoadmapId } = useSkills();
   const navigate = useNavigate();
 
   const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
 
   const handleSkillClick = (skillName) => {
+    const roadmapId = getRoadmapId(skillName);
+    if (roadmapId) {
+      navigate(`/roadmap/${roadmapId}`);
+      return;
+    }
     const skillId = SKILL_ID_MAP[skillName] || skillName.toLowerCase().replace(/\s+/g, '-');
     navigate(`/skill/${skillId}`);
   };

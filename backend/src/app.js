@@ -17,10 +17,10 @@ const app = express();
 // Security middleware
 app.use(helmet());
 
-// CORS
+// CORS (supports single origin or array)
 app.use(
   cors({
-    origin: config.corsOrigin,
+    origin: Array.isArray(config.corsOrigin) ? config.corsOrigin : config.corsOrigin,
     credentials: true,
   })
 );
