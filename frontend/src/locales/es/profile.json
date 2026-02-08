@@ -46,20 +46,22 @@
     "deleteTitle": "Eliminar roadmap"
   },
   "empty": {
-    "noRoadmaps": "Aún no has creado ningún roadmap",
+    "noRoadmaps": "Aún no has creado ninguna guía",
     "noFiltered": "No tienes",
     "roadmaps": "roadmaps",
     "description": "Comienza a crear rutas de aprendizaje personalizadas para ayudar a otros a aprender nuevas habilidades",
     "descriptionFiltered": "No tienes ningún",
     "roadmapsAtMoment": "roadmaps en este momento",
-    "createFirst": "Crea Tu Primer Roadmap"
+    "createFirst": "Crea Tu Primera Guía"
   },
   "loading": "Cargando tus roadmaps...",
   "messages": {
     "shareCaption": "Agrega un título (opcional):",
     "shared": "¡Roadmap compartido en el feed!",
     "shareError": "Error al compartir roadmap. Asegúrate de que esté publicado.",
-    "deleteConfirm": "¿Estás seguro de que quieres eliminar este roadmap?",
+    "deleteConfirmTitle": "¿Eliminar guía?",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar esta guía? Esta acción no se puede deshacer.",
+    "deleteConfirmButton": "Eliminar",
     "deleted": "¡Roadmap eliminado exitosamente!",
     "deleteError": "Error al eliminar roadmap. Por favor, intenta de nuevo."
   }

@@ -8,6 +8,7 @@ import postService from '../services/postService';
 import userService from '../services/userService';
 import Achievements from '../components/Achievements';
 import SkillTimeline from '../components/SkillTimeline';
+import ConfirmationModal from '../components/ConfirmationModal';
 import './Profile.css';
 
 const Profile = () => {
@@ -21,6 +22,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('roadmaps'); // roadmaps, achievements, timeline
   const [error, setError] = useState(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
   // Determine if viewing own profile or another user's
   const isOwnProfile = !userId || (userId === (user?.id || user?._id)?.toString());
@@ -108,16 +110,20 @@ const Profile = () => {
     }
   };
 
-  const handleDeleteRoadmap = async (roadmapId) => {
-    if (window.confirm(t('profile:messages.deleteConfirm'))) {
-      try {
-        await roadmapService.deleteRoadmap(roadmapId);
-        setRoadmaps(roadmaps.filter(r => r.id !== roadmapId));
-        alert(t('profile:messages.deleted'));
-      } catch (error) {
-        console.error('Error deleting roadmap:', error);
-        alert(error.error || t('profile:messages.deleteError'));
-      }
+  const handleDeleteRoadmapClick = (roadmapId) => {
+    setDeleteConfirmId(roadmapId);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteConfirmId) return;
+    const roadmapId = deleteConfirmId;
+    setDeleteConfirmId(null);
+    try {
+      await roadmapService.deleteRoadmap(roadmapId);
+      setRoadmaps((prev) => prev.filter((r) => r.id !== roadmapId));
+    } catch (err) {
+      console.error('Error deleting roadmap:', err);
+      alert(err.error || t('profile:messages.deleteError'));
     }
   };
 
@@ -325,7 +331,7 @@ const Profile = () => {
                   </button>
                   <button
                     className="action-button delete-button"
-                    onClick={() => handleDeleteRoadmap(roadmap.id)}
+                    onClick={() => handleDeleteRoadmapClick(roadmap.id)}
                     title={t('profile:roadmap.deleteTitle')}
                   >
                     {t('profile:roadmap.delete')}
@@ -358,6 +364,16 @@ const Profile = () => {
           )}
         </div>
       )}
+
+      <ConfirmationModal
+        isOpen={!!deleteConfirmId}
+        onClose={() => setDeleteConfirmId(null)}
+        onConfirm={handleConfirmDelete}
+        title={t('profile:messages.deleteConfirmTitle')}
+        message={t('profile:messages.deleteConfirm')}
+        confirmText={t('profile:messages.deleteConfirmButton')}
+        cancelText={t('common:buttons.cancel')}
+      />
     </div>
   );
 };
