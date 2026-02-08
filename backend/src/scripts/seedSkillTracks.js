@@ -31,24 +31,26 @@ const seedSkillTracks = async () => {
       console.log('Using existing demo user:', demoUser.username);
     }
 
-    // Clear existing seed roadmaps (optional - comment out if you want to keep existing ones)
+    // Check for existing seed roadmaps and create only missing ones
     const existingRoadmaps = await Roadmap.find({ 
       creator: demoUser._id,
       name: { $in: skillTracksData.map(track => track.name) }
     });
     
+    const existingNames = new Set(existingRoadmaps.map(r => r.name));
+    const roadmapsToCreate = skillTracksData.filter(track => !existingNames.has(track.name));
+    
     if (existingRoadmaps.length > 0) {
-      console.log(`Found ${existingRoadmaps.length} existing roadmaps. Deleting...`);
-      await Roadmap.deleteMany({ 
-        creator: demoUser._id,
-        name: { $in: skillTracksData.map(track => track.name) }
+      console.log(`Found ${existingRoadmaps.length} existing roadmaps. Skipping...`);
+      existingRoadmaps.forEach(roadmap => {
+        console.log(`  - ${roadmap.name} (already exists)`);
       });
     }
 
-    // Create roadmaps from seed data
+    // Create only missing roadmaps from seed data
     const createdRoadmaps = [];
     
-    for (const trackData of skillTracksData) {
+    for (const trackData of roadmapsToCreate) {
       const roadmap = await Roadmap.create({
         name: trackData.name,
         description: trackData.description || '',
@@ -74,11 +76,16 @@ const seedSkillTracks = async () => {
       console.log(`✓ Created roadmap: ${roadmap.name}`);
     }
 
-    console.log(`\n✅ Successfully seeded ${createdRoadmaps.length} skill tracks!`);
-    console.log('\nCreated roadmaps:');
-    createdRoadmaps.forEach(roadmap => {
-      console.log(`  - ${roadmap.name} (${roadmap.tags.join(', ')})`);
-    });
+    const totalRoadmaps = existingRoadmaps.length + createdRoadmaps.length;
+    console.log(`\n✅ Seed data check complete!`);
+    console.log(`   Total roadmaps available: ${totalRoadmaps}`);
+    if (createdRoadmaps.length > 0) {
+      console.log(`   Newly created: ${createdRoadmaps.length}`);
+      createdRoadmaps.forEach(roadmap => {
+        console.log(`     - ${roadmap.name} (${roadmap.tags.join(', ')})`);
+      });
+    }
+    console.log('\n📌 All roadmaps are published and public - visible to all users!');
 
     // Close database connection
     await mongoose.connection.close();
