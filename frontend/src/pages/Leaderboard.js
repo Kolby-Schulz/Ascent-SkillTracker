@@ -180,6 +180,43 @@ const Leaderboard = () => {
         <p className="leaderboard-subtitle">{t('leaderboard:subtitle')}</p>
       </div>
 
+      {/* Filters */}
+      <div className="leaderboard-filters">
+        <div className="filter-group">
+          <label className="filter-label">{t('leaderboard:scope')}</label>
+          <div className="filter-buttons">
+            <button
+              className={`filter-button ${scope === 'all' ? 'active' : ''}`}
+              onClick={() => setScope('all')}
+            >
+              {t('leaderboard:allUsers')}
+            </button>
+            <button
+              className={`filter-button ${scope === 'friends' ? 'active' : ''}`}
+              onClick={() => setScope('friends')}
+            >
+              {t('leaderboard:friends')}
+            </button>
+          </div>
+        </div>
+
+        <div className="filter-group">
+          <label className="filter-label">{t('leaderboard:category')}</label>
+          <select
+            className="filter-select"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">{t('leaderboard:allCategories')}</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Leaderboard Table */}
       <div className="leaderboard-container">
         {loading ? (
@@ -241,43 +278,6 @@ const Leaderboard = () => {
                 })}
               </div>
             </div>
-
-            {/* Filters */}
-            <div className="leaderboard-filters">
-        <div className="filter-group">
-          <label className="filter-label">{t('leaderboard:scope')}</label>
-          <div className="filter-buttons">
-            <button
-              className={`filter-button ${scope === 'all' ? 'active' : ''}`}
-              onClick={() => setScope('all')}
-            >
-              {t('leaderboard:allUsers')}
-            </button>
-            <button
-              className={`filter-button ${scope === 'friends' ? 'active' : ''}`}
-              onClick={() => setScope('friends')}
-            >
-              {t('leaderboard:friends')}
-            </button>
-          </div>
-        </div>
-
-        <div className="filter-group">
-          <label className="filter-label">{t('leaderboard:category')}</label>
-          <select
-            className="filter-select"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">{t('leaderboard:allCategories')}</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
 
             {/* Scrollable Rest of Rankings */}
             {rankings.length > 5 && (
