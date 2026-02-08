@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import roadmapService from '../services/roadmapService';
 import './CreateRoadmap.css';
 
 const CreateRoadmap = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const editId = searchParams.get('edit');
+
   const [skillName, setSkillName] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -18,6 +21,46 @@ const CreateRoadmap = () => {
   const [newResourceUrl, setNewResourceUrl] = useState('');
   const [newResourceTitle, setNewResourceTitle] = useState('');
   const [resourceError, setResourceError] = useState('');
+  const [loading, setLoading] = useState(!!editId);
+  const [loadError, setLoadError] = useState(null);
+
+  // Load roadmap for editing when edit=id in URL
+  useEffect(() => {
+    if (!editId) return;
+    const loadForEdit = async () => {
+      setLoading(true);
+      setLoadError(null);
+      try {
+        const res = await roadmapService.getMyRoadmapForView(editId);
+        const data = res?.data ?? res;
+        if (data) {
+          setSkillName(data.name || '');
+          const loaded = (data.subSkills || []).map((s, i) => ({
+            id: s._id || Date.now() + i,
+            title: s.title || '',
+            description: s.description || '',
+            order: typeof s.order === 'number' ? s.order : i + 1,
+            resources: (s.resources || []).map((r, j) => ({
+              url: r.url || '',
+              title: r.title || undefined,
+              type: r.type || 'other',
+              order: typeof r.order === 'number' ? r.order : j,
+            })),
+            customContent: s.customContent || '',
+          }));
+          if (loaded.length > 0) {
+            setSubSkills(loaded);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load roadmap for editing:', err);
+        setLoadError(err?.error || err?.message || 'Failed to load roadmap');
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadForEdit();
+  }, [editId]);
 
   const isValidUrl = (string) => {
     try {
@@ -221,8 +264,13 @@ const CreateRoadmap = () => {
 
     try {
       const roadmapData = { ...buildRoadmapPayload(), status: 'draft' };
-      await roadmapService.createRoadmap(roadmapData);
-      alert('Draft saved successfully!');
+      if (editId) {
+        await roadmapService.updateRoadmap(editId, roadmapData);
+        alert('Draft updated successfully!');
+      } else {
+        await roadmapService.createRoadmap(roadmapData);
+        alert('Draft saved successfully!');
+      }
       navigate('/dashboard/profile');
     } catch (error) {
       console.error('Error saving draft:', error);
@@ -238,8 +286,13 @@ const CreateRoadmap = () => {
 
     try {
       const roadmapData = { ...buildRoadmapPayload(), status: 'published' };
-      await roadmapService.createRoadmap(roadmapData);
-      alert('Roadmap published successfully!');
+      if (editId) {
+        await roadmapService.updateRoadmap(editId, roadmapData);
+        alert('Roadmap updated and published!');
+      } else {
+        await roadmapService.createRoadmap(roadmapData);
+        alert('Roadmap published successfully!');
+      }
       navigate('/dashboard/profile');
     } catch (error) {
       console.error('Error publishing roadmap:', error);
@@ -277,6 +330,29 @@ const CreateRoadmap = () => {
       opacity: 0
     })
   };
+
+  if (loading) {
+    return (
+      <div className="create-roadmap-wrapper">
+        <div className="create-roadmap-container" style={{ padding: '2rem', textAlign: 'center' }}>
+          <p>Loading roadmap for editing...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="create-roadmap-wrapper">
+        <div className="create-roadmap-container" style={{ padding: '2rem', textAlign: 'center' }}>
+          <p className="error-message">{loadError}</p>
+          <button onClick={() => navigate('/dashboard/profile')} className="back-button">
+            ← Back to Profile
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="create-roadmap-wrapper">
