@@ -1,7 +1,7 @@
 {
   "title": "Dashboard",
   "greeting": "Hello",
-  "skillsInProgress": "Skills in Progress:",
+  "skillsInProgress": "My Skills",
   "noSkills": "You don't have any skills yet. Start learning!",
   "addSkill": "Add Skill",
   "removeSkill": "Remove",

@@ -59,15 +59,25 @@
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 0;
   border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Top row: brand centered with right sidebar avatar (same 56px row height) */
+.sidebar-brand-row {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 36px;
+  overflow: visible;
 }
 
 .brand-logo {
   padding: 20px 12px;
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .brand-title {
@@ -140,10 +150,10 @@
   font-weight: 500;
 }
 
-/* Main Content - explicit column 2 */
+/* Main Content - explicit column 2 (top padding 24px to align greeting with avatar) */
 .dashboard-main {
   grid-column: 2;
-  padding: 12px 40px 32px 40px;
+  padding: 24px 40px 32px 40px;
   overflow-y: auto;
 }
 

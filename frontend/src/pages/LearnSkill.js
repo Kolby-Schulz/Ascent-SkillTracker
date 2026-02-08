@@ -94,8 +94,8 @@ const LearnSkill = () => {
   return (
     <div className="learn-skill-page">
       <div className="learn-skill-header">
-        <h1 className="learn-skill-title">Browse Skill Paths</h1>
-        <p className="learn-skill-subtitle">Discover skill paths created by our community</p>
+        <h1 className="learn-skill-title">Browse Skills</h1>
+        <p className="learn-skill-subtitle">Discover guides created by our community.</p>
       </div>
 
       <div className="learn-skill-filters">

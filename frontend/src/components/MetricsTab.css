@@ -1,10 +1,10 @@
 /* Metrics Tab - Color palette: 254c5d, 011c2f, d9bba3, aea79d, 546672 */
-/* margin-top aligns "Metrics" title with "Your Skills" in the main content column */
+/* margin-top aligns "Metrics" title with "My Skills" heading in the main content */
 .metrics-tab {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 48px;
+  margin-top: 12px;
 }
 
 .metrics-tab-header {
