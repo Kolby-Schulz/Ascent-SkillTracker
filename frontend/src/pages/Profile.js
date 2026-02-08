@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import roadmapService from '../services/roadmapService';
 import postService from '../services/postService';
+import Achievements from '../components/Achievements';
 import './Profile.css';
 
 const Profile = () => {
@@ -14,6 +15,7 @@ const Profile = () => {
   const [roadmaps, setRoadmaps] = useState([]);
   const [filter, setFilter] = useState('all'); // all, published, draft
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('roadmaps'); // roadmaps, achievements
 
   const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
 
@@ -126,6 +128,23 @@ const Profile = () => {
         </button>
       </motion.div>
 
+      {/* Tabs */}
+      <div className="profile-tabs">
+        <button
+          className={`profile-tab ${activeTab === 'roadmaps' ? 'active' : ''}`}
+          onClick={() => setActiveTab('roadmaps')}
+        >
+          {t('profile:myRoadmaps')}
+        </button>
+        <button
+          className={`profile-tab ${activeTab === 'achievements' ? 'active' : ''}`}
+          onClick={() => setActiveTab('achievements')}
+        >
+          {t('profile:achievements')}
+        </button>
+      </div>
+
+      {activeTab === 'roadmaps' && (
       <div className="roadmaps-section">
         <div className="section-header">
           <h2 className="section-title">{t('profile:myRoadmaps')}</h2>
@@ -255,6 +274,13 @@ const Profile = () => {
           </div>
         )}
       </div>
+      )}
+
+      {activeTab === 'achievements' && (
+        <div className="achievements-section">
+          <Achievements />
+        </div>
+      )}
     </div>
   );
 };

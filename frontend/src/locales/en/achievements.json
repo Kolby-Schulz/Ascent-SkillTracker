@@ -1,0 +1,16 @@
+{
+  "title": "Achievements & Streaks",
+  "streak": {
+    "title": "Learning Streak",
+    "current": "Current Streak",
+    "longest": "Longest Streak",
+    "days": "days",
+    "message": "Keep it up! You're on a {{count}} day streak!"
+  },
+  "filters": {
+    "all": "All",
+    "unlocked": "Unlocked",
+    "locked": "Locked"
+  },
+  "noAchievements": "No achievements match this filter"
+}

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 import PeakReached from '../components/PeakReached';
 import { recordCompletedSkill } from '../utils/skillProgress';
+import { updateStreak, checkStreakAchievements, checkSkillAchievements, getCompletedSkillsCount, unlockAchievement } from '../utils/achievements';
 import './SkillDetail.css';
 
 // Mock data for skills - in the future this will come from the API
@@ -138,6 +140,7 @@ const skillsData = {
 const SkillDetail = () => {
   const { skillId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -172,11 +175,33 @@ const SkillDetail = () => {
       wasCompletedRef.current = true;
       setShowCelebration(true);
       recordCompletedSkill(skillId);
+      
+      // Track achievements and streaks
+      const userId = user?.id || user?._id || 'default';
+      
+      // Update streak
+      updateStreak(userId);
+      
+      // Check and unlock achievements after a short delay to ensure localStorage is updated
+      setTimeout(() => {
+        const completedCount = getCompletedSkillsCount();
+        
+        // Check and unlock first step achievement (if this is their first completion)
+        if (completedCount === 1) {
+          unlockAchievement(userId, 'first_step');
+        }
+        
+        // Check skill completion achievements
+        checkSkillAchievements(userId, completedCount);
+        
+        // Check streak achievements
+        checkStreakAchievements(userId);
+      }, 100);
     } else if (skill && !isSkillMastered) {
       // Skill is not completed - reset flag
       wasCompletedRef.current = false;
     }
-  }, [isSkillMastered, skill, skillId]);
+  }, [isSkillMastered, skill, skillId, user]);
 
   if (!skill) {
     return (
@@ -199,6 +224,11 @@ const SkillDetail = () => {
     };
     setCompletedSteps(newCompletedSteps);
     localStorage.setItem(`skill-progress-${skillId}`, JSON.stringify(newCompletedSteps));
+    
+    // Update streak when user completes a step
+    const userId = user?.id || user?._id || 'default';
+    updateStreak(userId);
+    checkStreakAchievements(userId);
   };
 
   const nextSlide = () => {

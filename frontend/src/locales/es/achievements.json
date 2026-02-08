@@ -1,0 +1,16 @@
+{
+  "title": "Logros y Racha",
+  "streak": {
+    "title": "Racha de Aprendizaje",
+    "current": "Racha Actual",
+    "longest": "Racha Más Larga",
+    "days": "días",
+    "message": "¡Sigue así! Tienes una racha de {{count}} días!"
+  },
+  "filters": {
+    "all": "Todos",
+    "unlocked": "Desbloqueados",
+    "locked": "Bloqueados"
+  },
+  "noAchievements": "No hay logros que coincidan con este filtro"
+}
