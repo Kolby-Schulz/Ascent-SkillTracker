@@ -1,0 +1,22 @@
+{
+  "title": "Análisis de Progreso",
+  "subtitle": "Escala más alto y rastrea tu ascenso a nuevas cumbres de conocimiento",
+  "loading": "Cargando análisis...",
+  "skillsCompleted": "Habilidades Completadas",
+  "skillsInProgress": "Habilidades En Progreso",
+  "totalTimeSpent": "Tiempo Total Dedicado",
+  "avgDaysToComplete": "Promedio de Días para Completar",
+  "timeSpentPerSkill": "Tiempo Dedicado Por Habilidad",
+  "learningVelocity": "Velocidad de Aprendizaje",
+  "thirtyDayTrend": "Tendencia de Completación de 30 Días",
+  "additionalInsights": "Información Adicional",
+  "fastestSkill": "Completación Más Rápida",
+  "slowestSkill": "Completación Más Lenta",
+  "topCategory": "Categoría Principal",
+  "days": "días",
+  "steps": "pasos",
+  "skills": "habilidades",
+  "noTimeData": "Aún no hay datos de seguimiento de tiempo disponibles",
+  "noVelocityData": "Aún no hay datos de completación disponibles",
+  "noTrendData": "Aún no hay datos de tendencia disponibles"
+}
