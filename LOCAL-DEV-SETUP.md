@@ -70,6 +70,7 @@ Browser opens at http://localhost:3001
 - ✅ Use Docker only for MongoDB
 - ✅ Run backend locally: `cd backend && npm start`
 - ✅ Run frontend locally: `cd frontend && npm start`
+- ✅ **Mac:** Double-click `scripts/start-all.command` for one-click start (opens backend + frontend in separate Terminal windows)
 
 ---
 
