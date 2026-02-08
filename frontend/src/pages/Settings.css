@@ -142,6 +142,18 @@
 
 .settings-select {
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.settings-select option {
+  background: rgba(30, 30, 30, 0.95);
+  color: #fff;
+  padding: 0.5rem;
+}
+
+.settings-select:focus {
+  background: rgba(255, 255, 255, 0.15) !important;
 }
 
 .field-description {
