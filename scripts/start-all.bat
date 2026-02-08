@@ -7,6 +7,10 @@ echo Skill Roadmap - Start Everything
 echo ======================================
 echo.
 
+REM Kill any leftover Node processes (so "already running on port" does not happen)
+taskkill /F /IM node.exe 2>nul
+if %errorlevel% equ 0 (echo [OK] Stopped previous Node processes) else (echo [OK] No previous Node processes to stop)
+
 REM Stop Docker backend (uses port 5001, we need 5000)
 docker stop skill-roadmap-backend 2>nul
 echo [OK] Ensured Docker backend is stopped
@@ -36,7 +40,7 @@ echo Waiting for backend to start...
 timeout /t 5 /nobreak >nul
 
 echo Starting frontend in new window...
-start "Frontend (port 3001)" cmd /k "cd /d "%~dp0..\frontend" && npm start"
+start "Frontend (port 3001)" cmd /k "cd /d "%~dp0..\frontend" && set PORT=3001 && npm start"
 
 echo.
 echo ======================================
