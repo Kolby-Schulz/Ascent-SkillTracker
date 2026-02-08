@@ -7,6 +7,7 @@ const errorHandler = require('./middlewares/errorHandler');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
+const roadmapRoutes = require('./routes/roadmapRoutes');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/roadmaps', roadmapRoutes);
 
 // 404 handler
 app.use((req, res) => {

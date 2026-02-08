@@ -202,6 +202,30 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
+/* Create page: full width layout, profile floats in corner */
+.dashboard-layout.layout-create {
+  grid-template-columns: 220px 1fr;
+}
+
+.dashboard-layout.layout-create .dashboard-main {
+  max-width: none;
+}
+
+.dashboard-layout.layout-create .dashboard-right-sidebar.profile-float {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  z-index: 100;
+}
+
+.dashboard-layout.layout-create .profile-area {
+  justify-content: flex-end;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .dashboard-layout {
@@ -214,6 +238,11 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-layout.layout-create .dashboard-right-sidebar.profile-float {
+    top: 16px;
+    right: 16px;
+  }
+
   .dashboard-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
