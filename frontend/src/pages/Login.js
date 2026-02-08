@@ -10,7 +10,7 @@ import './Auth.css';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginAsDemoUser } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -134,6 +134,19 @@ const Login = () => {
             whileTap={{ scale: 0.98 }}
           >
             {loading ? 'Signing in...' : 'Sign In'}
+          </motion.button>
+
+          <motion.button
+            type="button"
+            className="auth-button auth-button-demo"
+            onClick={() => {
+              loginAsDemoUser();
+              navigate('/dashboard');
+            }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            DEMO BUTTON REMOVE BEFORE DEVPOST
           </motion.button>
         </form>
 
