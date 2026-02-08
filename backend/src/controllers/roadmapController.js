@@ -119,12 +119,17 @@ exports.getMyRoadmaps = async (req, res, next) => {
       filter.status = status;
     }
 
-    const roadmaps = await Roadmap.find(filter).sort({ updatedAt: -1 });
+    const roadmaps = await Roadmap.find(filter).sort({ updatedAt: -1 }).lean();
+
+    const data = roadmaps.map((r) => ({
+      ...r,
+      studentsCount: (r.learnedBy && r.learnedBy.length) || 0,
+    }));
 
     res.status(200).json({
       success: true,
-      count: roadmaps.length,
-      data: roadmaps,
+      count: data.length,
+      data,
     });
   } catch (error) {
     next(error);
@@ -155,6 +160,7 @@ exports.getMyRoadmapForView = async (req, res, next) => {
       ...roadmap,
       likesCount: roadmap.likedBy?.length ?? 0,
       isLiked: (roadmap.likedBy || []).some((id) => id.toString() === userId),
+      studentsCount: (roadmap.learnedBy && roadmap.learnedBy.length) || 0,
     };
 
     res.status(200).json({
@@ -194,6 +200,7 @@ exports.getRoadmapById = async (req, res, next) => {
       ...roadmap,
       likesCount: roadmap.likedBy?.length ?? 0,
       isLiked: userId && (roadmap.likedBy || []).some((id) => id.toString() === userId),
+      studentsCount: (roadmap.learnedBy && roadmap.learnedBy.length) || 0,
     };
 
     res.status(200).json({
@@ -235,6 +242,51 @@ exports.toggleLike = async (req, res, next) => {
         likesCount: roadmap.likedBy.length,
         liked: !hasLiked,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Register current user as a learner of this roadmap (Add to My Skills)
+ * @route   PUT /api/v1/roadmaps/:id/learn
+ * @access  Private
+ */
+exports.addLearner = async (req, res, next) => {
+  try {
+    const roadmap = await Roadmap.findById(req.params.id);
+
+    if (!roadmap) {
+      return next(new ErrorResponse('Roadmap not found', 404));
+    }
+
+    if (roadmap.status !== 'published') {
+      return next(new ErrorResponse('Only published guides can be added to My Skills', 400));
+    }
+
+    const userId = req.user._id;
+    if (roadmap.creator.toString() === userId.toString()) {
+      return res.status(200).json({
+        success: true,
+        data: { studentsCount: roadmap.learnedBy?.length ?? 0 },
+      });
+    }
+
+    const learnedBy = roadmap.learnedBy || [];
+    if (learnedBy.some((id) => id.toString() === userId.toString())) {
+      return res.status(200).json({
+        success: true,
+        data: { studentsCount: learnedBy.length },
+      });
+    }
+
+    roadmap.learnedBy = [...learnedBy, userId];
+    await roadmap.save();
+
+    res.status(200).json({
+      success: true,
+      data: { studentsCount: roadmap.learnedBy.length },
     });
   } catch (error) {
     next(error);
