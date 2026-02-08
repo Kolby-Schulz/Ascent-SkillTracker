@@ -120,7 +120,7 @@ const Profile = () => {
           </div>
         </div>
         <button className="create-new-button" onClick={handleCreateNew}>
-          ➕ Create New Roadmap
+          Create New Roadmap
         </button>
       </motion.div>
 
