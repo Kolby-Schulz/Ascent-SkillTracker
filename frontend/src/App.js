@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import SkillDetail from './pages/SkillDetail';
 import './App.css';
 
 function App() {
@@ -22,6 +23,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/skill/:skillId"
+              element={
+                <ProtectedRoute>
+                  <SkillDetail />
                 </ProtectedRoute>
               }
             />

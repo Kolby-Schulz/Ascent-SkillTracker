@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Dashboard.css';
 
@@ -11,7 +12,17 @@ const SIDEBAR_ITEMS = [
   { id: 'settings', label: 'Settings', icon: 'settings' },
 ];
 
-const INITIAL_SKILLS = ['Guitar', 'Fishing', 'Singing'];
+// Map skill names to their URL-friendly IDs
+const SKILL_ID_MAP = {
+  'Guitar': 'guitar',
+  'Fishing': 'fishing',
+  'Singing': 'singing',
+  'Web Development': 'web-development',
+  'Photography': 'photography',
+  'Cooking': 'cooking',
+};
+
+const INITIAL_SKILLS = ['Guitar', 'Web Development', 'Photography'];
 
 const SUGGESTED_SKILLS_POOL = [
   'Cooking', 'Photography', 'Spanish', 'Woodworking', 'Chess',
@@ -26,6 +37,7 @@ const getRandomSuggestedSkills = (count = 5) => {
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState('dashboard');
   const [skills, setSkills] = useState(INITIAL_SKILLS);
   const [draggedIndex, setDraggedIndex] = useState(null);
@@ -34,6 +46,11 @@ const Dashboard = () => {
   const profileRef = useRef(null);
 
   const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
+
+  const handleSkillClick = (skillName) => {
+    const skillId = SKILL_ID_MAP[skillName] || skillName.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/skill/${skillId}`);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -118,15 +135,17 @@ const Dashboard = () => {
                 onDragEnd={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, index)}
+                onClick={() => handleSkillClick(skill)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.02 }}
+                style={{ cursor: 'pointer' }}
               >
                 <div className="skill-card-content">
                   <span className="skill-icon">🎯</span>
                   <span className="skill-name">{skill}</span>
-                  <span className="skill-drag-hint">Drag to reorder</span>
+                  <span className="skill-drag-hint">Click to view • Drag to reorder</span>
                 </div>
               </motion.div>
             ))}
