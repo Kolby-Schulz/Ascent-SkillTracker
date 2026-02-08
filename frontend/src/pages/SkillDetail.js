@@ -233,6 +233,18 @@ const SkillDetail = () => {
     checkStreakAchievements(userId);
   };
 
+  // Reset all progress for this skill
+  const resetProgress = () => {
+    // Clear all completed steps
+    setCompletedSteps({});
+    
+    // Clear localStorage
+    localStorage.removeItem(`skill-progress-${skillId}`);
+    
+    // Reset current index to first step
+    setCurrentIndex(0);
+  };
+
   const nextSlide = () => {
     setDirection(1);
     setCurrentIndex((prevIndex) =>
@@ -320,6 +332,7 @@ const SkillDetail = () => {
           onStepComplete={(index) => {
             toggleStepCompletion(subSkills[index].id);
           }}
+          onResetProgress={resetProgress}
         />
         
         {/* Step detail view */}

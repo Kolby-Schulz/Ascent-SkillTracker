@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import './MountainProgress.css';
 
@@ -8,8 +8,10 @@ const MountainProgress = ({
   currentStepIndex = 0,
   onStepClick = () => {},
   onStepComplete = () => {},
-  friendProgress = []
+  friendProgress = [],
+  onResetProgress = null
 }) => {
+  const clickTimeouts = useRef({});
   const totalSteps = steps.length;
   const completedCount = Object.values(completedSteps).filter(Boolean).length;
   const progressPercentage = totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0;
@@ -44,14 +46,54 @@ const MountainProgress = ({
         
         {/* Steps positioned along the path */}
         <div className="steps-container">
-          {steps.map((step, index) => {
-            const position = getStepPosition(index);
-            const isCompleted = completedSteps[String(index)] || false;
-            const isCurrent = index === currentStepIndex;
+          {steps.map((step, arrayIndex) => {
+            // Use step.index if available, otherwise use arrayIndex
+            const stepIndex = step.index !== undefined ? step.index : arrayIndex;
+            const position = getStepPosition(arrayIndex);
+            const isCompleted = completedSteps[String(stepIndex)] || false;
+            const isCurrent = stepIndex === currentStepIndex;
+            
+            // Create handlers with the correct stepIndex captured in closure
+            // Use the stepIndex from the closure to ensure we always use the correct value
+            const handleClick = (e) => {
+              e.stopPropagation();
+              const timeoutKey = `step-${stepIndex}`;
+              
+              // Clear any existing timeout for this step
+              if (clickTimeouts.current[timeoutKey]) {
+                clearTimeout(clickTimeouts.current[timeoutKey]);
+                delete clickTimeouts.current[timeoutKey];
+                return;
+              }
+              
+              // Delay single click to allow for double-click detection
+              clickTimeouts.current[timeoutKey] = setTimeout(() => {
+                onStepClick(stepIndex);
+                delete clickTimeouts.current[timeoutKey];
+              }, 300);
+            };
+            
+            const handleDoubleClick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              const timeoutKey = `step-${stepIndex}`;
+              
+              // Clear single click timeout
+              if (clickTimeouts.current[timeoutKey]) {
+                clearTimeout(clickTimeouts.current[timeoutKey]);
+                delete clickTimeouts.current[timeoutKey];
+              }
+              
+              // Execute double-click action with the stepIndex from closure
+              // This ensures we use the correct index for this specific step element
+              onStepComplete(stepIndex);
+            };
             
             return (
               <motion.div
-                key={index}
+                key={`step-${stepIndex}-${arrayIndex}`}
+                data-step-index={stepIndex}
                 className={`mountain-step ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${position.y < 40 ? 'tooltip-below' : ''} ${position.x > 70 ? 'tooltip-left' : ''}`}
                 style={{
                   left: `${position.x}%`,
@@ -59,21 +101,18 @@ const MountainProgress = ({
                 }}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => onStepClick(index)}
-                onDoubleClick={(e) => {
-                  e.stopPropagation();
-                  onStepComplete(index);
-                }}
+                transition={{ delay: arrayIndex * 0.1 }}
+                onClick={handleClick}
+                onDoubleClick={handleDoubleClick}
               >
-                <div className="step-marker">
-                  <span className="step-number">{index + 1}</span>
+                <div className="step-marker" data-step-index={stepIndex}>
+                  <span className="step-number">{stepIndex + 1}</span>
                   {isCompleted && <span className="step-check">✓</span>}
                 </div>
                 {isCurrent && <div className="step-pulse"></div>}
                 {/* Hover tooltip with description */}
-                <div className="step-tooltip">
-                  <div className="step-tooltip-title">{step.title || `Step ${index + 1}`}</div>
+                <div className="step-tooltip" data-step-index={stepIndex}>
+                  <div className="step-tooltip-title">{step.title || `Step ${stepIndex + 1}`}</div>
                   {step.description && (
                     <div className="step-tooltip-description">{step.description}</div>
                   )}
@@ -245,6 +284,17 @@ const MountainProgress = ({
             />
           </div>
         </div>
+
+        {/* Reset button - bottom left */}
+        {onResetProgress && (
+          <button
+            className="mountain-reset-button"
+            onClick={onResetProgress}
+            title="Reset all progress"
+          >
+            ↻
+          </button>
+        )}
       </div>
 
     </div>

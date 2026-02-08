@@ -5,6 +5,34 @@
   padding: 20px;
 }
 
+.mountain-reset-button {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 5;
+}
+
+.mountain-reset-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  transform: rotate(180deg) scale(1.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
 .mountain-background {
   position: relative;
   width: 100%;
@@ -48,6 +76,11 @@
   cursor: pointer;
   z-index: 3;
   transition: all 0.3s ease;
+  pointer-events: all;
+}
+
+.mountain-step * {
+  pointer-events: none;
 }
 
 .mountain-step:hover {
