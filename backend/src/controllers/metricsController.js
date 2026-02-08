@@ -1,4 +1,5 @@
 const Guide = require('../models/Guide');
+const Roadmap = require('../models/Roadmap');
 const UserSkillProgress = require('../models/UserSkillProgress');
 
 /**
@@ -28,6 +29,10 @@ exports.getMyMetrics = async (req, res, next) => {
     // Total likes across all guides uploaded by user
     const totalGuideLikes = myGuides.reduce((sum, g) => sum + (g.likedBy?.length || 0), 0);
 
+    // Roadmaps created by user: total likes on those roadmaps
+    const myRoadmaps = await Roadmap.find({ creator: userId }).lean();
+    const totalRoadmapLikes = myRoadmaps.reduce((sum, r) => sum + (r.likedBy?.length || 0), 0);
+
     // Per-guide breakdown: title, skill, views, likes, uploader
     const guideBreakdown = myGuides.map((g) => ({
       id: g._id,
@@ -47,6 +52,8 @@ exports.getMyMetrics = async (req, res, next) => {
           guidesUploaded,
           totalGuideViews,
           totalGuideLikes,
+          totalRoadmapLikes,
+          totalLikes: totalGuideLikes + totalRoadmapLikes,
         },
         guideBreakdown,
       },

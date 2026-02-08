@@ -7,6 +7,8 @@ const FALLBACK_METRICS = {
     guidesUploaded: 0,
     totalGuideViews: 0,
     totalGuideLikes: 0,
+    totalRoadmapLikes: 0,
+    totalLikes: 0,
   },
   fromFallback: true,
 };

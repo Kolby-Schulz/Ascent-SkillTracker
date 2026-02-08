@@ -8,7 +8,7 @@ import './MetricsTab.css';
 // Color palette: 254c5d, 011c2f, d9bba3, aea79d, 546672
 const STAT_CARDS = [
   { key: 'guidesUploaded', label: 'Guides Created', icon: '📝', micro: '' },
-  { key: 'totalGuideLikes', label: 'Total Likes', icon: '❤', iconClass: 'icon-red', micro: '' },
+  { key: 'totalLikes', label: 'Total Likes', icon: '👍', iconClass: 'icon-white', micro: '' },
 ];
 
 const MetricsTab = () => {
@@ -41,6 +41,8 @@ const MetricsTab = () => {
         guidesUploaded: 0,
         totalGuideViews: 0,
         totalGuideLikes: 0,
+        totalRoadmapLikes: 0,
+        totalLikes: 0,
       });
       setError(null);
       setLoading(false);
@@ -57,6 +59,8 @@ const MetricsTab = () => {
         guidesUploaded: 0,
         totalGuideViews: 0,
         totalGuideLikes: 0,
+        totalRoadmapLikes: 0,
+        totalLikes: 0,
       };
       setMetrics(metricsData);
       if (!res?.fromFallback) setLastUpdated(new Date());
@@ -87,6 +91,8 @@ const MetricsTab = () => {
         guidesUploaded: 0,
         totalGuideViews: 0,
         totalGuideLikes: 0,
+        totalRoadmapLikes: 0,
+        totalLikes: 0,
       });
     } finally {
       setLoading(false);

@@ -79,12 +79,20 @@ exports.getRoadmaps = async (req, res, next) => {
 
     const roadmaps = await Roadmap.find(filter)
       .populate('creator', 'username email')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const userId = req.user?._id?.toString();
+    const data = roadmaps.map((r) => ({
+      ...r,
+      likesCount: r.likedBy?.length ?? 0,
+      isLiked: userId && (r.likedBy || []).some((id) => id.toString() === userId),
+    }));
 
     res.status(200).json({
       success: true,
-      count: roadmaps.length,
-      data: roadmaps,
+      count: data.length,
+      data,
     });
   } catch (error) {
     next(error);
@@ -126,7 +134,8 @@ exports.getMyRoadmaps = async (req, res, next) => {
 exports.getRoadmapById = async (req, res, next) => {
   try {
     const roadmap = await Roadmap.findById(req.params.id)
-      .populate('creator', 'username email');
+      .populate('creator', 'username email')
+      .lean();
 
     if (!roadmap) {
       return next(new ErrorResponse('Roadmap not found', 404));
@@ -139,9 +148,52 @@ exports.getRoadmapById = async (req, res, next) => {
       }
     }
 
+    const userId = req.user?._id?.toString();
+    const responseData = {
+      ...roadmap,
+      likesCount: roadmap.likedBy?.length ?? 0,
+      isLiked: userId && (roadmap.likedBy || []).some((id) => id.toString() === userId),
+    };
+
     res.status(200).json({
       success: true,
-      data: roadmap,
+      data: responseData,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Like or unlike a roadmap
+ * @route   PUT /api/v1/roadmaps/:id/like
+ * @access  Private
+ */
+exports.toggleLike = async (req, res, next) => {
+  try {
+    const roadmap = await Roadmap.findById(req.params.id);
+
+    if (!roadmap) {
+      return next(new ErrorResponse('Roadmap not found', 404));
+    }
+
+    const userId = req.user._id;
+    const likedBy = roadmap.likedBy || [];
+    const hasLiked = likedBy.some((id) => id.toString() === userId.toString());
+
+    if (hasLiked) {
+      roadmap.likedBy = likedBy.filter((id) => id.toString() !== userId.toString());
+    } else {
+      roadmap.likedBy = [...likedBy, userId];
+    }
+    await roadmap.save();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        likesCount: roadmap.likedBy.length,
+        liked: !hasLiked,
+      },
     });
   } catch (error) {
     next(error);

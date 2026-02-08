@@ -8,6 +8,7 @@ const {
   deleteRoadmap,
   publishRoadmap,
   unpublishRoadmap,
+  toggleLike,
 } = require('../controllers/roadmapController');
 const { protect } = require('../middlewares/auth');
 const {
@@ -29,5 +30,6 @@ router.put('/:id', protect, updateRoadmapValidation, updateRoadmap);
 router.delete('/:id', protect, roadmapIdValidation, deleteRoadmap);
 router.put('/:id/publish', protect, roadmapIdValidation, publishRoadmap);
 router.put('/:id/unpublish', protect, roadmapIdValidation, unpublishRoadmap);
+router.put('/:id/like', protect, roadmapIdValidation, toggleLike);
 
 module.exports = router;

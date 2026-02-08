@@ -103,10 +103,9 @@ const roadmapSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    studentsCount: {
-      type: Number,
-      default: 0,
-      min: 0,
+    likedBy: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+      default: [],
     },
     visibility: {
       type: String,
