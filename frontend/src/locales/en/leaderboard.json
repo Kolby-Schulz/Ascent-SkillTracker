@@ -1,0 +1,16 @@
+{
+  "title": "Leaderboard",
+  "subtitle": "Who will climb the ranks the highest?",
+  "scope": "View",
+  "allUsers": "All Users",
+  "friends": "Friends",
+  "category": "Category",
+  "tag": "Tag",
+  "allCategories": "All Categories",
+  "allTags": "All Tags",
+  "rank": "Rank",
+  "user": "User",
+  "skillsCompleted": "Skills Completed",
+  "avgTime": "Avg Time",
+  "noRankings": "No rankings available yet. Complete some skills to see your rank!"
+}
