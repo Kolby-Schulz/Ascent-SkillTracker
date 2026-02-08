@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import PeakReached from '../components/PeakReached';
 import './SkillDetail.css';
 
 // Mock data for skills - in the future this will come from the API
@@ -138,6 +139,8 @@ const SkillDetail = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const wasCompletedRef = useRef(false);
   
   // Track completed sub-skills (stored in localStorage per skill)
   const [completedSteps, setCompletedSteps] = useState(() => {
@@ -146,6 +149,32 @@ const SkillDetail = () => {
   });
 
   const skill = skillsData[skillId];
+  const { name, description, subSkills } = skill || {};
+  
+  // Calculate progress (only if skill exists)
+  const completedCount = skill ? Object.values(completedSteps).filter(Boolean).length : 0;
+  const totalSteps = skill ? subSkills.length : 0;
+  const progressPercentage = totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0;
+  const isSkillMastered = skill && completedCount === totalSteps;
+
+  // Initialize ref based on initial completion state
+  useEffect(() => {
+    if (skill) {
+      wasCompletedRef.current = isSkillMastered;
+    }
+  }, []); // Only run on mount
+
+  // Detect when skill becomes completed
+  useEffect(() => {
+    if (skill && isSkillMastered && !wasCompletedRef.current) {
+      // Skill just became completed - show celebration
+      wasCompletedRef.current = true;
+      setShowCelebration(true);
+    } else if (skill && !isSkillMastered) {
+      // Skill is not completed - reset flag
+      wasCompletedRef.current = false;
+    }
+  }, [isSkillMastered, skill]);
 
   if (!skill) {
     return (
@@ -159,14 +188,6 @@ const SkillDetail = () => {
       </div>
     );
   }
-
-  const { name, description, subSkills } = skill;
-  
-  // Calculate progress
-  const completedCount = Object.values(completedSteps).filter(Boolean).length;
-  const totalSteps = subSkills.length;
-  const progressPercentage = (completedCount / totalSteps) * 100;
-  const isSkillMastered = completedCount === totalSteps;
 
   // Toggle step completion
   const toggleStepCompletion = (stepId) => {
@@ -215,12 +236,18 @@ const SkillDetail = () => {
   };
 
   return (
-    <motion.div
-      className="skill-detail-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <>
+      <PeakReached
+        skillName={name}
+        isOpen={showCelebration}
+        onClose={() => setShowCelebration(false)}
+      />
+      <motion.div
+        className="skill-detail-container"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
       {/* Header Section */}
       <div className="skill-header">
         <button onClick={() => navigate('/dashboard')} className="back-button">
@@ -364,6 +391,7 @@ const SkillDetail = () => {
         </div>
       </motion.div>
     </motion.div>
+    </>
   );
 };
 
