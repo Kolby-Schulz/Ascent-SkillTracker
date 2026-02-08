@@ -3,6 +3,20 @@
   "createNewRoadmap": "Crear Nuevo Roadmap",
   "myRoadmaps": "Mis Roadmaps Creados",
   "achievements": "Logros y Racha",
+  "timeline": {
+    "tab": "Línea de Tiempo",
+    "title": "Línea de Tiempo de Aprendizaje",
+    "subtitle": "Tu viaje a través de {{count}} habilidades completadas",
+    "empty": {
+      "title": "Aún No Has Completado Habilidades",
+      "description": "¡Completa tu primera habilidad para verla aparecer en tu línea de tiempo!"
+    }
+  },
+  "theme": {
+    "tab": "Tema",
+    "title": "Personalizar Tema del Perfil",
+    "description": "Elige un tema de color para tu avatar y elementos del perfil"
+  },
   "filters": {
     "all": "Todos",
     "published": "Publicados",

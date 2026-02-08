@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import MetricsTab from './MetricsTab';
 import DayNightCycle from './DayNightCycle';
+import FloatingParticles from './FloatingParticles';
 import './DashboardLayout.css';
 
 const DashboardLayout = () => {
@@ -51,6 +52,7 @@ const DashboardLayout = () => {
   return (
     <div className={`dashboard-layout ${isCreatePage ? 'layout-create' : ''}`} style={{ backgroundImage: `url(${backgroundImage})` }}>
       <DayNightCycle />
+      <FloatingParticles />
       {/* Left Sidebar */}
       <aside className="dashboard-sidebar">
         <nav className="sidebar-nav">

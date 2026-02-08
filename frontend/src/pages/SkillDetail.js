@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import PeakReached from '../components/PeakReached';
+import CodePlayground from '../components/CodePlayground';
 import { recordCompletedSkill } from '../utils/skillProgress';
 import { updateStreak, checkStreakAchievements, checkSkillAchievements, getCompletedSkillsCount, unlockAchievement } from '../utils/achievements';
 import './SkillDetail.css';
@@ -374,6 +375,16 @@ const SkillDetail = () => {
                 <p className="sub-skill-description">
                   {subSkills[currentIndex].description}
                 </p>
+                
+                {/* Code Playground for coding-related skills */}
+                {(skillId === 'web-development' || skillId.includes('code') || skillId.includes('programming')) && (
+                  <div className="code-playground-section">
+                    <CodePlayground
+                      initialCode="// Try writing some code here!\nconsole.log('Hello, Ascent!');"
+                      language="javascript"
+                    />
+                  </div>
+                )}
                 
                 {/* Checkbox to mark as complete */}
                 <div className="step-completion">
