@@ -25,6 +25,10 @@ cd frontend && npm install && cd ..
 
 ## Every Time You Start (After Reboot)
 
+**One command:** Run `scripts/start-all.bat` (Windows) or `./scripts/start-all.sh` (Mac/Linux) — starts MongoDB, backend, and frontend in one go.
+
+Or follow the manual steps below:
+
 ### 1. Start Docker Desktop
 - Open Docker Desktop, wait ~30 seconds until it's ready
 
