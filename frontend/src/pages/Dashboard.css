@@ -19,11 +19,17 @@
 .greeting::after {
   content: '';
   display: block;
-  width: 40px;
-  height: 4px;
-  background: linear-gradient(90deg, #a855f7, #4f7cff);
-  border-radius: 2px;
-  margin-top: 8px;
+  width: 70px;
+  height: 5px;
+  margin-top: 10px;
+  
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Skills Section */
