@@ -383,16 +383,28 @@ const CreateRoadmap = () => {
                         className="carousel-card"
                       >
                       <div className="carousel-card-header">
-                        <span className="sub-skill-number">
-                          Step {subSkills[currentIndex].order}
-                        </span>
-                        <span className="sub-skill-total">
-                          of {subSkills.length}
-                        </span>
-                        {getCurrentResources().length > 0 && (
-                          <span className="resource-count-badge">
-                            {getCurrentResources().length} resource{getCurrentResources().length !== 1 ? 's' : ''}
+                        <div className="carousel-card-header-left">
+                          <span className="sub-skill-number">
+                            Step {subSkills[currentIndex].order}
                           </span>
+                          <span className="sub-skill-total">
+                            of {subSkills.length}
+                          </span>
+                          {getCurrentResources().length > 0 && (
+                            <span className="resource-count-badge">
+                              {getCurrentResources().length} resource{getCurrentResources().length !== 1 ? 's' : ''}
+                            </span>
+                          )}
+                        </div>
+                        {!isLearnerView && (
+                          <button
+                            type="button"
+                            className="resources-header-button"
+                            onClick={() => setIsFlipped(true)}
+                            title="Add or edit resources"
+                          >
+                            Add Resources
+                          </button>
                         )}
                       </div>
                       
@@ -462,13 +474,6 @@ const CreateRoadmap = () => {
                             rows={4}
                           />
 
-                          <button
-                            className="start-learning-button"
-                            onClick={() => setIsFlipped(true)}
-                          >
-                            🚀 Start Learning!
-                          </button>
-
                           <div className="card-actions">
                             <button
                               className="remove-step-button"
@@ -507,29 +512,7 @@ const CreateRoadmap = () => {
                         ← Back to Content
                       </button>
 
-                      {/* Intro: Sub-skill title + description */}
-                      <div className="resources-intro">
-                        <h3 className="resources-intro-title">
-                          {subSkills[currentIndex].title || 'Untitled'}
-                        </h3>
-                        <p className="resources-intro-text">
-                          {subSkills[currentIndex].description || 'Add a description on the content side, then add resources below.'}
-                        </p>
-                      </div>
-
-                      {/* Pretty text box - Creator can type whatever they want */}
-                      <div className="custom-content-section">
-                        <textarea
-                          className="custom-content-textarea"
-                          placeholder="Add your own notes, instructions, or extra content for learners..."
-                          value={subSkills[currentIndex].customContent || ''}
-                          onChange={(e) => handleCustomContentChange(e.target.value)}
-                          rows={3}
-                          maxLength={2000}
-                        />
-                      </div>
-
-                      {/* Free Resources - Green pill header + horizontal line */}
+                      {/* Free Resources - pill header + add resource + link list only */}
                       <div className="free-resources-header">
                         <span className="free-resources-pill">
                           <span className="free-resources-heart">❤️</span>
@@ -640,7 +623,7 @@ const CreateRoadmap = () => {
                 Viewing sub-skill {currentIndex + 1} of {subSkills.length}
               </p>
               <button className="add-step-button" onClick={handleAddStep}>
-                ➕ Add New Step
+                Add New Step
               </button>
             </div>
           )}
