@@ -7,6 +7,9 @@ const errorHandler = require('./middlewares/errorHandler');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
+const guideRoutes = require('./routes/guideRoutes');
+const metricsRoutes = require('./routes/metricsRoutes');
+const userSkillProgressRoutes = require('./routes/userSkillProgressRoutes');
 
 const app = express();
 
@@ -41,6 +44,9 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/guides', guideRoutes);
+app.use('/api/v1/metrics', metricsRoutes);
+app.use('/api/v1/user-skills', userSkillProgressRoutes);
 
 // 404 handler
 app.use((req, res) => {
