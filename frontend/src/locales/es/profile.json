@@ -1,7 +1,7 @@
 {
   "title": "Perfil",
-  "createNewRoadmap": "Crear Nuevo Roadmap",
-  "myRoadmaps": "Mis Roadmaps Creados",
+  "createNewRoadmap": "Crear Nueva Guía",
+  "myRoadmaps": "Mis Guías Creadas",
   "achievements": "Logros y Racha",
   "timeline": {
     "tab": "Línea de Tiempo",
@@ -23,16 +23,17 @@
     "drafts": "Borradores"
   },
   "stats": {
-    "created": "creados",
+    "created": "Creados",
     "roadmapsCreated": "roadmap",
     "roadmapsCreatedPlural": "roadmaps",
-    "totalStudents": "estudiantes totales"
+    "guidesCreated": "Guía",
+    "guidesCreatedPlural": "Guías"
   },
   "roadmap": {
     "published": "✓ Publicado",
     "draft": "📝 Borrador",
     "subSkills": "sub-habilidades",
-    "students": "estudiantes",
+    "students": "aprendices",
     "created": "Creado",
     "updated": "Actualizado",
     "view": "👁️ Ver",
