@@ -39,13 +39,15 @@ const RoadmapView = () => {
         let data = null;
         try {
           const res = await roadmapService.getRoadmapById(id);
-          data = res?.data ?? res;
+          // API returns { success: true, data: roadmap } or { data: roadmap }
+          data = res?.data?.data ?? res?.data ?? res;
         } catch (firstErr) {
           // If first attempt failed and user is logged in, try owner endpoint (for drafts)
           if (localStorage.getItem('token')) {
             try {
               const res = await roadmapService.getMyRoadmapForView(id);
-              data = res?.data ?? res;
+              // API returns { success: true, data: roadmap } or { data: roadmap }
+              data = res?.data?.data ?? res?.data ?? res;
             } catch (e) {
               throw firstErr;
             }

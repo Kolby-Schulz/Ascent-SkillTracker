@@ -34,7 +34,9 @@ const LearnSkill = () => {
       setLoadingRoadmaps(true);
       try {
         const res = await roadmapService.getRoadmaps({});
-        const list = Array.isArray(res.data) ? res.data : [];
+        // API returns { success: true, data: [...] } or { data: [...] }
+        const list = Array.isArray(res.data?.data) ? res.data.data : 
+                     Array.isArray(res.data) ? res.data : [];
         setPublishedRoadmaps(
           list.map((r) => ({
             id: r._id,

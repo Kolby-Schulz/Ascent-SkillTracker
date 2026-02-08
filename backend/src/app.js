@@ -43,11 +43,21 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rate limiting
+// Rate limiting - more lenient for development
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // limit each IP to 1000 requests per windowMs (very lenient for development)
   message: 'Too many requests from this IP, please try again later',
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting in development mode or for auth routes
+    if (process.env.NODE_ENV === 'development') {
+      return true;
+    }
+    // Skip rate limiting for auth routes (they have their own limiter in authRoutes.js)
+    return req.path.startsWith('/api/v1/auth');
+  },
 });
 
 app.use('/api/', limiter);
