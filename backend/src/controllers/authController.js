@@ -142,6 +142,73 @@ exports.getMe = async (req, res, next) => {
 };
 
 /**
+ * @desc    Get user profile by ID
+ * @route   GET /api/v1/auth/user/:userId
+ * @access  Private
+ */
+exports.getUserProfile = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const currentUserId = req.user.id;
+
+    const targetUser = await User.findById(userId).select('-passwordHash');
+    
+    if (!targetUser) {
+      return next(new ErrorResponse('User not found', 404));
+    }
+
+    // If viewing own profile, return full data
+    if (userId === currentUserId) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          user: {
+            id: targetUser._id,
+            username: targetUser.username,
+            email: targetUser.email,
+            roles: targetUser.roles,
+            privacy: targetUser.privacy,
+            bio: targetUser.bio,
+            profilePicture: targetUser.profilePicture,
+            createdAt: targetUser.createdAt,
+          },
+        },
+      });
+    }
+
+    // Check if user can view profile (must be friends or public profile)
+    const Friend = require('../models/Friend');
+    const friendship = await Friend.findOne({
+      $or: [
+        { requester: currentUserId, recipient: userId, status: 'accepted' },
+        { requester: userId, recipient: currentUserId, status: 'accepted' },
+      ],
+    });
+
+    if (!friendship && targetUser.privacy === 'private') {
+      return next(new ErrorResponse('This profile is private', 403));
+    }
+
+    // Return public profile data
+    res.status(200).json({
+      success: true,
+      data: {
+        user: {
+          id: targetUser._id,
+          username: targetUser.username,
+          privacy: targetUser.privacy,
+          bio: targetUser.bio,
+          profilePicture: targetUser.profilePicture,
+          createdAt: targetUser.createdAt,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc    Update user profile
  * @route   PUT /api/v1/auth/profile
  * @access  Private
