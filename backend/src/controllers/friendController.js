@@ -265,3 +265,56 @@ exports.searchUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * @desc    Get all users (for testing/debugging)
+ * @route   GET /api/v1/friends/all
+ * @access  Private
+ */
+exports.getAllUsers = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    console.log('Getting all users, excluding userId:', userId);
+
+    // Find all users except current user
+    const users = await User.find({
+      _id: { $ne: userId },
+    })
+      .select('username email profilePicture privacy createdAt')
+      .sort({ createdAt: -1 })
+      .limit(100);
+
+    console.log(`Found ${users.length} users in database`);
+
+    // Get existing friend relationships
+    const friendships = await Friend.find({
+      $or: [{ requester: userId }, { recipient: userId }],
+    });
+
+    const friendshipMap = new Map();
+    friendships.forEach((friendship) => {
+      const otherUserId =
+        friendship.requester.toString() === userId
+          ? friendship.recipient.toString()
+          : friendship.requester.toString();
+      friendshipMap.set(otherUserId, friendship.status);
+    });
+
+    const results = users.map((user) => ({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      profilePicture: user.profilePicture,
+      privacy: user.privacy,
+      relationshipStatus: friendshipMap.get(user._id.toString()) || null,
+      createdAt: user.createdAt,
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: { users: results },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

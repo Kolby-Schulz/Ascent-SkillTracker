@@ -201,6 +201,15 @@
   justify-content: flex-end;
 }
 
+/* Blur sidebars when modal is open */
+body.modal-open .dashboard-sidebar,
+body.modal-open .dashboard-right-sidebar {
+  filter: blur(5px);
+  opacity: 0.6;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .dashboard-layout {

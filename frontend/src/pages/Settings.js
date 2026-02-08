@@ -3,17 +3,27 @@ import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { updateProfile } from '../services/authService';
+import ConfirmationModal from '../components/ConfirmationModal';
+import Notification from '../components/Notification';
 import './Settings.css';
 
 const Settings = () => {
   const { user, setUser } = useAuth();
   const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('account');
-  const [privacy, setPrivacy] = useState(user?.privacy || 'public');
+  const [privacy, setPrivacy] = useState(() => {
+    // Initialize from user object, fallback to 'public'
+    return user?.privacy || 'public';
+  });
   
   // Edit mode states
   const [isEditingAccount, setIsEditingAccount] = useState(false);
   const [isEditingSecurity, setIsEditingSecurity] = useState(false);
+  
+  // Modal and notification states
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [pendingPrivacy, setPendingPrivacy] = useState(null);
+  const [notification, setNotification] = useState({ isVisible: false, message: '', type: 'success' });
   
   // Form states
   const [username, setUsername] = useState(user?.username || '');
@@ -26,22 +36,81 @@ const Settings = () => {
     // Update form fields when user changes
     setUsername(user?.username || '');
     setEmail(user?.email || '');
-    setPrivacy(user?.privacy || 'public');
+    if (user?.privacy) {
+      setPrivacy(user.privacy);
+    }
   }, [user]);
 
-  const handlePrivacyChange = async (newPrivacy) => {
+  // Add/remove blur class on body when modal is open
+  useEffect(() => {
+    if (showConfirmationModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [showConfirmationModal]);
+
+  const handlePrivacyChange = (newPrivacy) => {
+    // If switching to private, show confirmation modal
+    if (newPrivacy === 'private' && privacy === 'public') {
+      setPendingPrivacy(newPrivacy);
+      setShowConfirmationModal(true);
+    } else {
+      // If switching to public or already private, update directly
+      updatePrivacySetting(newPrivacy);
+    }
+  };
+
+  const updatePrivacySetting = async (newPrivacy) => {
     try {
       setPrivacy(newPrivacy);
       const response = await updateProfile({ privacy: newPrivacy });
       if (response.success && response.data.user) {
-        setUser(response.data.user);
+        const updatedUser = response.data.user;
+        setUser(updatedUser);
+        // Update localStorage to persist the change
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          userData.privacy = updatedUser.privacy;
+          localStorage.setItem('user', JSON.stringify(userData));
+        }
+        setNotification({
+          isVisible: true,
+          message: 'Privacy settings updated successfully!',
+          type: 'success',
+        });
+      } else {
+        throw new Error('Invalid response from server');
       }
     } catch (error) {
       console.error('Error updating privacy:', error);
       // Revert on error
       setPrivacy(user?.privacy || 'public');
-      alert('Failed to update privacy setting. Please try again.');
+      const errorMessage = error.response?.data?.error || error.message || 'Failed to update privacy setting. Please try again.';
+      setNotification({
+        isVisible: true,
+        message: errorMessage,
+        type: 'error',
+      });
     }
+  };
+
+  const handleConfirmPrivacyChange = () => {
+    if (pendingPrivacy) {
+      updatePrivacySetting(pendingPrivacy);
+      setPendingPrivacy(null);
+    }
+    setShowConfirmationModal(false);
+  };
+
+  const handleCancelPrivacyChange = () => {
+    setPendingPrivacy(null);
+    setShowConfirmationModal(false);
   };
 
   const handleEditAccount = () => {
@@ -295,6 +364,25 @@ const Settings = () => {
           )}
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showConfirmationModal}
+        onClose={handleCancelPrivacyChange}
+        onConfirm={handleConfirmPrivacyChange}
+        title="Switch to Private Mode?"
+        message="By switching to private mode, you will no longer appear in the public feed and other users will need to search for you to find your profile. Only your friends will be able to see your profile and accomplished skills. Are you sure you want to continue?"
+        confirmText="Yes, Make Private"
+        cancelText="Cancel"
+      />
+
+      {/* Notification */}
+      <Notification
+        message={notification.message}
+        type={notification.type}
+        isVisible={notification.isVisible}
+        onClose={() => setNotification({ ...notification, isVisible: false })}
+      />
     </motion.div>
   );
 };

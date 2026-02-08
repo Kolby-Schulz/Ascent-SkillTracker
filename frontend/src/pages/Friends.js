@@ -25,7 +25,7 @@ const Friends = () => {
     setLoading(true);
     try {
       const response = await friendService.getFriends();
-      setFriends(response.data.friends || []);
+      setFriends(response.data?.data?.friends || response.data?.friends || []);
     } catch (error) {
       console.error('Error loading friends:', error);
     } finally {
@@ -37,7 +37,7 @@ const Friends = () => {
     setLoading(true);
     try {
       const response = await friendService.getFriendRequests();
-      setRequests(response.data.requests || []);
+      setRequests(response.data?.data?.requests || response.data?.requests || []);
     } catch (error) {
       console.error('Error loading friend requests:', error);
     } finally {
@@ -47,14 +47,25 @@ const Friends = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (searchQuery.length < 2) return;
+    if (searchQuery.length < 2) {
+      alert('Please enter at least 2 characters to search');
+      return;
+    }
 
     setLoading(true);
     try {
       const response = await friendService.searchUsers(searchQuery);
-      setSearchResults(response.data.users || []);
+      console.log('Search results:', response.data); // Debug log
+      const users = response.data?.data?.users || response.data?.users || [];
+      setSearchResults(users);
+      if (users.length === 0) {
+        // No results found - this is normal, not an error
+        console.log('No users found matching:', searchQuery);
+      }
     } catch (error) {
       console.error('Error searching users:', error);
+      const errorMessage = error.response?.data?.error || error.message || 'Failed to search users. Please try again.';
+      alert(errorMessage);
       setSearchResults([]);
     } finally {
       setLoading(false);
