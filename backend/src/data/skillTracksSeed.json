@@ -1,0 +1,666 @@
+[
+  {
+    "name": "JavaScript Fundamentals",
+    "description": "Master the core concepts of JavaScript programming, from variables to functions and beyond.",
+    "tags": ["Technology"],
+    "subSkills": [
+      {
+        "title": "Variables and Data Types",
+        "description": "Learn about let, const, var, and the different data types in JavaScript.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types",
+            "title": "MDN: Variables and Data Types",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=W6NZfCO5SIk",
+            "title": "JavaScript Variables Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Functions and Scope",
+        "description": "Understand how functions work, including arrow functions and scope.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+            "title": "MDN: Functions Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://javascript.info/arrow-functions-basics",
+            "title": "Arrow Functions Explained",
+            "type": "article",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Arrays and Objects",
+        "description": "Work with arrays and objects, the fundamental data structures in JavaScript.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+            "title": "MDN: Array Reference",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.freecodecamp.org/news/javascript-array-methods/",
+            "title": "JavaScript Array Methods",
+            "type": "article",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "DOM Manipulation",
+        "description": "Learn to interact with HTML elements using JavaScript.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model",
+            "title": "MDN: DOM Introduction",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=0ik6X4DJKCc",
+            "title": "DOM Manipulation Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Spanish for Beginners",
+    "description": "Start your journey learning Spanish with essential vocabulary, grammar, and conversation skills.",
+    "tags": ["Languages"],
+    "subSkills": [
+      {
+        "title": "Basic Greetings and Introductions",
+        "description": "Learn common greetings, how to introduce yourself, and basic polite expressions.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://www.spanishdict.com/guide/basic-spanish-greetings",
+            "title": "Spanish Greetings Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=qmSe9Q2qT44",
+            "title": "Spanish Greetings Video",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Numbers and Time",
+        "description": "Master Spanish numbers from 1-100 and learn to tell time.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://www.spanishdict.com/guide/numbers-in-spanish",
+            "title": "Spanish Numbers Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.spanishdict.com/guide/telling-time-in-spanish",
+            "title": "Telling Time in Spanish",
+            "type": "article",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Common Verbs and Conjugations",
+        "description": "Learn essential verbs and how to conjugate them in present tense.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://www.spanishdict.com/guide/spanish-verb-conjugation",
+            "title": "Spanish Verb Conjugation Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=gmjWWphCx5k",
+            "title": "Spanish Verb Conjugation Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Everyday Conversations",
+        "description": "Practice common phrases for shopping, dining, and asking for directions.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://www.fluentu.com/blog/spanish/spanish-conversation-practice/",
+            "title": "Spanish Conversation Practice",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=JYHv0x3VqyM",
+            "title": "Spanish Conversation Examples",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Digital Photography Basics",
+    "description": "Learn the fundamentals of photography, from camera settings to composition techniques.",
+    "tags": ["Photography"],
+    "subSkills": [
+      {
+        "title": "Understanding Your Camera",
+        "description": "Learn about aperture, shutter speed, ISO, and how they work together.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://photographylife.com/what-is-aperture-in-photography",
+            "title": "Understanding Aperture",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Hpzid5Zx_4w",
+            "title": "Camera Settings Explained",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Composition Rules",
+        "description": "Master the rule of thirds, leading lines, and other composition techniques.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://www.photographymad.com/pages/view/10-top-photography-composition-rules",
+            "title": "10 Composition Rules",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=7ZVyNjKSr0M",
+            "title": "Composition Techniques Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Lighting Fundamentals",
+        "description": "Understand natural light, artificial light, and how to work with different lighting conditions.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://digital-photography-school.com/understanding-light-in-photography/",
+            "title": "Understanding Light in Photography",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=u9prcUCHlqM",
+            "title": "Photography Lighting Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Post-Processing Basics",
+        "description": "Introduction to photo editing software and basic editing techniques.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://www.adobe.com/products/photoshop/learn/get-started.html",
+            "title": "Getting Started with Photoshop",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=IEed7JuKwHQ",
+            "title": "Photo Editing Basics",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Beginner Guitar",
+    "description": "Start playing guitar with basic chords, strumming patterns, and your first songs.",
+    "tags": ["Music"],
+    "subSkills": [
+      {
+        "title": "Guitar Basics and Tuning",
+        "description": "Learn the parts of the guitar, how to hold it, and how to tune your instrument.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://www.guitarworld.com/lessons/guitar-basics-for-beginners",
+            "title": "Guitar Basics Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Ryf7l31nN0I",
+            "title": "How to Tune Your Guitar",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Basic Chords",
+        "description": "Master the essential open chords: C, G, D, A, E, and F.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://www.justinguitar.com/classes/beginner-guitar-course-grade-1",
+            "title": "Beginner Guitar Course",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=5q2Sk8X_1qY",
+            "title": "Basic Guitar Chords Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Strumming Patterns",
+        "description": "Learn common strumming patterns and how to keep rhythm.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://www.guitarhabits.com/10-essential-strumming-patterns-for-beginners/",
+            "title": "10 Essential Strumming Patterns",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Q7z1Xx3pX9E",
+            "title": "Strumming Patterns Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Your First Songs",
+        "description": "Play your first complete songs using the chords and patterns you've learned.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://www.ultimate-guitar.com/lessons/for_beginners/easy_songs_for_beginners",
+            "title": "Easy Songs for Beginners",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=0qDSXoJJtQU",
+            "title": "Easy Guitar Songs Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Healthy Cooking Fundamentals",
+    "description": "Learn to cook nutritious, delicious meals with basic techniques and recipes.",
+    "tags": ["Cooking"],
+    "subSkills": [
+      {
+        "title": "Kitchen Essentials and Knife Skills",
+        "description": "Set up your kitchen and master basic knife techniques for safe, efficient cooking.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://www.seriouseats.com/knife-skills-how-to-use-a-chefs-knife",
+            "title": "Knife Skills Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=G-Fg7l7G1zw",
+            "title": "Basic Knife Skills Tutorial",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Cooking Methods",
+        "description": "Learn sautéing, roasting, steaming, and other fundamental cooking techniques.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://www.thespruceeats.com/basic-cooking-methods-4129161",
+            "title": "Basic Cooking Methods",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZJy1ajvMU1k",
+            "title": "Cooking Techniques Explained",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Building Flavor",
+        "description": "Understand how to use herbs, spices, and seasonings to create delicious meals.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://www.bonappetit.com/story/how-to-build-flavor",
+            "title": "How to Build Flavor",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=8YGlmSlq6ZM",
+            "title": "Flavor Building Techniques",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Simple Healthy Recipes",
+        "description": "Cook complete, balanced meals with easy-to-follow recipes.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://www.eatingwell.com/recipes/17981/healthy-recipes/quick-easy/",
+            "title": "Quick and Easy Healthy Recipes",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=1Of5lzXp54s",
+            "title": "Healthy Meal Prep Ideas",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Introduction to Running",
+    "description": "Start your running journey with proper form, training plans, and injury prevention.",
+    "tags": ["Fitness"],
+    "subSkills": [
+      {
+        "title": "Getting Started",
+        "description": "Learn proper running form, breathing techniques, and essential gear.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://www.runnersworld.com/training/a20855450/how-to-start-running/",
+            "title": "How to Start Running",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=_kGESn8ArrU",
+            "title": "Running Form Basics",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Couch to 5K Training",
+        "description": "Follow a structured program to go from walking to running 5 kilometers.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://www.nhs.uk/live-well/exercise/running-and-aerobic-exercises/how-to-run-faster/",
+            "title": "NHS Couch to 5K Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=YkSljOqX5KI",
+            "title": "Couch to 5K Program Overview",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Injury Prevention",
+        "description": "Learn how to prevent common running injuries through proper warm-up and recovery.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://www.runnersworld.com/health-injuries/a20847877/running-injury-prevention/",
+            "title": "Running Injury Prevention",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oAPCPj8vBzs",
+            "title": "Running Warm-up Routine",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Building Endurance",
+        "description": "Increase your running distance and improve your cardiovascular fitness.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://www.runnersworld.com/training/a20855450/how-to-build-running-endurance/",
+            "title": "Building Running Endurance",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=YkSljOqX5KI",
+            "title": "Endurance Training Tips",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Creative Writing Basics",
+    "description": "Develop your writing skills with storytelling techniques, character development, and narrative structure.",
+    "tags": ["Writing"],
+    "subSkills": [
+      {
+        "title": "Story Structure",
+        "description": "Learn the fundamentals of plot, including the three-act structure and story arcs.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://www.masterclass.com/articles/how-to-structure-a-story",
+            "title": "How to Structure a Story",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=9n1Qus7LXi4",
+            "title": "Story Structure Explained",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Character Development",
+        "description": "Create compelling, believable characters with depth and motivation.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://www.writersdigest.com/write-better-fiction/character-development",
+            "title": "Character Development Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=K7Wv3F2PM5M",
+            "title": "Creating Memorable Characters",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Dialogue Writing",
+        "description": "Master the art of writing natural, engaging dialogue that moves your story forward.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://www.masterclass.com/articles/how-to-write-great-dialogue",
+            "title": "How to Write Great Dialogue",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=K7Wv3F2PM5M",
+            "title": "Dialogue Writing Tips",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Show, Don't Tell",
+        "description": "Learn to use descriptive writing and action to engage readers instead of exposition.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://www.writersdigest.com/write-better-fiction/show-dont-tell",
+            "title": "Show, Don't Tell Technique",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=9n1Qus7LXi4",
+            "title": "Show vs Tell in Writing",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Personal Finance Basics",
+    "description": "Learn to manage your money, budget effectively, and build financial security.",
+    "tags": ["Business"],
+    "subSkills": [
+      {
+        "title": "Budgeting Fundamentals",
+        "description": "Create and maintain a budget to track income and expenses.",
+        "order": 1,
+        "resources": [
+          {
+            "url": "https://www.nerdwallet.com/article/finance/how-to-budget",
+            "title": "How to Create a Budget",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=YHFDeBSC5vU",
+            "title": "Budgeting for Beginners",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Saving and Emergency Funds",
+        "description": "Learn strategies for building savings and creating an emergency fund.",
+        "order": 2,
+        "resources": [
+          {
+            "url": "https://www.investopedia.com/terms/e/emergency_fund.asp",
+            "title": "Emergency Fund Guide",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Gg8nQ8eEz7k",
+            "title": "Building an Emergency Fund",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Understanding Credit",
+        "description": "Learn about credit scores, credit cards, and how to use credit responsibly.",
+        "order": 3,
+        "resources": [
+          {
+            "url": "https://www.experian.com/blogs/ask-experian/credit-education/",
+            "title": "Credit Education Center",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=58-6p_QUHXI",
+            "title": "Understanding Credit Scores",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "title": "Introduction to Investing",
+        "description": "Get started with investing basics, including stocks, bonds, and retirement accounts.",
+        "order": 4,
+        "resources": [
+          {
+            "url": "https://www.investopedia.com/investing-essentials-4689754",
+            "title": "Investing Essentials",
+            "type": "article",
+            "order": 0
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=3UF0ymVdYLA",
+            "title": "Investing for Beginners",
+            "type": "video",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  }
+]

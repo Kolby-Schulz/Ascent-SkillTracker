@@ -52,6 +52,48 @@
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.brand-logo {
+  padding: 20px 12px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+}
+
+.brand-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  color: #ffffff;
+  text-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 0, 0, 0.5),
+    0 4px 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.brand-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  border-radius: 2px;
+}
+
+.brand-tagline {
+  font-size: 11px;
+  font-weight: 500;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
 .sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -90,7 +132,7 @@
 /* Main Content - explicit column 2 */
 .dashboard-main {
   grid-column: 2;
-  padding: 32px 40px;
+  padding: 12px 40px 32px 40px;
   overflow-y: auto;
 }
 

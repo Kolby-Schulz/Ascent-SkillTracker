@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import MetricsTab from './MetricsTab';
 import DayNightCycle from './DayNightCycle';
@@ -55,6 +56,15 @@ const DashboardLayout = () => {
       <FloatingParticles />
       {/* Left Sidebar */}
       <aside className="dashboard-sidebar">
+        <motion.div
+          className="brand-logo"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="brand-title">Ascent</h1>
+          <p className="brand-tagline">Reach New Heights</p>
+        </motion.div>
         <nav className="sidebar-nav">
           {SIDEBAR_ITEMS.map((item) => (
             <button
