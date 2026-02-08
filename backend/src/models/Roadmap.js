@@ -107,6 +107,10 @@ const roadmapSchema = new mongoose.Schema(
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       default: [],
     },
+    learnedBy: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+      default: [],
+    },
     visibility: {
       type: String,
       enum: ['public', 'unlisted', 'private'],

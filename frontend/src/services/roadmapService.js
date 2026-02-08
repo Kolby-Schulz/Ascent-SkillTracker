@@ -102,6 +102,16 @@ const roadmapService = {
       throw error.response?.data || error;
     }
   },
+
+  // Register as learner (Add to My Skills) - increments learners count for the guide creator's profile
+  addLearner: async (roadmapId) => {
+    try {
+      const response = await api.put(`/roadmaps/${roadmapId}/learn`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
 };
 
 export default roadmapService;

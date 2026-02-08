@@ -65,9 +65,14 @@ const LearnSkill = () => {
     navigate(`/roadmap/${skill.id}`);
   };
 
-  const handleAddSkill = (e, skill) => {
+  const handleAddSkill = async (e, skill) => {
     e.stopPropagation();
     addSkill(skill.name, skill.id);
+    try {
+      await roadmapService.addLearner(skill.id);
+    } catch {
+      // e.g. not logged in or already a learner; local add still applies
+    }
     if (!skills.includes(skill.name)) navigate('/dashboard');
   };
 

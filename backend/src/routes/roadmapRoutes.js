@@ -10,6 +10,7 @@ const {
   publishRoadmap,
   unpublishRoadmap,
   toggleLike,
+  addLearner,
 } = require('../controllers/roadmapController');
 const { protect, optionalProtect } = require('../middlewares/auth');
 const {
@@ -34,5 +35,6 @@ router.delete('/:id', protect, roadmapIdValidation, deleteRoadmap);
 router.put('/:id/publish', protect, roadmapIdValidation, publishRoadmap);
 router.put('/:id/unpublish', protect, roadmapIdValidation, unpublishRoadmap);
 router.put('/:id/like', protect, roadmapIdValidation, toggleLike);
+router.put('/:id/learn', protect, roadmapIdValidation, addLearner);
 
 module.exports = router;
