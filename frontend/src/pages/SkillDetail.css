@@ -1,19 +1,20 @@
 .skill-detail-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   padding: 20px;
 }
 
 /* Header Section */
 .skill-header {
   max-width: 1200px;
-  margin: 0 auto 60px;
+  margin: 0 auto 40px;
   color: white;
 }
 
 .back-button {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
@@ -25,44 +26,142 @@
 }
 
 .back-button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateX(-5px);
 }
 
 .skill-title {
-  font-size: 56px;
-  font-weight: 800;
-  margin-bottom: 16px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mastered-badge {
+  font-size: 18px;
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  animation: celebrateBounce 0.6s ease;
+}
+
+@keyframes celebrateBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 .skill-description {
-  font-size: 20px;
-  opacity: 0.95;
-  font-weight: 400;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 30px;
 }
 
-/* Carousel Section */
+/* Progress Bar */
+.progress-bar-container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.progress-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.progress-percentage {
+  font-size: 24px;
+  font-weight: 700;
+  color: #D9BBA3;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a855f7, #D9BBA3);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-stats {
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+/* Carousel Section - Glass Panel */
 .carousel-section {
   max-width: 1200px;
   margin: 0 auto;
-  background: white;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  color: #1a202c;
+  color: #fff;
   margin-bottom: 8px;
   text-align: center;
 }
 
 .carousel-subtitle {
   font-size: 16px;
-  color: #718096;
+  color: rgba(255, 255, 255, 0.6);
   text-align: center;
   margin-bottom: 40px;
 }
@@ -79,7 +178,7 @@
 .carousel-content {
   flex: 1;
   position: relative;
-  height: 300px;
+  height: 380px;
   overflow: hidden;
   border-radius: 16px;
 }
@@ -88,13 +187,21 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   padding: 40px;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-card.completed {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
 .carousel-card-header {
@@ -105,31 +212,96 @@
 }
 
 .sub-skill-number {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #D9BBA3;
+  color: white;
   padding: 6px 16px;
   border-radius: 20px;
 }
 
 .sub-skill-total {
   font-size: 14px;
-  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .sub-skill-title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   margin-bottom: 16px;
   line-height: 1.2;
+  color: #fff;
 }
 
 .sub-skill-description {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.6;
-  opacity: 0.95;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 24px;
+}
+
+/* Step Completion Checkbox */
+.step-completion {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.completion-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.completion-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.completion-checkbox input[type="checkbox"]:checked + .checkbox-custom {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-color: #10b981;
+}
+
+.completion-checkbox input[type="checkbox"]:checked + .checkbox-custom::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.checkbox-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  transition: color 0.2s;
+}
+
+.completion-checkbox:hover .checkbox-custom {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.completion-checkbox:hover .checkbox-label {
+  color: #fff;
 }
 
 /* Carousel Buttons */
@@ -137,9 +309,10 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: white;
-  border: 2px solid #e2e8f0;
-  color: #667eea;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
   font-size: 32px;
   font-weight: 700;
   cursor: pointer;
@@ -152,9 +325,8 @@
 }
 
 .carousel-button:hover {
-  background: #667eea;
-  color: white;
-  border-color: #667eea;
+  background: rgba(217, 187, 163, 0.3);
+  border-color: #D9BBA3;
   transform: scale(1.1);
 }
 
@@ -171,31 +343,51 @@
 }
 
 .indicator {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: #e2e8f0;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   cursor: pointer;
   transition: all 0.3s;
   padding: 0;
+  position: relative;
 }
 
 .indicator:hover {
-  background: #cbd5e0;
-  transform: scale(1.2);
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.3);
 }
 
 .indicator.active {
-  background: #667eea;
+  background: #D9BBA3;
   width: 32px;
   border-radius: 6px;
+}
+
+.indicator.completed {
+  background: #10b981;
+}
+
+.indicator.completed::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.indicator.active.completed {
+  background: linear-gradient(90deg, #10b981, #059669);
 }
 
 /* Progress Info */
 .progress-info {
   text-align: center;
-  color: #718096;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
 }
 
@@ -208,26 +400,42 @@
   max-width: 600px;
   margin: 100px auto;
   text-align: center;
-  background: white;
   padding: 60px 40px;
   border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .skill-not-found h2 {
   font-size: 32px;
-  color: #1a202c;
+  color: white;
   margin-bottom: 30px;
+}
+
+/* Glass Panel Base */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .skill-title {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .skill-description {
     font-size: 16px;
+  }
+
+  .mastered-badge {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
+
+  .progress-bar-container {
+    padding: 20px;
   }
 
   .carousel-section {
@@ -243,7 +451,7 @@
   }
 
   .carousel-content {
-    height: 350px;
+    height: 420px;
   }
 
   .carousel-card {
@@ -251,11 +459,11 @@
   }
 
   .sub-skill-title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .sub-skill-description {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .carousel-button {
@@ -285,7 +493,11 @@
   }
 
   .skill-title {
-    font-size: 28px;
+    font-size: 24px;
+  }
+
+  .progress-percentage {
+    font-size: 20px;
   }
 
   .carousel-section {
@@ -293,7 +505,7 @@
   }
 
   .carousel-content {
-    height: 400px;
+    height: 450px;
   }
 
   .sub-skill-title {
@@ -308,5 +520,9 @@
     width: 40px;
     height: 40px;
     font-size: 24px;
+  }
+
+  .checkbox-label {
+    font-size: 14px;
   }
 }
