@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { getMyMetrics } from '../services/metricsService';
+import { useSkills } from '../context/SkillsContext';
+import { getSkillsProgressCounts } from '../utils/skillProgress';
 import './MetricsTab.css';
 
 // Color palette: 254c5d, 011c2f, d9bba3, aea79d, 546672
 const STAT_CARDS = [
-  { key: 'skillsLearned', label: 'Skills Learned', icon: '✅', micro: '' },
-  { key: 'skillsInProgress', label: 'Skills in progress', icon: '📚', micro: '' },
   { key: 'guidesUploaded', label: 'Guides Created', icon: '📝', micro: '' },
   { key: 'totalGuideLikes', label: 'Total Likes', icon: '❤', iconClass: 'icon-red', micro: '' },
 ];
 
 const MetricsTab = () => {
+  const { skills } = useSkills();
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
-  const [refreshing, setRefreshing] = useState(false);
 
-  const fetchMetrics = useCallback(async (showRefreshing = false) => {
+  // Local progress from localStorage for Learning Progress section only
+  const { learned: localSkillsLearned, inProgress: localSkillsInProgress } = getSkillsProgressCounts(skills);
+
+  const fetchMetrics = useCallback(async () => {
     const token = localStorage.getItem('token')?.trim();
     if (token === 'demo-bypass-token') {
       setMetrics({
@@ -30,13 +33,11 @@ const MetricsTab = () => {
       });
       setError(null);
       setLoading(false);
-      setRefreshing(false);
       return;
     }
 
     try {
-      if (!showRefreshing) setLoading(true);
-      else setRefreshing(true);
+      setLoading(true);
       setError(null);
       const res = await getMyMetrics();
       setMetrics(res?.metrics || {
@@ -63,7 +64,6 @@ const MetricsTab = () => {
       });
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, []);
 
@@ -74,7 +74,7 @@ const MetricsTab = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')?.trim();
     if (token === 'demo-bypass-token') return;
-    const interval = setInterval(() => fetchMetrics(true), 60000);
+    const interval = setInterval(fetchMetrics, 60000);
     return () => clearInterval(interval);
   }, [fetchMetrics]);
 
@@ -88,8 +88,9 @@ const MetricsTab = () => {
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const skillsLearned = metrics?.skillsLearned ?? 0;
-  const skillsInProgress = metrics?.skillsInProgress ?? 0;
+  // For Learning Progress section only (from localStorage)
+  const skillsLearned = localSkillsLearned ?? 0;
+  const skillsInProgress = localSkillsInProgress ?? 0;
   const totalSkills = skillsLearned + skillsInProgress;
   const learnedPercent = totalSkills > 0 ? Math.round((skillsLearned / totalSkills) * 100) : 0;
 
@@ -100,7 +101,7 @@ const MetricsTab = () => {
           <h3 className="metrics-tab-title">Metrics</h3>
         </div>
         <div className="metrics-stat-cards-skeleton">
-          {[1, 2, 3, 4].map((i) => (
+          {[1, 2].map((i) => (
             <div key={i} className="metric-stat-skeleton" />
           ))}
         </div>
@@ -113,21 +114,12 @@ const MetricsTab = () => {
     <div className="metrics-tab">
       <div className="metrics-tab-header">
         <h3 className="metrics-tab-title">Metrics</h3>
-        <button
-          className="metrics-refresh-btn"
-          onClick={() => fetchMetrics(true)}
-          disabled={refreshing}
-          title="Refresh metrics"
-          aria-label="Refresh metrics"
-        >
-          <span className={`metrics-refresh-icon ${refreshing ? 'spinning' : ''}`}>↻</span>
-        </button>
       </div>
       {lastUpdated && !error && (
         <p className="metrics-last-updated">Updated {formatLastUpdated(lastUpdated)}</p>
       )}
 
-      {/* Classic Stat Cards */}
+      {/* Stat Cards: Guides Created, Total Likes */}
       <div className="metrics-stat-cards">
         {STAT_CARDS.map((card, i) => (
           <motion.div

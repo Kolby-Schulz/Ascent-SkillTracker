@@ -51,13 +51,6 @@ const DashboardLayout = () => {
       <DayNightCycle />
       {/* Left Sidebar */}
       <aside className="dashboard-sidebar">
-        <div className="sidebar-logo">
-          <div className="logo-shapes">
-            <span className="logo-square" />
-            <span className="logo-circle" />
-            <span className="logo-triangle" />
-          </div>
-        </div>
         <nav className="sidebar-nav">
           {SIDEBAR_ITEMS.map((item) => (
             <button
@@ -65,7 +58,6 @@ const DashboardLayout = () => {
               className={`sidebar-nav-item ${getActiveNav() === item.id ? 'active' : ''}`}
               onClick={() => handleNavClick(item.path)}
             >
-              <span className="nav-icon">{item.icon || item.label.charAt(0)}</span>
               <span className="nav-label">{item.label}</span>
             </button>
           ))}

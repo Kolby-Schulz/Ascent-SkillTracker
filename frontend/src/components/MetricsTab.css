@@ -1,8 +1,10 @@
 /* Metrics Tab - Color palette: 254c5d, 011c2f, d9bba3, aea79d, 546672 */
+/* margin-top aligns "Metrics" title with "Your Skills" in the main content column */
 .metrics-tab {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 22px;
 }
 
 .metrics-tab-header {
@@ -15,7 +17,7 @@
 .metrics-tab-title {
   font-size: 18px;
   font-weight: 600;
-  color: #d9bba3;
+  color: #fff;
   margin: 0;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(217, 187, 163, 0.3);
@@ -63,7 +65,7 @@
 
 .metrics-last-updated {
   font-size: 11px;
-  color: #aea79d;
+  color: #fff;
   margin: -12px 0 0 0;
 }
 
@@ -174,17 +176,17 @@
 .metrics-stat-value {
   font-size: 22px;
   font-weight: 700;
-  color: #d9bba3;
+  color: #fff;
 }
 
 .metrics-stat-label {
   font-size: 12px;
-  color: #aea79d;
+  color: #fff;
 }
 
 .metrics-stat-micro {
   font-size: 10px;
-  color: #546672;
+  color: #fff;
   margin-top: 2px;
 }
 
@@ -199,7 +201,7 @@
 .metrics-progress-title {
   font-size: 13px;
   font-weight: 600;
-  color: #d9bba3;
+  color: #fff;
   margin: 0 0 10px 0;
 }
 
@@ -225,18 +227,22 @@
 
 .metrics-progress-text {
   font-size: 12px;
-  color: #aea79d;
+  color: #fff;
   margin: 0;
 }
 
 .metrics-progress-sub {
   font-size: 11px;
-  color: #546672;
+  color: #fff;
   margin: 0;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+  .metrics-tab {
+    margin-top: 0;
+  }
+
   .metrics-stat-cards {
     grid-template-columns: 1fr;
     gap: 8px;
