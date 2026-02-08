@@ -1,0 +1,910 @@
+.day-night-cycle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  /* Sun/Moon that moves across the sky */
+  .sun-moon {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FFD700 0%, #FFA500 70%, #FF8C00 100%);
+    box-shadow: 
+      0 0 60px rgba(255, 215, 0, 0.8),
+      0 0 100px rgba(255, 165, 0, 0.6),
+      inset -10px -10px 20px rgba(255, 200, 0, 0.3);
+    animation: 
+      sun-moon-cycle 60s linear infinite,
+      sun-moon-colors 60s linear infinite;
+    top: 20%;
+    left: -60px;
+  }
+  
+  @keyframes sun-moon-cycle {
+    0% {
+      /* Dawn - sun rising from left */
+      left: -60px;
+      top: 80%;
+    }
+    2% {
+      left: 0%;
+      top: 78%;
+    }
+    4% {
+      left: 2%;
+      top: 76%;
+    }
+    6% {
+      left: 4%;
+      top: 72%;
+    }
+    8% {
+      left: 6%;
+      top: 68%;
+    }
+    10% {
+      left: 8%;
+      top: 64%;
+    }
+    12% {
+      left: 10%;
+      top: 60%;
+    }
+    14% {
+      left: 12%;
+      top: 56%;
+    }
+    16% {
+      left: 14%;
+      top: 52%;
+    }
+    18% {
+      left: 16%;
+      top: 48%;
+    }
+    20% {
+      left: 18%;
+      top: 44%;
+    }
+    22% {
+      left: 20%;
+      top: 40%;
+    }
+    24% {
+      left: 22%;
+      top: 36%;
+    }
+    26% {
+      left: 24%;
+      top: 32%;
+    }
+    28% {
+      left: 26%;
+      top: 28%;
+    }
+    30% {
+      left: 28%;
+      top: 24%;
+    }
+    32% {
+      left: 30%;
+      top: 21%;
+    }
+    34% {
+      left: 32%;
+      top: 18%;
+    }
+    36% {
+      left: 34%;
+      top: 16%;
+    }
+    38% {
+      left: 36%;
+      top: 14%;
+    }
+    40% {
+      left: 38%;
+      top: 12%;
+    }
+    42% {
+      left: 40%;
+      top: 11%;
+    }
+    44% {
+      left: 42%;
+      top: 10.5%;
+    }
+    46% {
+      left: 44%;
+      top: 10.2%;
+    }
+    48% {
+      left: 46%;
+      top: 10.1%;
+    }
+    50% {
+      /* Noon - sun at top center */
+      left: 50%;
+      top: 10%;
+    }
+    52% {
+      left: 52%;
+      top: 10.1%;
+    }
+    54% {
+      left: 54%;
+      top: 10.2%;
+    }
+    56% {
+      left: 56%;
+      top: 10.5%;
+    }
+    58% {
+      left: 58%;
+      top: 11%;
+    }
+    60% {
+      left: 60%;
+      top: 12%;
+    }
+    62% {
+      left: 62%;
+      top: 14%;
+    }
+    64% {
+      left: 64%;
+      top: 16%;
+    }
+    66% {
+      left: 66%;
+      top: 18%;
+    }
+    68% {
+      left: 68%;
+      top: 21%;
+    }
+    70% {
+      left: 70%;
+      top: 24%;
+    }
+    72% {
+      left: 72%;
+      top: 28%;
+    }
+    74% {
+      left: 74%;
+      top: 32%;
+    }
+    76% {
+      left: 76%;
+      top: 36%;
+    }
+    78% {
+      left: 78%;
+      top: 40%;
+    }
+    80% {
+      left: 80%;
+      top: 44%;
+    }
+    82% {
+      left: 82%;
+      top: 48%;
+    }
+    84% {
+      left: 84%;
+      top: 52%;
+    }
+    86% {
+      left: 86%;
+      top: 56%;
+    }
+    88% {
+      left: 88%;
+      top: 60%;
+    }
+    90% {
+      left: 90%;
+      top: 64%;
+    }
+    92% {
+      left: 92%;
+      top: 68%;
+    }
+    94% {
+      left: 94%;
+      top: 72%;
+    }
+    96% {
+      left: 96%;
+      top: 74%;
+    }
+    98% {
+      left: 98%;
+      top: 77%;
+    }
+    100% {
+      /* Sunset/Night - sun setting on right, becomes moon */
+      left: calc(100% + 60px);
+      top: 80%;
+    }
+  }
+  
+  /* Separate animation for color transitions - very subtle yellow to orange, staying in warm tones */
+  @keyframes sun-moon-colors {
+    0% {
+      /* Dawn - warm orange-yellow */
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 70%, #FF8C00 100%);
+      box-shadow: 
+        0 0 80px rgba(255, 215, 0, 0.9),
+        0 0 120px rgba(255, 165, 0, 0.7);
+    }
+    10% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 68%, #FF8C00 100%);
+      box-shadow: 
+        0 0 79px rgba(255, 215, 0, 0.88),
+        0 0 119px rgba(255, 165, 0, 0.68);
+    }
+    20% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 66%, #FF8C00 100%);
+      box-shadow: 
+        0 0 78px rgba(255, 215, 0, 0.87),
+        0 0 118px rgba(255, 165, 0, 0.67);
+    }
+    30% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 64%, #FF8C00 100%);
+      box-shadow: 
+        0 0 77px rgba(255, 215, 0, 0.86),
+        0 0 117px rgba(255, 165, 0, 0.66);
+    }
+    40% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 62%, #FF8C00 100%);
+      box-shadow: 
+        0 0 76px rgba(255, 215, 0, 0.85),
+        0 0 116px rgba(255, 165, 0, 0.65);
+    }
+    45% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 60%, #FF8C00 100%);
+      box-shadow: 
+        0 0 75px rgba(255, 215, 0, 0.84),
+        0 0 115px rgba(255, 165, 0, 0.64);
+    }
+    50% {
+      /* Noon - brightest yellow-orange */
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 58%, #FF8C00 100%);
+      box-shadow: 
+        0 0 80px rgba(255, 215, 0, 0.9),
+        0 0 120px rgba(255, 165, 0, 0.7);
+    }
+    55% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 60%, #FF8C00 100%);
+      box-shadow: 
+        0 0 79px rgba(255, 215, 0, 0.88),
+        0 0 119px rgba(255, 165, 0, 0.68);
+    }
+    60% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 62%, #FF8C00 100%);
+      box-shadow: 
+        0 0 78px rgba(255, 215, 0, 0.87),
+        0 0 118px rgba(255, 165, 0, 0.67);
+    }
+    70% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 64%, #FF8C00 100%);
+      box-shadow: 
+        0 0 77px rgba(255, 215, 0, 0.86),
+        0 0 117px rgba(255, 165, 0, 0.66);
+    }
+    80% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 66%, #FF8C00 100%);
+      box-shadow: 
+        0 0 76px rgba(255, 215, 0, 0.85),
+        0 0 116px rgba(255, 165, 0, 0.65);
+    }
+    85% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 68%, #FF8C00 100%);
+      box-shadow: 
+        0 0 75px rgba(255, 215, 0, 0.84),
+        0 0 115px rgba(255, 165, 0, 0.64);
+    }
+    90% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 70%, #FF8C00 100%);
+      box-shadow: 
+        0 0 74px rgba(255, 215, 0, 0.83),
+        0 0 114px rgba(255, 165, 0, 0.63);
+    }
+    92% {
+      background: radial-gradient(circle, #FFD700 0%, #FFA500 72%, #FF8C00 100%);
+      box-shadow: 
+        0 0 70px rgba(255, 215, 0, 0.8),
+        0 0 110px rgba(255, 165, 0, 0.6);
+    }
+    95% {
+      /* Transitioning to moon - subtle gray tones */
+      background: radial-gradient(circle, #E0E0E0 0%, #D3D3D3 70%, #C0C0C0 100%);
+      box-shadow: 
+        0 0 45px rgba(224, 224, 224, 0.6),
+        0 0 85px rgba(211, 211, 211, 0.4);
+    }
+    98% {
+      background: radial-gradient(circle, #D3D3D3 0%, #C0C0C0 72%, #B0B0B0 100%);
+      box-shadow: 
+        0 0 42px rgba(211, 211, 211, 0.58),
+        0 0 82px rgba(192, 192, 192, 0.38);
+    }
+    100% {
+      /* Moon - cool gray */
+      background: radial-gradient(circle, #E6E6FA 0%, #D3D3D3 70%, #C0C0C0 100%);
+      box-shadow: 
+        0 0 40px rgba(230, 230, 250, 0.6),
+        0 0 80px rgba(211, 211, 211, 0.4),
+        inset 10px 10px 20px rgba(200, 200, 200, 0.3);
+    }
+  }
+  
+  /* Sky overlay that changes with sun position */
+  .sky-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: sky-cycle 60s linear infinite;
+    pointer-events: none;
+    will-change: background;
+  }
+  
+  @keyframes sky-cycle {
+    0% {
+      /* Dawn - warm orange/pink */
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.3) 0%,
+        rgba(255, 99, 71, 0.2) 30%,
+        rgba(0, 0, 0, 0.4) 100%
+      );
+    }
+    1% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.298) 0%,
+        rgba(255, 99, 71, 0.199) 30%,
+        rgba(0, 0, 0, 0.399) 100%
+      );
+    }
+    2% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.296) 0%,
+        rgba(255, 99, 71, 0.198) 30%,
+        rgba(0, 0, 0, 0.398) 100%
+      );
+    }
+    3% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.294) 0%,
+        rgba(255, 99, 71, 0.197) 30%,
+        rgba(0, 0, 0, 0.397) 100%
+      );
+    }
+    4% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.292) 0%,
+        rgba(255, 99, 71, 0.196) 30%,
+        rgba(0, 0, 0, 0.396) 100%
+      );
+    }
+    5% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.29) 0%,
+        rgba(255, 99, 71, 0.195) 30%,
+        rgba(0, 0, 0, 0.395) 100%
+      );
+    }
+    6% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.288) 0%,
+        rgba(255, 99, 71, 0.194) 30%,
+        rgba(0, 0, 0, 0.394) 100%
+      );
+    }
+    7% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.286) 0%,
+        rgba(255, 99, 71, 0.193) 30%,
+        rgba(0, 0, 0, 0.393) 100%
+      );
+    }
+    8% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.284) 0%,
+        rgba(255, 99, 71, 0.192) 30%,
+        rgba(0, 0, 0, 0.392) 100%
+      );
+    }
+    9% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.282) 0%,
+        rgba(255, 99, 71, 0.191) 30%,
+        rgba(0, 0, 0, 0.391) 100%
+      );
+    }
+    10% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.28) 0%,
+        rgba(255, 99, 71, 0.19) 30%,
+        rgba(0, 0, 0, 0.39) 100%
+      );
+    }
+    12% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.276) 0%,
+        rgba(255, 165, 0, 0.188) 30%,
+        rgba(0, 0, 0, 0.388) 100%
+      );
+    }
+    14% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.272) 0%,
+        rgba(255, 165, 0, 0.186) 30%,
+        rgba(0, 0, 0, 0.386) 100%
+      );
+    }
+    16% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.268) 0%,
+        rgba(255, 165, 0, 0.184) 30%,
+        rgba(0, 0, 0, 0.384) 100%
+      );
+    }
+    18% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.264) 0%,
+        rgba(135, 206, 235, 0.18) 30%,
+        rgba(0, 0, 0, 0.382) 100%
+      );
+    }
+    20% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 165, 0, 0.26) 0%,
+        rgba(135, 206, 235, 0.176) 30%,
+        rgba(0, 0, 0, 0.38) 100%
+      );
+    }
+    22% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 165, 0, 0.256) 0%,
+        rgba(135, 206, 235, 0.172) 30%,
+        rgba(0, 0, 0, 0.378) 100%
+      );
+    }
+    24% {
+      background: linear-gradient(
+        to bottom,
+        rgba(200, 200, 255, 0.252) 0%,
+        rgba(135, 206, 235, 0.168) 30%,
+        rgba(0, 0, 0, 0.376) 100%
+      );
+    }
+    26% {
+      background: linear-gradient(
+        to bottom,
+        rgba(200, 200, 255, 0.248) 0%,
+        rgba(135, 206, 235, 0.164) 30%,
+        rgba(0, 0, 0, 0.374) 100%
+      );
+    }
+    28% {
+      background: linear-gradient(
+        to bottom,
+        rgba(200, 200, 255, 0.244) 0%,
+        rgba(135, 206, 235, 0.16) 30%,
+        rgba(0, 0, 0, 0.372) 100%
+      );
+    }
+    30% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.24) 0%,
+        rgba(176, 224, 230, 0.156) 30%,
+        rgba(0, 0, 0, 0.37) 100%
+      );
+    }
+    32% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.236) 0%,
+        rgba(176, 224, 230, 0.152) 30%,
+        rgba(0, 0, 0, 0.368) 100%
+      );
+    }
+    34% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.232) 0%,
+        rgba(176, 224, 230, 0.148) 30%,
+        rgba(0, 0, 0, 0.366) 100%
+      );
+    }
+    36% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.228) 0%,
+        rgba(176, 224, 230, 0.144) 30%,
+        rgba(0, 0, 0, 0.364) 100%
+      );
+    }
+    38% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.224) 0%,
+        rgba(176, 224, 230, 0.14) 30%,
+        rgba(0, 0, 0, 0.362) 100%
+      );
+    }
+    40% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.22) 0%,
+        rgba(176, 224, 230, 0.136) 30%,
+        rgba(0, 0, 0, 0.36) 100%
+      );
+    }
+    42% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.216) 0%,
+        rgba(176, 224, 230, 0.132) 30%,
+        rgba(0, 0, 0, 0.358) 100%
+      );
+    }
+    44% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.212) 0%,
+        rgba(176, 224, 230, 0.128) 30%,
+        rgba(0, 0, 0, 0.356) 100%
+      );
+    }
+    46% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.208) 0%,
+        rgba(176, 224, 230, 0.124) 30%,
+        rgba(0, 0, 0, 0.354) 100%
+      );
+    }
+    48% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.204) 0%,
+        rgba(176, 224, 230, 0.12) 30%,
+        rgba(0, 0, 0, 0.352) 100%
+      );
+    }
+    50% {
+      /* Noon - brightest */
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.2) 0%,
+        rgba(176, 224, 230, 0.116) 30%,
+        rgba(0, 0, 0, 0.35) 100%
+      );
+    }
+    52% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.204) 0%,
+        rgba(176, 224, 230, 0.12) 30%,
+        rgba(0, 0, 0, 0.352) 100%
+      );
+    }
+    54% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.208) 0%,
+        rgba(176, 224, 230, 0.124) 30%,
+        rgba(0, 0, 0, 0.354) 100%
+      );
+    }
+    56% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.212) 0%,
+        rgba(176, 224, 230, 0.128) 30%,
+        rgba(0, 0, 0, 0.356) 100%
+      );
+    }
+    58% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.216) 0%,
+        rgba(176, 224, 230, 0.132) 30%,
+        rgba(0, 0, 0, 0.358) 100%
+      );
+    }
+    60% {
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, 0.22) 0%,
+        rgba(176, 224, 230, 0.136) 30%,
+        rgba(0, 0, 0, 0.36) 100%
+      );
+    }
+    62% {
+      background: linear-gradient(
+        to bottom,
+        rgba(200, 220, 255, 0.224) 0%,
+        rgba(255, 200, 100, 0.14) 30%,
+        rgba(0, 0, 0, 0.362) 100%
+      );
+    }
+    64% {
+      background: linear-gradient(
+        to bottom,
+        rgba(200, 220, 255, 0.228) 0%,
+        rgba(255, 200, 100, 0.144) 30%,
+        rgba(0, 0, 0, 0.364) 100%
+      );
+    }
+    66% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 215, 0, 0.232) 0%,
+        rgba(255, 180, 0, 0.148) 30%,
+        rgba(0, 0, 0, 0.366) 100%
+      );
+    }
+    68% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 215, 0, 0.236) 0%,
+        rgba(255, 160, 0, 0.152) 30%,
+        rgba(0, 0, 0, 0.368) 100%
+      );
+    }
+    70% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 215, 0, 0.24) 0%,
+        rgba(255, 140, 0, 0.156) 30%,
+        rgba(0, 0, 0, 0.37) 100%
+      );
+    }
+    72% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 200, 0, 0.244) 0%,
+        rgba(255, 130, 0, 0.16) 30%,
+        rgba(0, 0, 0, 0.372) 100%
+      );
+    }
+    74% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 190, 0, 0.248) 0%,
+        rgba(255, 120, 0, 0.164) 30%,
+        rgba(0, 0, 0, 0.374) 100%
+      );
+    }
+    76% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 180, 0, 0.252) 0%,
+        rgba(255, 110, 0, 0.168) 30%,
+        rgba(0, 0, 0, 0.376) 100%
+      );
+    }
+    78% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 160, 0, 0.256) 0%,
+        rgba(255, 100, 0, 0.172) 30%,
+        rgba(0, 0, 0, 0.378) 100%
+      );
+    }
+    80% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 140, 0, 0.26) 0%,
+        rgba(255, 99, 71, 0.176) 30%,
+        rgba(0, 0, 0, 0.38) 100%
+      );
+    }
+    82% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 130, 0, 0.264) 0%,
+        rgba(255, 90, 60, 0.18) 30%,
+        rgba(0, 0, 0, 0.4) 100%
+      );
+    }
+    84% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 120, 0, 0.268) 0%,
+        rgba(255, 85, 55, 0.184) 30%,
+        rgba(0, 0, 0, 0.42) 100%
+      );
+    }
+    86% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 110, 0, 0.272) 0%,
+        rgba(255, 80, 50, 0.188) 30%,
+        rgba(0, 0, 0, 0.44) 100%
+      );
+    }
+    88% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 100, 0, 0.276) 0%,
+        rgba(255, 75, 45, 0.192) 30%,
+        rgba(0, 0, 0, 0.46) 100%
+      );
+    }
+    90% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 99, 71, 0.28) 0%,
+        rgba(25, 25, 112, 0.38) 30%,
+        rgba(0, 0, 0, 0.58) 100%
+      );
+    }
+    91% {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 80, 60, 0.3) 0%,
+        rgba(25, 25, 112, 0.42) 30%,
+        rgba(0, 0, 0, 0.62) 100%
+      );
+    }
+    92% {
+      background: linear-gradient(
+        to bottom,
+        rgba(100, 50, 150, 0.4) 0%,
+        rgba(25, 25, 112, 0.46) 30%,
+        rgba(0, 0, 0, 0.66) 100%
+      );
+    }
+    93% {
+      background: linear-gradient(
+        to bottom,
+        rgba(80, 40, 120, 0.45) 0%,
+        rgba(25, 25, 112, 0.5) 30%,
+        rgba(0, 0, 0, 0.7) 100%
+      );
+    }
+    94% {
+      background: linear-gradient(
+        to bottom,
+        rgba(50, 30, 100, 0.5) 0%,
+        rgba(25, 25, 112, 0.54) 30%,
+        rgba(0, 0, 0, 0.72) 100%
+      );
+    }
+    95% {
+      background: linear-gradient(
+        to bottom,
+        rgba(25, 25, 112, 0.55) 0%,
+        rgba(0, 0, 0, 0.6) 50%,
+        rgba(0, 0, 0, 0.65) 100%
+      );
+    }
+    96% {
+      background: linear-gradient(
+        to bottom,
+        rgba(25, 25, 112, 0.58) 0%,
+        rgba(0, 0, 0, 0.62) 50%,
+        rgba(0, 0, 0, 0.67) 100%
+      );
+    }
+    97% {
+      background: linear-gradient(
+        to bottom,
+        rgba(25, 25, 112, 0.61) 0%,
+        rgba(0, 0, 0, 0.64) 50%,
+        rgba(0, 0, 0, 0.69) 100%
+      );
+    }
+    98% {
+      background: linear-gradient(
+        to bottom,
+        rgba(25, 25, 112, 0.64) 0%,
+        rgba(0, 0, 0, 0.66) 50%,
+        rgba(0, 0, 0, 0.71) 100%
+      );
+    }
+    99% {
+      background: linear-gradient(
+        to bottom,
+        rgba(25, 25, 112, 0.67) 0%,
+        rgba(0, 0, 0, 0.68) 50%,
+        rgba(0, 0, 0, 0.73) 100%
+      );
+    }
+    100% {
+      /* Night - lighter dark with stars */
+      background: linear-gradient(
+        to bottom,
+        rgba(25, 25, 112, 0.7) 0%,
+        rgba(0, 0, 0, 0.7) 50%,
+        rgba(0, 0, 0, 0.75) 100%
+      );
+    }
+  }
+  
+  /* Stars that appear at night */
+  .stars-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    animation: stars-fade 60s linear infinite;
+  }
+  
+  @keyframes stars-fade {
+    0%, 55% {
+      opacity: 0;
+    }
+    70% {
+      opacity: 0.3;
+    }
+    85% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 4px white;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.5);
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sun-moon {
+      width: 80px;
+      height: 80px;
+    }
+  }
