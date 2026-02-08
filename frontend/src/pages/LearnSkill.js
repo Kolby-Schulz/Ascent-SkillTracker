@@ -21,21 +21,6 @@ const INTEREST_CATEGORIES = [
   'General',
 ];
 
-const MOCK_SKILL_PATHS = [
-  { id: 'mock-1', name: 'Learn Guitar', category: 'Music', creator: 'Ascent Team', difficulty: 'Beginner', students: 1250, isMock: true },
-  { id: 'mock-2', name: 'Master Spanish', category: 'Languages', creator: 'Maria G.', difficulty: 'Intermediate', students: 890, isMock: true },
-  { id: 'mock-3', name: 'Web Development', category: 'Technology', creator: 'Ascent Team', difficulty: 'Beginner', students: 2100, isMock: true },
-  { id: 'mock-4', name: 'Photography Basics', category: 'Photography', creator: 'John D.', difficulty: 'Beginner', students: 650, isMock: true },
-  { id: 'mock-5', name: 'Yoga Fundamentals', category: 'Fitness', creator: 'Ascent Team', difficulty: 'Beginner', students: 430, isMock: true },
-  { id: 'mock-6', name: 'Creative Writing', category: 'Writing', creator: 'Sarah L.', difficulty: 'Intermediate', students: 320, isMock: true },
-  { id: 'mock-7', name: 'Italian Language', category: 'Languages', creator: 'Ascent Team', difficulty: 'Beginner', students: 560, isMock: true },
-  { id: 'mock-8', name: 'Data Science', category: 'Technology', creator: 'Tech Pro', difficulty: 'Advanced', students: 780, isMock: true },
-  { id: 'mock-9', name: 'Baking Mastery', category: 'Cooking', creator: 'Chef Mike', difficulty: 'Intermediate', students: 450, isMock: true },
-  { id: 'mock-10', name: 'Digital Art', category: 'Arts & Crafts', creator: 'Ascent Team', difficulty: 'Beginner', students: 920, isMock: true },
-  { id: 'mock-11', name: 'Running 5K', category: 'Fitness', creator: 'Coach Alex', difficulty: 'Beginner', students: 670, isMock: true },
-  { id: 'mock-12', name: 'Business Strategy', category: 'Business', creator: 'Ascent Team', difficulty: 'Advanced', students: 340, isMock: true },
-];
-
 const LearnSkill = () => {
   const { addSkill } = useSkills();
   const navigate = useNavigate();
@@ -57,8 +42,8 @@ const LearnSkill = () => {
             category: r.category || 'General',
             creator: r.creator?.email?.split('@')[0] || r.creator?.username || 'Community',
             difficulty: 'Beginner',
-            students: r.studentsCount ?? 0,
-            isMock: false,
+            likesCount: r.likesCount ?? 0,
+            isLiked: r.isLiked ?? false,
           }))
         );
       } catch {
@@ -70,32 +55,47 @@ const LearnSkill = () => {
     fetchPublished();
   }, []);
 
-  const allSkillPaths = [...publishedRoadmaps];
-  const namesFromApi = new Set(publishedRoadmaps.map((s) => s.name));
-  MOCK_SKILL_PATHS.forEach((s) => {
-    if (!namesFromApi.has(s.name)) allSkillPaths.push(s);
-  });
-
-  const filteredSkills = allSkillPaths.filter((skill) => {
+  const filteredSkills = publishedRoadmaps.filter((skill) => {
     const matchesCategory = selectedCategory === 'All' || skill.category === selectedCategory;
     const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const handleAddSkill = (skill) => {
-    if (skill.isMock) {
-      addSkill(skill.name);
-    } else {
-      addSkill(skill.name, skill.id);
-    }
+  const handleViewSkill = (skill) => {
+    navigate(`/roadmap/${skill.id}`);
+  };
+
+  const handleAddSkill = (e, skill) => {
+    e.stopPropagation();
+    addSkill(skill.name, skill.id);
     navigate('/dashboard');
+  };
+
+  const handleLike = async (e, skill) => {
+    e.stopPropagation();
+    try {
+      const res = await roadmapService.likeRoadmap(skill.id);
+      setPublishedRoadmaps((prev) =>
+        prev.map((s) =>
+          s.id === skill.id
+            ? {
+                ...s,
+                likesCount: res?.data?.likesCount ?? s.likesCount + (s.isLiked ? -1 : 1),
+                isLiked: res?.data?.liked ?? !s.isLiked,
+              }
+            : s
+        )
+      );
+    } catch {
+      // e.g. 401: not logged in; keep UI as-is
+    }
   };
 
   return (
     <div className="learn-skill-page">
       <div className="learn-skill-header">
         <h1 className="learn-skill-title">Browse Skill Paths</h1>
-        <p className="learn-skill-subtitle">Discover skills created by our community and the Ascent team</p>
+        <p className="learn-skill-subtitle">Discover skill paths created by our community</p>
       </div>
 
       <div className="learn-skill-filters">
@@ -131,23 +131,41 @@ const LearnSkill = () => {
             <motion.div
               key={skill.id}
               className="learn-skill-card"
+              role="button"
+              tabIndex={0}
+              onClick={() => handleViewSkill(skill)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleViewSkill(skill);
+                }
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
               whileHover={{ scale: 1.02, y: -5 }}
+              style={{ cursor: 'pointer' }}
             >
               <div className="learn-skill-card-header">
-                <span className="learn-skill-category">{skill.category}</span>
-                <span className="learn-skill-difficulty">{skill.difficulty}</span>
+                <h3 className="learn-skill-name">{skill.name}</h3>
+                <button
+                  type="button"
+                  className={`learn-skill-like-btn ${skill.isLiked ? 'liked' : ''}`}
+                  onClick={(e) => handleLike(e, skill)}
+                  aria-label={skill.isLiked ? 'Unlike' : 'Like'}
+                  title={skill.isLiked ? 'Unlike' : 'Like'}
+                >
+                  <span className="learn-skill-like-icon">👍</span>
+                  <span className="learn-skill-like-count">{skill.likesCount}</span>
+                </button>
               </div>
-              <h3 className="learn-skill-name">{skill.name}</h3>
               <div className="learn-skill-meta">
                 <span className="learn-skill-creator">By {skill.creator}</span>
-                <span className="learn-skill-students">{skill.students.toLocaleString()} students</span>
               </div>
               <motion.button
+                type="button"
                 className="learn-skill-add-button"
-                onClick={() => handleAddSkill(skill)}
+                onClick={(e) => handleAddSkill(e, skill)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

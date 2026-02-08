@@ -173,6 +173,11 @@
   color: #ef4444;
 }
 
+.metrics-stat-icon.icon-white {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
 .metrics-stat-value {
   font-size: 22px;
   font-weight: 700;

@@ -82,6 +82,16 @@ const roadmapService = {
       throw error.response?.data || error;
     }
   },
+
+  // Like or unlike a roadmap (toggle)
+  likeRoadmap: async (id) => {
+    try {
+      const response = await api.put(`/roadmaps/${id}/like`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
 };
 
 export default roadmapService;
