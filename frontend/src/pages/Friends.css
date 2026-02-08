@@ -247,6 +247,27 @@
   gap: 1.5rem;
 }
 
+.search-hint {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem 0;
+  max-width: 520px;
+}
+
+.search-empty {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.search-empty p {
+  margin: 0;
+  font-size: 1rem;
+}
+
 .search-form {
   display: flex;
   gap: 1rem;
