@@ -32,13 +32,37 @@ const Login = () => {
 
     try {
       const response = await loginService({ username: username.trim().toLowerCase(), password });
-      login(response.data.token, response.data.user);
-      navigate('/dashboard');
+      
+      // Handle response structure - check if it's response.data or just response
+      const token = response.data?.token || response.token;
+      const user = response.data?.user || response.user;
+      
+      if (!token || !user) {
+        throw new Error('Invalid response from server');
+      }
+      
+      // Save to localStorage and update auth context
+      login(token, user);
+      
+      // Try React Router navigation first, fallback to window.location for Cursor compatibility
+      try {
+        navigate('/dashboard');
+        // Fallback: if navigate doesn't work, use window.location after a short delay
+        setTimeout(() => {
+          if (window.location.pathname !== '/dashboard') {
+            window.location.href = '/dashboard';
+          }
+        }, 100);
+      } catch (navError) {
+        // If navigate fails, use window.location directly
+        console.warn('React Router navigate failed, using window.location:', navError);
+        window.location.href = '/dashboard';
+      }
     } catch (err) {
+      console.error('Login error:', err);
       setError(
-        err.response?.data?.error || 'Login failed. Please try again.'
+        err.response?.data?.error || err.message || 'Login failed. Please try again.'
       );
-    } finally {
       setLoading(false);
     }
   };
