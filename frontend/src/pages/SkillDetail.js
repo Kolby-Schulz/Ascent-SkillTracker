@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import PeakReached from '../components/PeakReached';
+import MountainProgress from '../components/MountainProgress';
 import CodePlayground from '../components/CodePlayground';
 import { recordCompletedSkill } from '../utils/skillProgress';
 import { updateStreak, checkStreakAchievements, checkSkillAchievements, getCompletedSkillsCount, unlockAchievement } from '../utils/achievements';
@@ -297,55 +298,91 @@ const SkillDetail = () => {
           </h1>
           <p className="skill-description">{description}</p>
         </motion.div>
-        
-        {/* Progress Bar */}
-        <motion.div
-          className="progress-bar-container"
-          initial={{ y: -30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <div className="progress-bar-header">
-            <span className="progress-label">Overall Progress</span>
-            <span className="progress-percentage">{Math.round(progressPercentage)}%</span>
-          </div>
-          <div className="progress-bar-track">
-            <motion.div
-              className="progress-bar-fill"
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercentage}%` }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            />
-          </div>
-          <div className="progress-stats">
-            <span>{completedCount} of {totalSteps} steps completed</span>
-          </div>
-        </motion.div>
       </div>
 
-      {/* Sub-skills Carousel */}
+      {/* Mountain Progress Visualization */}
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        <MountainProgress
+          steps={subSkills.map((step, index) => ({
+            ...step,
+            index
+          }))}
+          completedSteps={completedSteps}
+          currentStepIndex={currentIndex}
+          onStepClick={(index) => {
+            setCurrentIndex(index);
+            setDirection(index > currentIndex ? 1 : -1);
+          }}
+          onStepComplete={(index) => {
+            toggleStepCompletion(subSkills[index].id);
+          }}
+        />
+        
+        {/* Step detail view */}
+        {subSkills[currentIndex] && (
+          <motion.div
+            className="step-detail-panel glass-panel"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            <div className="step-detail-header">
+              <span className="step-detail-number">
+                Step {subSkills[currentIndex].order || currentIndex + 1} of {subSkills.length}
+              </span>
+              {completedSteps[String(currentIndex)] && (
+                <span className="step-detail-completed">✓ Completed</span>
+              )}
+            </div>
+            <h3 className="step-detail-title">{subSkills[currentIndex].title}</h3>
+            <p className="step-detail-description">{subSkills[currentIndex].description}</p>
+            
+            {/* Code Playground for coding-related skills */}
+            {(skillId === 'web-development' || skillId.includes('code') || skillId.includes('programming')) && (
+              <div className="code-playground-section">
+                <CodePlayground
+                  initialCode="// Try writing some code here!\nconsole.log('Hello, Ascent!');"
+                  language="javascript"
+                />
+              </div>
+            )}
+            
+            {subSkills[currentIndex].customContent && (
+              <div className="step-detail-extra">
+                {subSkills[currentIndex].customContent}
+              </div>
+            )}
+
+            <div className="step-detail-completion">
+              <label className="completion-checkbox">
+                <input
+                  type="checkbox"
+                  checked={!!completedSteps[String(currentIndex)]}
+                  onChange={() => toggleStepCompletion(currentIndex)}
+                />
+                <span className="checkbox-custom" />
+                <span className="checkbox-label">
+                  {completedSteps[String(currentIndex)] ? 'Completed ✓' : 'Mark as complete'}
+                </span>
+              </label>
+            </div>
+          </motion.div>
+        )}
+      </motion.div>
+
+      {/* Legacy carousel - keeping for reference but hidden */}
       <motion.div
         className="carousel-section glass-panel"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
+        style={{ display: 'none' }}
       >
-        <h2 className="carousel-title">Learning Path</h2>
-        <p className="carousel-subtitle">
-          Master these {subSkills.length} essential sub-skills
-        </p>
-
         <div className="carousel-container">
-          {/* Navigation Buttons */}
-          <button
-            className="carousel-button carousel-button-left"
-            onClick={prevSlide}
-            aria-label="Previous sub-skill"
-          >
-            ‹
-          </button>
-
-          {/* Carousel Content */}
           <div className="carousel-content">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
