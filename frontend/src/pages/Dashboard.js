@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSkills } from '../context/SkillsContext';
-import { sortSkillsWithCompletedAtEnd, getSkillStatus } from '../utils/skillProgress';
+import { sortSkillsWithCompletedAtEnd, getSkillOrRoadmapStatus } from '../utils/skillProgress';
 import './Dashboard.css';
 
 // Map skill names to their URL-friendly IDs
@@ -49,8 +49,8 @@ const Dashboard = () => {
     removeSkill(skillToRemove);
   };
 
-  // Completed skills at end; order: not-started, in-progress, completed
-  const sortedSkills = sortSkillsWithCompletedAtEnd(skills);
+  // Completed skills at end; order: not-started, in-progress, completed (includes roadmaps)
+  const sortedSkills = sortSkillsWithCompletedAtEnd(skills, getRoadmapId);
 
   return (
     <>
@@ -64,7 +64,7 @@ const Dashboard = () => {
 
           <div className="skills-grid">
             {sortedSkills.map((skill, index) => {
-              const status = getSkillStatus(skill);
+              const status = getSkillOrRoadmapStatus(skill, getRoadmapId);
               const originalIndex = skills.indexOf(skill);
               return (
                 <motion.div

@@ -47,15 +47,40 @@ export function getSkillStatus(skillName) {
 }
 
 /**
+ * Get completion status for a user-created roadmap (stored in roadmap-progress-${roadmapId}).
+ * @param {string} roadmapId
+ * @returns {'completed'|'in-progress'|'not-started'}
+ */
+export function getRoadmapStatus(roadmapId) {
+  if (!roadmapId) return 'not-started';
+  const totalRaw = localStorage.getItem(`roadmap-total-steps-${roadmapId}`);
+  const totalSteps = totalRaw ? parseInt(totalRaw, 10) : 0;
+  if (totalSteps === 0) return 'not-started';
+
+  const raw = localStorage.getItem(`roadmap-progress-${roadmapId}`);
+  const completedSteps = raw ? JSON.parse(raw) : {};
+  const completedCount = Object.values(completedSteps).filter(Boolean).length;
+
+  if (completedCount === totalSteps) return 'completed';
+  if (completedCount > 0) return 'in-progress';
+  return 'not-started';
+}
+
+/**
  * Get learned and in-progress counts for a list of skill names.
+ * Includes both built-in skills (skill-progress-*) and user-created roadmaps (roadmap-progress-*).
  * @param {string[]} skillNames
+ * @param {(name: string) => string | null} [getRoadmapId] - optional; if provided, skills with a roadmapId use roadmap progress
  * @returns {{ learned: number, inProgress: number }}
  */
-export function getSkillsProgressCounts(skillNames) {
+export function getSkillsProgressCounts(skillNames, getRoadmapId) {
   let learned = 0;
   let inProgress = 0;
   for (const name of skillNames || []) {
-    const status = getSkillStatus(name);
+    const roadmapId = typeof getRoadmapId === 'function' ? getRoadmapId(name) : null;
+    const status = roadmapId
+      ? getRoadmapStatus(roadmapId)
+      : getSkillStatus(name);
     if (status === 'completed') learned += 1;
     else if (status === 'in-progress') inProgress += 1;
   }
@@ -63,14 +88,26 @@ export function getSkillsProgressCounts(skillNames) {
 }
 
 /**
+ * Get status for a skill (built-in or roadmap).
+ * @param {string} skillName
+ * @param {(name: string) => string | null} [getRoadmapId]
+ * @returns {'completed'|'in-progress'|'not-started'}
+ */
+export function getSkillOrRoadmapStatus(skillName, getRoadmapId) {
+  const roadmapId = typeof getRoadmapId === 'function' ? getRoadmapId(skillName) : null;
+  return roadmapId ? getRoadmapStatus(roadmapId) : getSkillStatus(skillName);
+}
+
+/**
  * Sort skill names so completed are at the end, then in-progress, then not-started.
  * @param {string[]} skillNames
+ * @param {(name: string) => string | null} [getRoadmapId] - optional; if provided, roadmap completion is used for sorting
  * @returns {string[]}
  */
-export function sortSkillsWithCompletedAtEnd(skillNames) {
+export function sortSkillsWithCompletedAtEnd(skillNames, getRoadmapId) {
   return [...(skillNames || [])].sort((a, b) => {
-    const aStatus = getSkillStatus(a);
-    const bStatus = getSkillStatus(b);
+    const aStatus = getSkillOrRoadmapStatus(a, getRoadmapId);
+    const bStatus = getSkillOrRoadmapStatus(b, getRoadmapId);
     const order = { 'not-started': 0, 'in-progress': 1, completed: 2 };
     return (order[aStatus] ?? 0) - (order[bStatus] ?? 0);
   });
