@@ -58,7 +58,7 @@ const Dashboard = () => {
     <>
       <div className="dashboard-content">
         <div className="main-header">
-          <h1 className="greeting">Hello, {userDisplayName}</h1>
+          <h1 className="greeting">{t('dashboard:greeting')}, {userDisplayName}</h1>
         </div>
 
         <div className="skills-section">
@@ -83,18 +83,18 @@ const Dashboard = () => {
                     <span className="skill-icon">🎯</span>
                     <span className="skill-name">{skill}</span>
                     {status === 'completed' && (
-                      <span className="skill-card-badge skill-card-badge--completed">Completed!</span>
+                      <span className="skill-card-badge skill-card-badge--completed">{t('dashboard:completed')}</span>
                     )}
                     {status === 'in-progress' && (
-                      <span className="skill-card-badge skill-card-badge--in-progress">In progress</span>
+                      <span className="skill-card-badge skill-card-badge--in-progress">{t('dashboard:inProgress')}</span>
                     )}
                     <div className="skill-actions">
-                      <span className="skill-drag-hint">Click to view</span>
+                      <span className="skill-drag-hint">{t('dashboard:clickToView')}</span>
                       <div className="skill-buttons">
                         <button
                           className="skill-remove"
                           onClick={(e) => handleRemoveSkill(skill, e)}
-                          title="Remove skill"
+                          title={t('dashboard:removeSkillTitle')}
                         >
                           ×
                         </button>

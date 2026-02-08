@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import roadmapService from '../services/roadmapService';
 import postService from '../services/postService';
 import './Profile.css';
 
 const Profile = () => {
+  const { t } = useTranslation(['profile', 'common']);
   const navigate = useNavigate();
   const { user } = useAuth();
   const [roadmaps, setRoadmaps] = useState([]);
@@ -65,27 +67,27 @@ const Profile = () => {
 
   const handleShareToFeed = async (roadmapId, e) => {
     e.stopPropagation();
-    const caption = window.prompt('Add a caption (optional):');
+    const caption = window.prompt(t('profile:messages.shareCaption'));
     if (caption === null) return; // User cancelled
 
     try {
       await postService.createPost(roadmapId, caption || '');
-      alert('Roadmap shared to feed!');
+      alert(t('profile:messages.shared'));
     } catch (error) {
       console.error('Error sharing to feed:', error);
-      alert(error.response?.data?.error || 'Failed to share roadmap. Make sure it is published.');
+      alert(error.response?.data?.error || t('profile:messages.shareError'));
     }
   };
 
   const handleDeleteRoadmap = async (roadmapId) => {
-    if (window.confirm('Are you sure you want to delete this roadmap?')) {
+    if (window.confirm(t('profile:messages.deleteConfirm'))) {
       try {
         await roadmapService.deleteRoadmap(roadmapId);
         setRoadmaps(roadmaps.filter(r => r.id !== roadmapId));
-        alert('Roadmap deleted successfully!');
+        alert(t('profile:messages.deleted'));
       } catch (error) {
         console.error('Error deleting roadmap:', error);
-        alert(error.error || 'Failed to delete roadmap. Please try again.');
+        alert(error.error || t('profile:messages.deleteError'));
       }
     }
   };
@@ -113,38 +115,38 @@ const Profile = () => {
           <div className="profile-info">
             <h1 className="profile-username">{userDisplayName}</h1>
             <p className="profile-stats">
-              {roadmaps.length} roadmap{roadmaps.length !== 1 ? 's' : ''} created
+              {roadmaps.length} {roadmaps.length !== 1 ? t('profile:stats.roadmapsCreatedPlural') : t('profile:stats.roadmapsCreated')} {t('profile:stats.created')}
               {' • '}
-              {roadmaps.reduce((sum, r) => sum + r.studentsCount, 0)} total students
+              {roadmaps.reduce((sum, r) => sum + r.studentsCount, 0)} {t('profile:stats.totalStudents')}
             </p>
           </div>
         </div>
         <button className="create-new-button" onClick={handleCreateNew}>
-          Create New Roadmap
+          {t('profile:createNewRoadmap')}
         </button>
       </motion.div>
 
       <div className="roadmaps-section">
         <div className="section-header">
-          <h2 className="section-title">My Created Roadmaps</h2>
+          <h2 className="section-title">{t('profile:myRoadmaps')}</h2>
           <div className="filter-buttons">
             <button
               className={`filter-button ${filter === 'all' ? 'active' : ''}`}
               onClick={() => setFilter('all')}
             >
-              All ({roadmaps.length})
+              {t('profile:filters.all')} ({roadmaps.length})
             </button>
             <button
               className={`filter-button ${filter === 'published' ? 'active' : ''}`}
               onClick={() => setFilter('published')}
             >
-              Published ({roadmaps.filter(r => r.status === 'published').length})
+              {t('profile:filters.published')} ({roadmaps.filter(r => r.status === 'published').length})
             </button>
             <button
               className={`filter-button ${filter === 'draft' ? 'active' : ''}`}
               onClick={() => setFilter('draft')}
             >
-              Drafts ({roadmaps.filter(r => r.status === 'draft').length})
+              {t('profile:filters.drafts')} ({roadmaps.filter(r => r.status === 'draft').length})
             </button>
           </div>
         </div>
@@ -152,7 +154,7 @@ const Profile = () => {
         {loading ? (
           <div className="loading-state">
             <div className="spinner"></div>
-            <p>Loading your roadmaps...</p>
+            <p>{t('profile:loading')}</p>
           </div>
         ) : filteredRoadmaps.length === 0 ? (
           <motion.div
@@ -163,19 +165,19 @@ const Profile = () => {
             <div className="empty-icon">📚</div>
             <h3 className="empty-title">
               {filter === 'all' 
-                ? "You haven't created any roadmaps yet"
-                : `No ${filter} roadmaps`
+                ? t('profile:empty.noRoadmaps')
+                : `${t('profile:empty.noFiltered')} ${filter} ${t('profile:empty.roadmaps')}`
               }
             </h3>
             <p className="empty-description">
               {filter === 'all'
-                ? 'Start creating custom learning paths to help others learn new skills'
-                : `You don't have any ${filter} roadmaps at the moment`
+                ? t('profile:empty.description')
+                : `${t('profile:empty.descriptionFiltered')} ${filter} ${t('profile:empty.roadmapsAtMoment')}`
               }
             </p>
             {filter === 'all' && (
               <button className="empty-cta-button" onClick={handleCreateNew}>
-                Create Your First Roadmap
+                {t('profile:empty.createFirst')}
               </button>
             )}
           </motion.div>
@@ -192,7 +194,7 @@ const Profile = () => {
               >
                 <div className="roadmap-card-header">
                   <span className={`status-badge ${roadmap.status}`}>
-                    {roadmap.status === 'published' ? '✓ Published' : '📝 Draft'}
+                    {roadmap.status === 'published' ? t('profile:roadmap.published') : t('profile:roadmap.draft')}
                   </span>
                 </div>
                 
@@ -201,51 +203,51 @@ const Profile = () => {
                 <div className="roadmap-meta">
                   <div className="meta-item">
                     <span className="meta-icon">📋</span>
-                    <span className="meta-text">{roadmap.subSkillCount} sub-skills</span>
+                    <span className="meta-text">{roadmap.subSkillCount} {t('profile:roadmap.subSkills')}</span>
                   </div>
                   {roadmap.status === 'published' && (
                     <div className="meta-item">
                       <span className="meta-icon">👥</span>
-                      <span className="meta-text">{roadmap.studentsCount} students</span>
+                      <span className="meta-text">{roadmap.studentsCount} {t('profile:roadmap.students')}</span>
                     </div>
                   )}
                 </div>
 
                 <div className="roadmap-dates">
-                  <p className="date-text">Created: {formatDate(roadmap.createdAt)}</p>
-                  <p className="date-text">Updated: {formatDate(roadmap.updatedAt)}</p>
+                  <p className="date-text">{t('profile:roadmap.created')}: {formatDate(roadmap.createdAt)}</p>
+                  <p className="date-text">{t('profile:roadmap.updated')}: {formatDate(roadmap.updatedAt)}</p>
                 </div>
 
                 <div className="roadmap-actions">
                   <button
                     className="action-button view-button"
                     onClick={() => handleViewRoadmap(roadmap.id)}
-                    title="View roadmap"
+                    title={t('profile:roadmap.viewTitle')}
                   >
-                    👁️ View
+                    {t('profile:roadmap.view')}
                   </button>
                   {roadmap.status === 'published' && (
                     <button
                       className="action-button share-button"
                       onClick={(e) => handleShareToFeed(roadmap.id, e)}
-                      title="Share to feed"
+                      title={t('profile:roadmap.shareTitle')}
                     >
-                      📤 Share
+                      {t('profile:roadmap.share')}
                     </button>
                   )}
                   <button
                     className="action-button edit-button"
                     onClick={() => handleEditRoadmap(roadmap.id)}
-                    title="Edit roadmap"
+                    title={t('profile:roadmap.editTitle')}
                   >
-                    ✏️ Edit
+                    {t('profile:roadmap.edit')}
                   </button>
                   <button
                     className="action-button delete-button"
                     onClick={() => handleDeleteRoadmap(roadmap.id)}
-                    title="Delete roadmap"
+                    title={t('profile:roadmap.deleteTitle')}
                   >
-                    🗑️
+                    {t('profile:roadmap.delete')}
                   </button>
                 </div>
               </motion.div>

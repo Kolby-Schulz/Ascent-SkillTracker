@@ -28,6 +28,7 @@
     "requestSent": "¡Solicitud de amistad enviada!",
     "requestAccepted": "¡Solicitud de amistad aceptada!",
     "friendRemoved": "Amigo eliminado",
+    "removeConfirm": "¿Estás seguro de que quieres eliminar este amigo?",
     "searchError": "Por favor ingresa al menos 2 caracteres para buscar"
   }
 }

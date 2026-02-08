@@ -1,0 +1,50 @@
+{
+  "title": "Profile",
+  "createNewRoadmap": "Create New Roadmap",
+  "myRoadmaps": "My Created Roadmaps",
+  "filters": {
+    "all": "All",
+    "published": "Published",
+    "drafts": "Drafts"
+  },
+  "stats": {
+    "created": "created",
+    "roadmapsCreated": "roadmap",
+    "roadmapsCreatedPlural": "roadmaps",
+    "totalStudents": "total students"
+  },
+  "roadmap": {
+    "published": "✓ Published",
+    "draft": "📝 Draft",
+    "subSkills": "sub-skills",
+    "students": "students",
+    "created": "Created",
+    "updated": "Updated",
+    "view": "👁️ View",
+    "share": "📤 Share",
+    "edit": "✏️ Edit",
+    "delete": "🗑️",
+    "viewTitle": "View roadmap",
+    "shareTitle": "Share to feed",
+    "editTitle": "Edit roadmap",
+    "deleteTitle": "Delete roadmap"
+  },
+  "empty": {
+    "noRoadmaps": "You haven't created any roadmaps yet",
+    "noFiltered": "No",
+    "roadmaps": "roadmaps",
+    "description": "Start creating custom learning paths to help others learn new skills",
+    "descriptionFiltered": "You don't have any",
+    "roadmapsAtMoment": "roadmaps at the moment",
+    "createFirst": "Create Your First Roadmap"
+  },
+  "loading": "Loading your roadmaps...",
+  "messages": {
+    "shareCaption": "Add a caption (optional):",
+    "shared": "Roadmap shared to feed!",
+    "shareError": "Failed to share roadmap. Make sure it is published.",
+    "deleteConfirm": "Are you sure you want to delete this roadmap?",
+    "deleted": "Roadmap deleted successfully!",
+    "deleteError": "Failed to delete roadmap. Please try again."
+  }
+}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import friendService from '../services/friendService';
 import './Friends.css';
 
 const Friends = () => {
+  const { t } = useTranslation(['friends', 'common']);
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('friends'); // friends, requests, search
   const [friends, setFriends] = useState([]);
@@ -48,7 +50,7 @@ const Friends = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     if (searchQuery.length < 2) {
-      alert('Please enter at least 2 characters to search');
+      alert(t('friends:messages.searchError'));
       return;
     }
 
@@ -64,7 +66,7 @@ const Friends = () => {
       }
     } catch (error) {
       console.error('Error searching users:', error);
-      const errorMessage = error.response?.data?.error || error.message || 'Failed to search users. Please try again.';
+      const errorMessage = error.response?.data?.error || error.message || t('friends:messages.searchError');
       alert(errorMessage);
       setSearchResults([]);
     } finally {
@@ -80,10 +82,10 @@ const Friends = () => {
         u.id === userId ? { ...u, relationshipStatus: 'pending' } : u
       );
       setSearchResults(updatedResults);
-      alert('Friend request sent!');
+      alert(t('friends:messages.requestSent'));
     } catch (error) {
       console.error('Error sending friend request:', error);
-      alert(error.response?.data?.error || 'Failed to send friend request');
+      alert(error.response?.data?.error || t('friends:messages.requestSent'));
     }
   };
 
@@ -92,23 +94,23 @@ const Friends = () => {
       await friendService.acceptFriendRequest(requestId);
       setRequests(requests.filter((req) => req.id !== requestId));
       loadFriends(); // Refresh friends list
-      alert('Friend request accepted!');
+      alert(t('friends:messages.requestAccepted'));
     } catch (error) {
       console.error('Error accepting request:', error);
-      alert('Failed to accept friend request');
+      alert(t('friends:messages.requestAccepted'));
     }
   };
 
   const handleRemoveFriend = async (friendshipId) => {
-    if (!window.confirm('Are you sure you want to remove this friend?')) return;
+    if (!window.confirm(t('friends:messages.removeConfirm'))) return;
 
     try {
       await friendService.removeFriend(friendshipId);
       setFriends(friends.filter((f) => f.friendshipId !== friendshipId));
-      alert('Friend removed');
+      alert(t('friends:messages.friendRemoved'));
     } catch (error) {
       console.error('Error removing friend:', error);
-      alert('Failed to remove friend');
+      alert(t('friends:messages.friendRemoved'));
     }
   };
 
@@ -120,8 +122,8 @@ const Friends = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="friends-header">
-        <h1 className="friends-title">Friends</h1>
-        <p className="friends-subtitle">Manage your connections and discover new friends</p>
+        <h1 className="friends-title">{t('friends:title')}</h1>
+        <p className="friends-subtitle">{t('friends:subtitle')}</p>
       </div>
 
       <div className="friends-tabs">
@@ -129,27 +131,27 @@ const Friends = () => {
           className={`friends-tab ${activeTab === 'friends' ? 'active' : ''}`}
           onClick={() => setActiveTab('friends')}
         >
-          My Friends ({friends.length})
+          {t('friends:tabs.friends')} ({friends.length})
         </button>
         <button
           className={`friends-tab ${activeTab === 'requests' ? 'active' : ''}`}
           onClick={() => setActiveTab('requests')}
         >
-          Requests ({requests.length})
+          {t('friends:tabs.requests')} ({requests.length})
         </button>
         <button
           className={`friends-tab ${activeTab === 'search' ? 'active' : ''}`}
           onClick={() => setActiveTab('search')}
         >
-          Search Users
+          {t('friends:tabs.search')}
         </button>
       </div>
 
       <div className="friends-content">
         {loading && (
-          <div className="loading-state">
+            <div className="loading-state">
             <div className="spinner"></div>
-            <p>Loading...</p>
+            <p>{t('common:messages.loading')}</p>
           </div>
         )}
 
@@ -157,7 +159,7 @@ const Friends = () => {
           <div className="friends-list">
             {friends.length === 0 ? (
               <div className="empty-state">
-                <p>You don't have any friends yet. Search for users to add friends!</p>
+                <p>{t('friends:friends.noFriends')}</p>
               </div>
             ) : (
               friends.map((friend) => (
@@ -183,9 +185,9 @@ const Friends = () => {
                   <button
                     className="remove-friend-button"
                     onClick={() => handleRemoveFriend(friend.friendshipId)}
-                    title="Remove friend"
+                    title={t('friends:friends.remove')}
                   >
-                    Remove
+                    {t('friends:friends.remove')}
                   </button>
                 </motion.div>
               ))
@@ -197,7 +199,7 @@ const Friends = () => {
           <div className="requests-list">
             {requests.length === 0 ? (
               <div className="empty-state">
-                <p>No pending friend requests</p>
+                <p>{t('friends:requests.noRequests')}</p>
               </div>
             ) : (
               requests.map((request) => (
@@ -225,13 +227,13 @@ const Friends = () => {
                       className="accept-button"
                       onClick={() => handleAcceptRequest(request.id)}
                     >
-                      Accept
+                      {t('friends:requests.accept')}
                     </button>
                     <button
                       className="reject-button"
                       onClick={() => handleRemoveFriend(request.id)}
                     >
-                      Reject
+                      {t('friends:requests.reject')}
                     </button>
                   </div>
                 </motion.div>
@@ -247,11 +249,11 @@ const Friends = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by username or email..."
+                placeholder={t('friends:search.placeholder')}
                 className="search-input"
               />
               <button type="submit" className="search-button">
-                Search
+                {t('friends:search.search')}
               </button>
             </form>
 
@@ -277,7 +279,7 @@ const Friends = () => {
                       <h3 className="friend-username">{user.username}</h3>
                       <p className="friend-email">{user.email}</p>
                       {user.privacy === 'private' && (
-                        <span className="privacy-badge">Private</span>
+                        <span className="privacy-badge">{t('friends:search.private')}</span>
                       )}
                     </div>
                     <div className="user-actions">
@@ -286,14 +288,14 @@ const Friends = () => {
                           className="add-friend-button"
                           onClick={() => handleSendRequest(user.id)}
                         >
-                          Add Friend
+                          {t('friends:search.addFriend')}
                         </button>
                       )}
                       {user.relationshipStatus === 'pending' && (
-                        <span className="status-badge">Request Sent</span>
+                        <span className="status-badge">{t('friends:search.requestSent')}</span>
                       )}
                       {user.relationshipStatus === 'accepted' && (
-                        <span className="status-badge">Friends</span>
+                        <span className="status-badge">{t('friends:search.friends')}</span>
                       )}
                     </div>
                   </motion.div>

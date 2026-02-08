@@ -1,0 +1,50 @@
+{
+  "title": "Perfil",
+  "createNewRoadmap": "Crear Nuevo Roadmap",
+  "myRoadmaps": "Mis Roadmaps Creados",
+  "filters": {
+    "all": "Todos",
+    "published": "Publicados",
+    "drafts": "Borradores"
+  },
+  "stats": {
+    "created": "creados",
+    "roadmapsCreated": "roadmap",
+    "roadmapsCreatedPlural": "roadmaps",
+    "totalStudents": "estudiantes totales"
+  },
+  "roadmap": {
+    "published": "✓ Publicado",
+    "draft": "📝 Borrador",
+    "subSkills": "sub-habilidades",
+    "students": "estudiantes",
+    "created": "Creado",
+    "updated": "Actualizado",
+    "view": "👁️ Ver",
+    "share": "📤 Compartir",
+    "edit": "✏️ Editar",
+    "delete": "🗑️",
+    "viewTitle": "Ver roadmap",
+    "shareTitle": "Compartir en el feed",
+    "editTitle": "Editar roadmap",
+    "deleteTitle": "Eliminar roadmap"
+  },
+  "empty": {
+    "noRoadmaps": "Aún no has creado ningún roadmap",
+    "noFiltered": "No tienes",
+    "roadmaps": "roadmaps",
+    "description": "Comienza a crear rutas de aprendizaje personalizadas para ayudar a otros a aprender nuevas habilidades",
+    "descriptionFiltered": "No tienes ningún",
+    "roadmapsAtMoment": "roadmaps en este momento",
+    "createFirst": "Crea Tu Primer Roadmap"
+  },
+  "loading": "Cargando tus roadmaps...",
+  "messages": {
+    "shareCaption": "Agrega un título (opcional):",
+    "shared": "¡Roadmap compartido en el feed!",
+    "shareError": "Error al compartir roadmap. Asegúrate de que esté publicado.",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este roadmap?",
+    "deleted": "¡Roadmap eliminado exitosamente!",
+    "deleteError": "Error al eliminar roadmap. Por favor, intenta de nuevo."
+  }
+}

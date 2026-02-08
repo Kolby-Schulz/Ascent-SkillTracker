@@ -10,6 +10,7 @@ import enDashboard from '../locales/en/dashboard.json';
 import enSettings from '../locales/en/settings.json';
 import enFriends from '../locales/en/friends.json';
 import enNavigation from '../locales/en/navigation.json';
+import enProfile from '../locales/en/profile.json';
 
 // Import Spanish translations
 import esCommon from '../locales/es/common.json';
@@ -19,6 +20,7 @@ import esDashboard from '../locales/es/dashboard.json';
 import esSettings from '../locales/es/settings.json';
 import esFriends from '../locales/es/friends.json';
 import esNavigation from '../locales/es/navigation.json';
+import esProfile from '../locales/es/profile.json';
 
 i18n
   .use(LanguageDetector) // Detects user's browser language
@@ -33,6 +35,7 @@ i18n
         settings: enSettings,
         friends: enFriends,
         navigation: enNavigation,
+        profile: enProfile,
       },
       es: {
         common: esCommon,
@@ -42,11 +45,12 @@ i18n
         settings: esSettings,
         friends: esFriends,
         navigation: esNavigation,
+        profile: esProfile,
       },
     },
     fallbackLng: 'en', // Default language
     defaultNS: 'common', // Default namespace
-    ns: ['common', 'home', 'auth', 'dashboard', 'settings', 'friends', 'navigation'],
+    ns: ['common', 'home', 'auth', 'dashboard', 'settings', 'friends', 'navigation', 'profile'],
     interpolation: {
       escapeValue: false, // React already escapes values
     },

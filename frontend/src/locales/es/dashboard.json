@@ -1,8 +1,13 @@
 {
   "title": "Panel de Control",
+  "greeting": "Hola",
   "skillsInProgress": "Habilidades en Progreso:",
   "noSkills": "Aún no tienes habilidades. ¡Comienza a aprender!",
   "addSkill": "Agregar Habilidad",
   "removeSkill": "Eliminar",
-  "learnSkill": "Aprender Habilidad"
+  "learnSkill": "Aprender Habilidad",
+  "completed": "¡Completado!",
+  "inProgress": "En progreso",
+  "clickToView": "Haz clic para ver",
+  "removeSkillTitle": "Eliminar habilidad"
 }
