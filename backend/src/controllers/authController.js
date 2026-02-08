@@ -49,6 +49,9 @@ exports.register = async (req, res, next) => {
           username: user.username,
           email: user.email,
           roles: user.roles,
+          privacy: user.privacy,
+          bio: user.bio,
+          profilePicture: user.profilePicture,
         },
       },
     });
@@ -98,6 +101,9 @@ exports.login = async (req, res, next) => {
           username: user.username,
           email: user.email,
           roles: user.roles,
+          privacy: user.privacy,
+          bio: user.bio,
+          profilePicture: user.profilePicture,
         },
       },
     });

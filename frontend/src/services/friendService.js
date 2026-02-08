@@ -1,34 +1,39 @@
-import api from './api';
+import apiClient from './api';
 
 export const friendService = {
   // Search users
   searchUsers: (query) => {
-    return api.get(`/friends/search?q=${encodeURIComponent(query)}`);
+    return apiClient.get(`/friends/search?q=${encodeURIComponent(query)}`);
   },
 
   // Send friend request
   sendFriendRequest: (recipientId) => {
-    return api.post('/friends/request', { recipientId });
+    return apiClient.post('/friends/request', { recipientId });
   },
 
   // Accept friend request
   acceptFriendRequest: (requestId) => {
-    return api.put(`/friends/accept/${requestId}`);
+    return apiClient.put(`/friends/accept/${requestId}`);
   },
 
   // Remove friend or reject request
   removeFriend: (requestId) => {
-    return api.delete(`/friends/${requestId}`);
+    return apiClient.delete(`/friends/${requestId}`);
   },
 
   // Get friends list
   getFriends: () => {
-    return api.get('/friends');
+    return apiClient.get('/friends');
   },
 
   // Get pending friend requests
   getFriendRequests: () => {
-    return api.get('/friends/requests');
+    return apiClient.get('/friends/requests');
+  },
+
+  // Get all users (for testing)
+  getAllUsers: () => {
+    return apiClient.get('/friends/all');
   },
 };
 
