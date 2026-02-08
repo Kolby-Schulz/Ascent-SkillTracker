@@ -11,6 +11,53 @@
   color: white;
 }
 
+.skill-header-top {
+  margin-bottom: 30px;
+}
+
+.skill-header-top .back-button {
+  margin-bottom: 0;
+}
+
+.skill-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.skill-add-hint {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.add-to-my-skills-button {
+  padding: 12px 24px;
+  background: #D9BBA3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-to-my-skills-button:hover {
+  background: #c9a893;
+  box-shadow: 0 4px 12px rgba(217, 187, 163, 0.4);
+}
+
+.step-completion-locked {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  font-style: italic;
+}
+
 .back-button {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);

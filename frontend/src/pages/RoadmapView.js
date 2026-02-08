@@ -6,11 +6,13 @@ import MountainProgress from '../components/MountainProgress';
 import roadmapService from '../services/roadmapService';
 import progressService from '../services/progressService';
 import { recordCompletedRoadmap } from '../utils/skillProgress';
+import { useSkills } from '../context/SkillsContext';
 import './SkillDetail.css';
 
 const RoadmapView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addSkill, skills } = useSkills();
   const [roadmap, setRoadmap] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -77,6 +79,7 @@ const RoadmapView = () => {
   const completedCount = Object.values(completedSteps).filter(Boolean).length;
   const progressPercentage = totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0;
   const isSkillMastered = totalSteps > 0 && completedCount === totalSteps;
+  const isInMySkills = roadmap && skills.includes(roadmap.name);
 
   useEffect(() => {
     if (roadmap && totalSteps > 0) {
@@ -192,6 +195,7 @@ const RoadmapView = () => {
   }
 
   const toggleStepCompletion = async (stepIndex) => {
+    if (!isInMySkills) return;
     const key = String(stepIndex);
     const wasCompleted = completedSteps[key];
     const next = { ...completedSteps, [key]: !wasCompleted };
@@ -240,9 +244,11 @@ const RoadmapView = () => {
         exit={{ opacity: 0 }}
       >
         <div className="skill-header">
-          <button onClick={() => navigate(-1)} className="back-button">
-            ← Back
-          </button>
+          <div className="skill-header-top">
+            <button onClick={() => navigate(-1)} className="back-button">
+              ← Back
+            </button>
+          </div>
           <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
             <h1 className="skill-title">
               {roadmap.name}
@@ -253,6 +259,45 @@ const RoadmapView = () => {
             </p>
           </motion.div>
 
+          {/* Add to My Skills - near progress bar; required to check off steps */}
+          <div className="skill-header-actions">
+            <motion.button
+              type="button"
+              className="add-to-my-skills-button"
+              onClick={() => addSkill(roadmap.name, id)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.25 }}
+            >
+              {isInMySkills ? 'In My Skills' : 'Add to My Skills'}
+            </motion.button>
+          </div>
+
+          {/* Progress Bar - same as SkillDetail */}
+          <motion.div
+            className="progress-bar-container"
+            initial={{ y: -30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <div className="progress-bar-header">
+              <span className="progress-label">Overall Progress</span>
+              <span className="progress-percentage">{Math.round(progressPercentage)}%</span>
+            </div>
+            <div className="progress-bar-track">
+              <motion.div
+                className="progress-bar-fill"
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercentage}%` }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              />
+            </div>
+            <div className="progress-stats">
+              <span>{completedCount} of {totalSteps} steps completed</span>
+            </div>
+          </motion.div>
         </div>
 
         <motion.div
@@ -317,17 +362,21 @@ const RoadmapView = () => {
               )}
 
               <div className="step-detail-completion">
-                <label className="completion-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={!!completedSteps[String(currentIndex)]}
-                    onChange={() => toggleStepCompletion(currentIndex)}
-                  />
-                  <span className="checkbox-custom" />
-                  <span className="checkbox-label">
-                    {completedSteps[String(currentIndex)] ? 'Completed ✓' : 'Mark as complete'}
-                  </span>
-                </label>
+                {isInMySkills ? (
+                  <label className="completion-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={!!completedSteps[String(currentIndex)]}
+                      onChange={() => toggleStepCompletion(currentIndex)}
+                    />
+                    <span className="checkbox-custom" />
+                    <span className="checkbox-label">
+                      {completedSteps[String(currentIndex)] ? 'Completed ✓' : 'Mark as complete'}
+                    </span>
+                  </label>
+                ) : (
+                  <p className="step-completion-locked">Add this guide to My Skills to check off steps.</p>
+                )}
               </div>
             </motion.div>
           )}

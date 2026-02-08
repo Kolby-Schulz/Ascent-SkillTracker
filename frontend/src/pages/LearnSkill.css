@@ -256,7 +256,8 @@
   font-weight: 500;
 }
 
-.learn-skill-add-button {
+/* Same button as roadmap page (add-to-my-skills-button) */
+.learn-skill-card .add-to-my-skills-button {
   width: 100%;
   padding: 12px;
   background: #D9BBA3;
@@ -269,9 +270,14 @@
   transition: all 0.2s;
 }
 
-.learn-skill-add-button:hover {
+.learn-skill-card .add-to-my-skills-button:hover {
   background: #c9a893;
   box-shadow: 0 4px 12px rgba(217, 187, 163, 0.4);
+}
+
+.learn-skill-card .add-to-my-skills-button.in-my-skills {
+  background: rgba(217, 187, 163, 0.5);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 /* Mobile */
