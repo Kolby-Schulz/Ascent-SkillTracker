@@ -264,7 +264,14 @@ const RoadmapView = () => {
             <motion.button
               type="button"
               className="add-to-my-skills-button"
-              onClick={() => addSkill(roadmap.name, id)}
+              onClick={async () => {
+                addSkill(roadmap.name, id);
+                try {
+                  await roadmapService.addLearner(id);
+                } catch {
+                  // e.g. not logged in or already a learner
+                }
+              }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               initial={{ y: -20, opacity: 0 }}
