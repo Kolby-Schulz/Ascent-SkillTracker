@@ -33,27 +33,51 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 70vh;
+  min-height: 90vh;
   padding: 40px 20px;
   text-align: center;
 }
 
-.hero-title {
-  font-size: 56px;
-  font-weight: 800;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3);
-  letter-spacing: 2px;
-  will-change: transform;
+/* Brand logo (Ascent + Reach New Heights) - hero version */
+.hero-section .brand-logo {
+  margin-bottom: 40px;
+  padding: 0;
+  border: none;
 }
 
-.hero-subtitle {
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 40px;
-  opacity: 0.95;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-  will-change: transform;
+.hero-section .brand-logo.hero-brand .brand-title {
+  font-size: 56px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  color: #ffffff;
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 0, 0, 0.5),
+    0 4px 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.hero-section .brand-logo.hero-brand .brand-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  border-radius: 2px;
+}
+
+.hero-section .brand-logo.hero-brand .brand-tagline {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .cta-buttons {
@@ -140,50 +164,15 @@
 
 
 
-.features-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 60px 20px;
-}
-
-.feature-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 16px;
-  padding: 30px;
-  transition: all 0.3s;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-}
-
-.feature-card h3 {
-  font-size: 24px;
-  margin-bottom: 12px;
-}
-
-.feature-card p {
-  font-size: 16px;
-  line-height: 1.6;
-  opacity: 0.9;
-}
-
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-  .hero-title {
+  .hero-section .brand-logo.hero-brand .brand-title {
     font-size: 40px;
   }
 
-  .hero-subtitle {
-    font-size: 18px;
+  .hero-section .brand-logo.hero-brand .brand-tagline {
+    font-size: 16px;
+    letter-spacing: 2px;
   }
 
   .cta-buttons {
@@ -195,10 +184,5 @@
 
   .cta-button {
     width: 100%;
-  }
-
-  .features-section {
-    grid-template-columns: 1fr;
-    padding: 40px 20px;
   }
 }

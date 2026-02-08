@@ -24,28 +24,21 @@ const Home = () => {
         exit={{ opacity: 0 }}
       >
       <div className="hero-section">
-        <motion.h1
-          className="hero-title"
+        <motion.div
+          className="brand-logo hero-brand"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          {t('home:title')}
-        </motion.h1>
-        <motion.p
-          className="hero-subtitle"
-          initial={{ y: -30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          {t('home:subtitle')}
-        </motion.p>
+          <h1 className="brand-title">Ascent</h1>
+          <p className="brand-tagline">Reach New Heights</p>
+        </motion.div>
 
         <motion.div
           className="cta-buttons"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.5 }}
         >
           <Link to="/register">
             <motion.button
@@ -67,28 +60,6 @@ const Home = () => {
           </Link>
         </motion.div>
       </div>
-
-      <motion.div
-        className="features-section"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-      >
-        <div className="feature-card">
-          <h3>📚 Structured Learning</h3>
-          <p>
-            Follow step-by-step roadmaps designed to help you master any skill
-          </p>
-        </div>
-        <div className="feature-card">
-          <h3>🎯 Track Progress</h3>
-          <p>Monitor your journey and celebrate milestones along the way</p>
-        </div>
-        <div className="feature-card">
-          <h3>🚀 Stay Motivated</h3>
-          <p>Visual roadmaps keep you engaged and focused on your goals</p>
-        </div>
-      </motion.div>
     </motion.div>
     </>
   );
