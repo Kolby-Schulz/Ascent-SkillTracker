@@ -16,12 +16,14 @@ exports.getMyMetrics = async (req, res, next) => {
     const skillsLearned = progressList.filter((p) => p.status === 'learned').length;
     const skillsInProgress = progressList.filter((p) => p.status === 'in_progress').length;
 
-    // Guides uploaded by user
+    // Roadmaps (guides) created by user — same count as Profile "my roadmaps"
+    const myRoadmaps = await Roadmap.find({ creator: userId }).lean();
+    const guidesUploaded = myRoadmaps.length;
+
+    // Guides (legacy/other) uploaded by user — for views/likes breakdown
     const myGuides = await Guide.find({ uploadedBy: userId })
       .populate('uploadedBy', 'username email')
       .lean();
-
-    const guidesUploaded = myGuides.length;
 
     // Total views across all guides uploaded by user
     const totalGuideViews = myGuides.reduce((sum, g) => sum + (g.views || 0), 0);
@@ -29,8 +31,7 @@ exports.getMyMetrics = async (req, res, next) => {
     // Total likes across all guides uploaded by user
     const totalGuideLikes = myGuides.reduce((sum, g) => sum + (g.likedBy?.length || 0), 0);
 
-    // Roadmaps created by user: total likes on those roadmaps
-    const myRoadmaps = await Roadmap.find({ creator: userId }).lean();
+    // Total likes on user's roadmaps (guides)
     const totalRoadmapLikes = myRoadmaps.reduce((sum, r) => sum + (r.likedBy?.length || 0), 0);
 
     // Per-guide breakdown: title, skill, views, likes, uploader

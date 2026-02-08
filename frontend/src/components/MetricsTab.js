@@ -131,6 +131,12 @@ const MetricsTab = () => {
     return () => clearInterval(interval);
   }, [fetchMetrics]);
 
+  useEffect(() => {
+    const onGuidesChanged = () => fetchMetrics();
+    window.addEventListener('ascent-guides-changed', onGuidesChanged);
+    return () => window.removeEventListener('ascent-guides-changed', onGuidesChanged);
+  }, [fetchMetrics]);
+
   const formatLastUpdated = (d) => {
     if (!d) return null;
     const now = new Date();

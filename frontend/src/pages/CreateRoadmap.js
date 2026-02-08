@@ -345,10 +345,8 @@ const CreateRoadmap = () => {
       const roadmapData = { ...buildRoadmapPayload(), status: "published" };
       if (editId) {
         await roadmapService.updateRoadmap(editId, roadmapData);
-        alert("Roadmap updated and published!");
       } else {
         await roadmapService.createRoadmap(roadmapData);
-        alert("Roadmap published successfully!");
       }
       navigate("/dashboard/profile");
     } catch (error) {

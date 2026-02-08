@@ -121,6 +121,7 @@ const Profile = () => {
     try {
       await roadmapService.deleteRoadmap(roadmapId);
       setRoadmaps((prev) => prev.filter((r) => r.id !== roadmapId));
+      window.dispatchEvent(new CustomEvent('ascent-guides-changed'));
     } catch (err) {
       console.error('Error deleting roadmap:', err);
       alert(err.error || t('profile:messages.deleteError'));

@@ -12,7 +12,7 @@ import './Auth.css';
 const Login = () => {
   const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
-  const { login, loginAsDemoUser } = useAuth();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -136,19 +136,6 @@ const Login = () => {
             whileTap={{ scale: 0.98 }}
           >
             {loading ? t('auth:login.signingIn') : t('auth:login.signIn')}
-          </motion.button>
-
-          <motion.button
-            type="button"
-            className="auth-button auth-button-demo"
-            onClick={() => {
-              loginAsDemoUser();
-              navigate('/dashboard');
-            }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            DEMO BUTTON REMOVE BEFORE DEVPOST
           </motion.button>
         </form>
 
