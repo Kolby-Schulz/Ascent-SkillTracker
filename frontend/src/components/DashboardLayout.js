@@ -105,7 +105,7 @@ const DashboardLayout = () => {
             )}
           </div>
         </div>
-        <MetricsTab />
+        {!isCreatePage && <MetricsTab />}
       </aside>
     </div>
   );
