@@ -1,6 +1,9 @@
 import apiClient from './api';
 
 export const userSkillService = {
+  /** Get current user's skill progress list from backend (source of truth) */
+  getMyProgress: () => apiClient.get('/user-skills'),
+
   /** Get other users (in DB) who are learning this skill by name */
   getUsersLearningSkill: (skillName) => {
     return apiClient.get('/user-skills/learning', {

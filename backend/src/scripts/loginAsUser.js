@@ -10,15 +10,36 @@
  *   4. Refresh the page
  */
 require('dotenv').config();
+const { execSync } = require('child_process');
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const { generateToken } = require('../utils/jwt');
 
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+
+function openBrowser(url) {
+  const quoted = `"${url.replace(/"/g, '\\"')}"`;
+  try {
+    if (process.platform === 'win32') {
+      execSync(`start "" ${quoted}`, { shell: true, stdio: 'ignore' });
+    } else if (process.platform === 'darwin') {
+      execSync(`open ${quoted}`, { stdio: 'ignore' });
+    } else {
+      execSync(`xdg-open ${quoted}`, { stdio: 'ignore' });
+    }
+  } catch (e) {
+    console.error('Could not open browser:', e.message);
+  }
+}
+
 async function run() {
-  const username = process.argv[2];
+  const args = process.argv.slice(2).filter((a) => a !== '--open');
+  const openBrowserFlag = process.argv.includes('--open');
+  const username = args[0];
   if (!username) {
-    console.error('Usage: node src/scripts/loginAsUser.js <username>');
+    console.error('Usage: node src/scripts/loginAsUser.js <username> [--open]');
     console.error('Example: node src/scripts/loginAsUser.js katsudom');
+    console.error('         node src/scripts/loginAsUser.js katsudom --open   (open browser and log in)');
     process.exit(1);
   }
 
@@ -45,14 +66,28 @@ async function run() {
     };
 
     console.log('--- Log in as:', user.username, '---');
-    console.log('');
-    console.log('Token (copy to localStorage key "token"):');
-    console.log(token);
-    console.log('');
-    console.log('User (copy to localStorage key "user"):');
-    console.log(JSON.stringify(userPayload));
-    console.log('');
-    console.log('Browser: DevTools -> Application -> Local Storage -> set BOTH "token" and "user" to the values above, then refresh.');
+
+    if (openBrowserFlag) {
+      const hash = `token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify(userPayload))}`;
+      const url = `${FRONTEND_URL}/dev-login#${hash}`;
+      console.log('Opening browser to log in…');
+      openBrowser(url);
+      console.log('If the app is running at', FRONTEND_URL + ', you should be logged in.');
+    } else {
+      console.log('');
+      console.log('1) Token - copy the ONE line below (ignore line wraps) into localStorage key "token":');
+      console.log('---BEGIN TOKEN---');
+      console.log(token);
+      console.log('---END TOKEN---');
+      console.log('');
+      console.log('2) User - copy the ONE line below (ignore line wraps) into localStorage key "user":');
+      console.log('---BEGIN USER---');
+      console.log(JSON.stringify(userPayload));
+      console.log('---END USER---');
+      console.log('');
+      console.log('Or run with --open to open the browser and log in automatically:');
+      console.log('  node src/scripts/loginAsUser.js', user.username, '--open');
+    }
   } catch (err) {
     console.error('Error:', err.message);
     process.exit(1);

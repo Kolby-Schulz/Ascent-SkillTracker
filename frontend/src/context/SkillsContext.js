@@ -1,9 +1,19 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { useAuth } from './AuthContext';
+import userSkillService from '../services/userSkillService';
 
 const SkillsContext = createContext();
 
-const STORAGE_KEY_SKILLS = 'user-skills-list';
-const STORAGE_KEY_ROADMAP_IDS = 'user-skills-roadmap-ids';
+const STORAGE_KEY_PREFIX_SKILLS = 'user-skills-list-';
+const STORAGE_KEY_PREFIX_ROADMAP_IDS = 'user-skills-roadmap-ids-';
+
+const getStorageKeys = (userId) => {
+  const suffix = userId || 'anon';
+  return {
+    skills: `${STORAGE_KEY_PREFIX_SKILLS}${suffix}`,
+    roadmapIds: `${STORAGE_KEY_PREFIX_ROADMAP_IDS}${suffix}`,
+  };
+};
 
 const loadStored = (key, fallback) => {
   try {
@@ -23,16 +33,45 @@ export const useSkills = () => {
 };
 
 export const SkillsProvider = ({ children }) => {
-  const [skills, setSkillsState] = useState(() =>
-    loadStored(STORAGE_KEY_SKILLS, ['Guitar', 'Web Development', 'Photography'])
-  );
-  const [roadmapIdsBySkillName, setRoadmapIdsBySkillName] = useState(() =>
-    loadStored(STORAGE_KEY_ROADMAP_IDS, {})
-  );
+  const { user } = useAuth();
+  const userId = user?.id;
+
+  const [skills, setSkillsState] = useState([]);
+  const [roadmapIdsBySkillName, setRoadmapIdsBySkillName] = useState({});
+
+  // Load this user's skills from backend (source of truth) when user changes; fallback to localStorage only if API fails
+  useEffect(() => {
+    if (!userId) {
+      setSkillsState([]);
+      setRoadmapIdsBySkillName({});
+      return;
+    }
+    const { skills: skillsKey, roadmapIds: roadmapIdsKey } = getStorageKeys(userId);
+    const storedRoadmapIds = loadStored(roadmapIdsKey, {});
+
+    const loadSkills = async () => {
+      try {
+        const res = await userSkillService.getMyProgress();
+        const progress = res?.data?.data?.progress;
+        const skillNames = Array.isArray(progress) ? progress.map((p) => p.skillName) : [];
+        setSkillsState(skillNames);
+        localStorage.setItem(skillsKey, JSON.stringify(skillNames));
+      } catch {
+        const stored = loadStored(skillsKey, null);
+        setSkillsState(Array.isArray(stored) ? stored : []);
+      }
+      setRoadmapIdsBySkillName(storedRoadmapIds && typeof storedRoadmapIds === 'object' ? storedRoadmapIds : {});
+    };
+
+    loadSkills();
+  }, [userId]);
 
   const setSkills = (newSkills) => {
     setSkillsState(newSkills);
-    localStorage.setItem(STORAGE_KEY_SKILLS, JSON.stringify(newSkills));
+    if (userId) {
+      const { skills: key } = getStorageKeys(userId);
+      localStorage.setItem(key, JSON.stringify(newSkills));
+    }
   };
 
   const addSkill = (skillName, roadmapId) => {
@@ -41,7 +80,10 @@ export const SkillsProvider = ({ children }) => {
       if (roadmapId) {
         setRoadmapIdsBySkillName((prev) => {
           const next = { ...prev, [skillName]: roadmapId };
-          localStorage.setItem(STORAGE_KEY_ROADMAP_IDS, JSON.stringify(next));
+          if (userId) {
+            const { roadmapIds: key } = getStorageKeys(userId);
+            localStorage.setItem(key, JSON.stringify(next));
+          }
           return next;
         });
       }
@@ -51,7 +93,10 @@ export const SkillsProvider = ({ children }) => {
     if (roadmapId) {
       setRoadmapIdsBySkillName((prev) => {
         const next = { ...prev, [skillName]: roadmapId };
-        localStorage.setItem(STORAGE_KEY_ROADMAP_IDS, JSON.stringify(next));
+        if (userId) {
+          const { roadmapIds: key } = getStorageKeys(userId);
+          localStorage.setItem(key, JSON.stringify(next));
+        }
         return next;
       });
     }
@@ -62,7 +107,10 @@ export const SkillsProvider = ({ children }) => {
     setRoadmapIdsBySkillName((prev) => {
       const next = { ...prev };
       delete next[skillName];
-      localStorage.setItem(STORAGE_KEY_ROADMAP_IDS, JSON.stringify(next));
+      if (userId) {
+        const { roadmapIds: key } = getStorageKeys(userId);
+        localStorage.setItem(key, JSON.stringify(next));
+      }
       return next;
     });
   };

@@ -19,6 +19,7 @@ import Feed from './pages/Feed';
 import Friends from './pages/Friends';
 import Leaderboard from './pages/Leaderboard';
 import RoadmapView from './pages/RoadmapView';
+import DevLogin from './pages/DevLogin';
 import './App.css';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <div className="App">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/dev-login" element={<DevLogin />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route
