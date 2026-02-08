@@ -16,14 +16,21 @@ const postRoutes = require('./routes/postRoutes');
 
 const app = express();
 
-// Security middleware
-app.use(helmet());
-
-// CORS (supports single origin or array)
+// CORS (supports single origin or array) - must be before other middleware
 app.use(
   cors({
     origin: Array.isArray(config.corsOrigin) ? config.corsOrigin : config.corsOrigin,
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
+// Security middleware (configured to work with CORS)
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    crossOriginEmbedderPolicy: false,
   })
 );
 
