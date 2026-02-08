@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import LearnSkill from './pages/LearnSkill';
+import SkillDetail from './pages/SkillDetail';
 import './App.css';
 
 function App() {
@@ -32,6 +33,14 @@ function App() {
                 <Route index element={<Dashboard />} />
                 <Route path="learn-skill" element={<LearnSkill />} />
               </Route>
+              <Route
+                path="/skill/:skillId"
+                element={
+                  <ProtectedRoute>
+                    <SkillDetail />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
