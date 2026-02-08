@@ -1,20 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import MetricsTab from './MetricsTab';
 import DayNightCycle from './DayNightCycle';
 import './DashboardLayout.css';
 
-const SIDEBAR_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', path: '/dashboard' },
-  { id: 'create', label: 'Create', path: '/dashboard/create', icon: '➕' },
-  { id: 'learn-skill', label: 'Learn Skill', path: '/dashboard/learn-skill' },
-  { id: 'feed', label: 'Feed', path: '/dashboard/feed' },
-  { id: 'friends', label: 'Friends', path: '/dashboard/friends' },
-  { id: 'settings', label: 'Settings', path: '/dashboard/settings' },
-];
-
 const DashboardLayout = () => {
+  const { t } = useTranslation(['navigation', 'common']);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +16,15 @@ const DashboardLayout = () => {
 
   const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
   const backgroundImage = process.env.PUBLIC_URL + '/images/6229893.jpg';
+
+  const SIDEBAR_ITEMS = [
+    { id: 'dashboard', label: t('navigation:dashboard'), path: '/dashboard' },
+    { id: 'create', label: t('navigation:create'), path: '/dashboard/create', icon: '➕' },
+    { id: 'learn-skill', label: t('navigation:learnSkill'), path: '/dashboard/learn-skill' },
+    { id: 'feed', label: t('navigation:feed'), path: '/dashboard/feed' },
+    { id: 'friends', label: t('navigation:friends'), path: '/dashboard/friends' },
+    { id: 'settings', label: t('navigation:settings'), path: '/dashboard/settings' },
+  ];
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -85,13 +87,13 @@ const DashboardLayout = () => {
             {profileMenuOpen && (
               <div className="profile-dropdown glass-panel">
                 <button className="dropdown-item" onClick={() => navigate('/dashboard/profile')}>
-                  Profile
+                  {t('navigation:profile')}
                 </button>
                 <button className="dropdown-item" onClick={() => navigate('/dashboard/settings')}>
-                  Settings
+                  {t('navigation:settings')}
                 </button>
                 <button className="dropdown-item" onClick={logout}>
-                  Logout
+                  {t('common:buttons.logout')}
                 </button>
               </div>
             )}

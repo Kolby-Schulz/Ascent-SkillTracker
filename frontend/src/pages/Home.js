@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import FlyingBirds from '../components/FlyingBirds';
 import DriftingClouds from '../components/DriftingClouds';
 import WindEffect from '../components/WindEffect';
 import './Home.css';
 
 const Home = () => {
+  const { t } = useTranslation(['home', 'common']);
   const backgroundImage = process.env.PUBLIC_URL + '/images/6229869.jpg';
 
   return (
@@ -28,7 +30,7 @@ const Home = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Ascent
+          {t('home:title')}
         </motion.h1>
         <motion.p
           className="hero-subtitle"
@@ -36,7 +38,7 @@ const Home = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          Reach New Heights
+          {t('home:subtitle')}
         </motion.p>
 
         <motion.div
@@ -51,7 +53,7 @@ const Home = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Get Started
+              {t('home:getStarted')}
             </motion.button>
           </Link>
           <Link to="/login">
@@ -60,7 +62,7 @@ const Home = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Sign In
+              {t('home:signIn')}
             </motion.button>
           </Link>
         </motion.div>

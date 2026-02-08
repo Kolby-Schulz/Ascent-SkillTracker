@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { login as loginService } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 import FlyingBirds from '../components/FlyingBirds';
@@ -9,6 +10,7 @@ import WindEffect from '../components/WindEffect';
 import './Auth.css';
 
 const Login = () => {
+  const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
   const { login, loginAsDemoUser } = useAuth();
   const [formData, setFormData] = useState({
@@ -83,8 +85,8 @@ const Login = () => {
         transition={{ duration: 0.3 }}
       >
         <div className="auth-card">
-        <h1 className="auth-title">Welcome Back</h1>
-        <p className="auth-subtitle">Sign in to continue your learning journey</p>
+        <h1 className="auth-title">{t('auth:login.title')}</h1>
+        <p className="auth-subtitle">{t('auth:login.subtitle')}</p>
 
         {error && (
           <motion.div
@@ -98,28 +100,28 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">{t('auth:login.username')}</label>
             <input
               type="text"
               id="username"
               name="username"
               value={username}
               onChange={handleChange}
-              placeholder="Enter your username"
+              placeholder={t('auth:login.usernamePlaceholder')}
               required
               autoComplete="username"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('auth:login.password')}</label>
             <input
               type="password"
               id="password"
               name="password"
               value={password}
               onChange={handleChange}
-              placeholder="Enter your password"
+              placeholder={t('auth:login.passwordPlaceholder')}
               required
               autoComplete="current-password"
               minLength="6"
@@ -133,7 +135,7 @@ const Login = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('auth:login.signingIn') : t('auth:login.signIn')}
           </motion.button>
 
           <motion.button
@@ -151,9 +153,9 @@ const Login = () => {
         </form>
 
         <p className="auth-footer">
-          Don't have an account?{' '}
+          {t('auth:login.noAccount')}{' '}
           <Link to="/register" className="auth-link">
-            Sign up
+            {t('auth:login.signUp')}
           </Link>
         </p>
       </div>

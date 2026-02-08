@@ -1,0 +1,33 @@
+{
+  "title": "Friends",
+  "subtitle": "Manage your connections and discover new friends",
+  "tabs": {
+    "friends": "My Friends",
+    "requests": "Requests",
+    "search": "Search Users"
+  },
+  "friends": {
+    "noFriends": "You don't have any friends yet. Search for users to add friends!",
+    "remove": "Remove"
+  },
+  "requests": {
+    "noRequests": "No pending friend requests",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "search": {
+    "placeholder": "Search by username or email...",
+    "search": "Search",
+    "noResults": "No users found",
+    "addFriend": "Add Friend",
+    "requestSent": "Request Sent",
+    "friends": "Friends",
+    "private": "Private"
+  },
+  "messages": {
+    "requestSent": "Friend request sent!",
+    "requestAccepted": "Friend request accepted!",
+    "friendRemoved": "Friend removed",
+    "searchError": "Please enter at least 2 characters to search"
+  }
+}

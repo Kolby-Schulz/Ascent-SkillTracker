@@ -1,0 +1,39 @@
+{
+  "buttons": {
+    "getStarted": "Comenzar",
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "continue": "Continuar",
+    "search": "Buscar",
+    "addFriend": "Agregar Amigo",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "remove": "Eliminar",
+    "logout": "Cerrar Sesión",
+    "create": "Crear",
+    "view": "Ver",
+    "share": "Compartir"
+  },
+  "labels": {
+    "username": "Nombre de Usuario",
+    "email": "Correo Electrónico",
+    "password": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Nueva Contraseña",
+    "search": "Buscar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  },
+  "messages": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "Operación exitosa"
+  }
+}

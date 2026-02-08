@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { updateProfile } from '../services/authService';
@@ -8,8 +9,10 @@ import Notification from '../components/Notification';
 import './Settings.css';
 
 const Settings = () => {
+  const { t, i18n } = useTranslation(['settings', 'common']);
   const { user, setUser } = useAuth();
   const { theme, setTheme } = useTheme();
+  const [language, setLanguage] = useState(i18n.language);
   const [activeTab, setActiveTab] = useState('account');
   const [privacy, setPrivacy] = useState(() => {
     // Initialize from user object, fallback to 'public'
@@ -39,7 +42,9 @@ const Settings = () => {
     if (user?.privacy) {
       setPrivacy(user.privacy);
     }
-  }, [user]);
+    // Sync language with i18n
+    setLanguage(i18n.language);
+  }, [user, i18n.language]);
 
   // Add/remove blur class on body when modal is open
   useEffect(() => {
@@ -81,7 +86,7 @@ const Settings = () => {
         }
         setNotification({
           isVisible: true,
-          message: 'Privacy settings updated successfully!',
+          message: t('settings:notifications.privacyUpdated'),
           type: 'success',
         });
       } else {
@@ -158,10 +163,15 @@ const Settings = () => {
   };
 
 
+  const handleLanguageChange = (newLanguage) => {
+    i18n.changeLanguage(newLanguage);
+    setLanguage(newLanguage);
+  };
+
   const tabs = [
-    { id: 'account', label: 'Account' },
-    { id: 'security', label: 'Security' },
-    { id: 'preferences', label: 'Preferences' },
+    { id: 'account', label: t('settings:tabs.account') },
+    { id: 'security', label: t('settings:tabs.security') },
+    { id: 'preferences', label: t('settings:tabs.preferences') },
   ];
 
   return (
@@ -172,8 +182,8 @@ const Settings = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="settings-header">
-        <h1 className="settings-title">Settings</h1>
-        <p className="settings-subtitle">Manage your account settings and preferences</p>
+        <h1 className="settings-title">{t('settings:title')}</h1>
+        <p className="settings-subtitle">{t('settings:subtitle')}</p>
       </div>
 
       <div className="settings-content">
@@ -200,42 +210,42 @@ const Settings = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h2 className="section-title">Account Information</h2>
+              <h2 className="section-title">{t('settings:account.title')}</h2>
               <form onSubmit={handleSaveAccount} className="settings-form">
                 <div className="form-group">
-                  <label htmlFor="username">Username</label>
+                  <label htmlFor="username">{t('settings:account.username')}</label>
                   <input
                     type="text"
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter your username"
+                    placeholder={t('settings:account.usernamePlaceholder')}
                     disabled={!isEditingAccount}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="email">{t('settings:account.email')}</label>
                   <input
                     type="email"
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
+                    placeholder={t('settings:account.emailPlaceholder')}
                     disabled={!isEditingAccount}
                   />
                 </div>
                 <div className="form-actions">
                   {!isEditingAccount ? (
-                    <button type="button" onClick={handleEditAccount} className="settings-button-edit">
-                      Edit
+                    <button type="button" onClick={handleEditAccount} className="settings-button-edit settings-button-purple">
+                      {t('common:buttons.edit')}
                     </button>
                   ) : (
                     <>
                       <button type="button" onClick={handleCancelAccount} className="settings-button-cancel">
-                        Cancel
+                        {t('common:buttons.cancel')}
                       </button>
                       <button type="submit" className="settings-button settings-button-purple">
-                        Save Changes
+                        {t('settings:account.saveChanges')}
                       </button>
                     </>
                   )}
@@ -252,53 +262,53 @@ const Settings = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h2 className="section-title">Change Password</h2>
+              <h2 className="section-title">{t('settings:security.title')}</h2>
               <form onSubmit={handleChangePassword} className="settings-form">
                 <div className="form-group">
-                  <label htmlFor="currentPassword">Current Password</label>
+                  <label htmlFor="currentPassword">{t('settings:security.currentPassword')}</label>
                   <input
                     type="password"
                     id="currentPassword"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    placeholder="Enter current password"
+                    placeholder={t('settings:security.currentPasswordPlaceholder')}
                     disabled={!isEditingSecurity}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="newPassword">New Password</label>
+                  <label htmlFor="newPassword">{t('settings:security.newPassword')}</label>
                   <input
                     type="password"
                     id="newPassword"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Enter new password"
+                    placeholder={t('settings:security.newPasswordPlaceholder')}
                     disabled={!isEditingSecurity}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="confirmPassword">Confirm New Password</label>
+                  <label htmlFor="confirmPassword">{t('settings:security.confirmPassword')}</label>
                   <input
                     type="password"
                     id="confirmPassword"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm new password"
+                    placeholder={t('settings:security.confirmPasswordPlaceholder')}
                     disabled={!isEditingSecurity}
                   />
                 </div>
                 <div className="form-actions">
                   {!isEditingSecurity ? (
-                    <button type="button" onClick={handleEditSecurity} className="settings-button-edit">
-                      Edit
+                    <button type="button" onClick={handleEditSecurity} className="settings-button-edit settings-button-purple">
+                      {t('common:buttons.edit')}
                     </button>
                   ) : (
                     <>
                       <button type="button" onClick={handleCancelSecurity} className="settings-button-cancel">
-                        Cancel
+                        {t('common:buttons.cancel')}
                       </button>
                       <button type="submit" className="settings-button settings-button-purple">
-                        Update Password
+                        {t('settings:security.updatePassword')}
                       </button>
                     </>
                   )}
@@ -315,48 +325,63 @@ const Settings = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h2 className="section-title">App Preferences</h2>
+              <h2 className="section-title">{t('settings:preferences.title')}</h2>
               <div className="settings-form">
                 <div className="form-group">
-                  <label htmlFor="theme">Theme</label>
+                  <label htmlFor="language">{t('settings:preferences.language')}</label>
+                  <select
+                    id="language"
+                    value={language}
+                    onChange={(e) => handleLanguageChange(e.target.value)}
+                    className="settings-select"
+                  >
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                  </select>
+                  <p className="field-description">
+                    {t('settings:preferences.languageDescription')}
+                  </p>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="theme">{t('settings:preferences.theme')}</label>
                   <select
                     id="theme"
                     value={theme}
                     onChange={(e) => setTheme(e.target.value)}
                     className="settings-select"
                   >
-                    <option value="auto">Auto (Sun moves across screen)</option>
-                    <option value="light">Light (Always day time)</option>
-                    <option value="dark">Dark (Always night time with stars)</option>
+                    <option value="auto">{t('settings:preferences.themeOptions.auto')}</option>
+                    <option value="light">{t('settings:preferences.themeOptions.light')}</option>
+                    <option value="dark">{t('settings:preferences.themeOptions.dark')}</option>
                   </select>
                   <p className="field-description">
-                    {theme === 'auto' && 'The sun will move across the screen in a day/night cycle'}
-                    {theme === 'light' && 'The dashboard will stay in day time mode'}
-                    {theme === 'dark' && 'The dashboard will stay in night time mode with twinkling stars'}
+                    {theme === 'auto' && t('settings:preferences.themeDescriptions.auto')}
+                    {theme === 'light' && t('settings:preferences.themeDescriptions.light')}
+                    {theme === 'dark' && t('settings:preferences.themeDescriptions.dark')}
                   </p>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="privacy">Privacy Setting</label>
+                  <label htmlFor="privacy">{t('settings:preferences.privacy')}</label>
                   <div className="privacy-toggle">
                     <button
                       type="button"
                       className={`privacy-option ${privacy === 'public' ? 'active' : ''}`}
                       onClick={() => handlePrivacyChange('public')}
                     >
-                      Public
+                      {t('settings:preferences.privacyOptions.public')}
                     </button>
                     <button
                       type="button"
                       className={`privacy-option ${privacy === 'private' ? 'active' : ''}`}
                       onClick={() => handlePrivacyChange('private')}
                     >
-                      Private
+                      {t('settings:preferences.privacyOptions.private')}
                     </button>
                   </div>
                   <p className="field-description">
                     {privacy === 'public'
-                      ? 'Your profile and accomplished skills are visible to everyone'
-                      : 'Your profile and skills are only visible to your friends'}
+                      ? t('settings:preferences.privacyDescriptions.public')
+                      : t('settings:preferences.privacyDescriptions.private')}
                   </p>
                 </div>
               </div>
@@ -370,10 +395,10 @@ const Settings = () => {
         isOpen={showConfirmationModal}
         onClose={handleCancelPrivacyChange}
         onConfirm={handleConfirmPrivacyChange}
-        title="Switch to Private Mode?"
-        message="By switching to private mode, you will no longer appear in the public feed and other users will need to search for you to find your profile. Only your friends will be able to see your profile and accomplished skills. Are you sure you want to continue?"
-        confirmText="Yes, Make Private"
-        cancelText="Cancel"
+        title={t('settings:modal.privacyTitle')}
+        message={t('settings:modal.privacyMessage')}
+        confirmText={t('settings:modal.confirmPrivate')}
+        cancelText={t('common:buttons.cancel')}
       />
 
       {/* Notification */}

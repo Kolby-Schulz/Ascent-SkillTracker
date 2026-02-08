@@ -1,0 +1,63 @@
+{
+  "title": "Configuración",
+  "subtitle": "Administra la configuración y preferencias de tu cuenta",
+  "tabs": {
+    "account": "Cuenta",
+    "security": "Seguridad",
+    "preferences": "Preferencias"
+  },
+  "account": {
+    "title": "Información de la Cuenta",
+    "username": "Nombre de Usuario",
+    "email": "Correo Electrónico",
+    "usernamePlaceholder": "Ingresa tu nombre de usuario",
+    "emailPlaceholder": "Ingresa tu correo electrónico",
+    "saveChanges": "Guardar Cambios"
+  },
+  "security": {
+    "title": "Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Nueva Contraseña",
+    "currentPasswordPlaceholder": "Ingresa la contraseña actual",
+    "newPasswordPlaceholder": "Ingresa la nueva contraseña",
+    "confirmPasswordPlaceholder": "Confirma la nueva contraseña",
+    "updatePassword": "Actualizar Contraseña"
+  },
+  "preferences": {
+    "title": "Preferencias de la Aplicación",
+    "theme": "Tema",
+    "themeOptions": {
+      "auto": "Automático (El sol se mueve por la pantalla)",
+      "light": "Claro (Siempre de día)",
+      "dark": "Oscuro (Siempre de noche con estrellas)"
+    },
+    "themeDescriptions": {
+      "auto": "El sol se moverá por la pantalla en un ciclo día/noche",
+      "light": "El panel de control permanecerá en modo diurno",
+      "dark": "El panel de control permanecerá en modo nocturno con estrellas centelleantes"
+    },
+    "language": "Idioma",
+    "languageDescription": "Elige tu idioma preferido para la interfaz de la aplicación",
+    "privacy": "Configuración de Privacidad",
+    "privacyOptions": {
+      "public": "Público",
+      "private": "Privado"
+    },
+    "privacyDescriptions": {
+      "public": "Tu perfil y habilidades logradas son visibles para todos",
+      "private": "Tu perfil y habilidades solo son visibles para tus amigos"
+    },
+    "savePrivacy": "Guardar Configuración de Privacidad"
+  },
+  "modal": {
+    "privacyTitle": "¿Cambiar a Modo Privado?",
+    "privacyMessage": "Al cambiar a modo privado, ya no aparecerás en el feed público y otros usuarios necesitarán buscarte para encontrar tu perfil. Solo tus amigos podrán ver tu perfil y habilidades logradas. ¿Estás seguro de que quieres continuar?",
+    "confirmPrivate": "Sí, Hacer Privado"
+  },
+  "notifications": {
+    "privacyUpdated": "¡Configuración de privacidad actualizada exitosamente!",
+    "accountUpdated": "¡Configuración de cuenta actualizada exitosamente!",
+    "passwordUpdated": "¡Contraseña actualizada exitosamente!"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "title": "Settings",
+  "subtitle": "Manage your account settings and preferences",
+  "tabs": {
+    "account": "Account",
+    "security": "Security",
+    "preferences": "Preferences"
+  },
+  "account": {
+    "title": "Account Information",
+    "username": "Username",
+    "email": "Email",
+    "usernamePlaceholder": "Enter your username",
+    "emailPlaceholder": "Enter your email",
+    "saveChanges": "Save Changes"
+  },
+  "security": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "currentPasswordPlaceholder": "Enter current password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "updatePassword": "Update Password"
+  },
+  "preferences": {
+    "title": "App Preferences",
+    "theme": "Theme",
+    "themeOptions": {
+      "auto": "Auto (Sun moves across screen)",
+      "light": "Light (Always day time)",
+      "dark": "Dark (Always night time with stars)"
+    },
+    "themeDescriptions": {
+      "auto": "The sun will move across the screen in a day/night cycle",
+      "light": "The dashboard will stay in day time mode",
+      "dark": "The dashboard will stay in night time mode with twinkling stars"
+    },
+    "language": "Language",
+    "languageDescription": "Choose your preferred language for the application interface",
+    "privacy": "Privacy Setting",
+    "privacyOptions": {
+      "public": "Public",
+      "private": "Private"
+    },
+    "privacyDescriptions": {
+      "public": "Your profile and accomplished skills are visible to everyone",
+      "private": "Your profile and skills are only visible to your friends"
+    },
+    "savePrivacy": "Save Privacy Settings"
+  },
+  "modal": {
+    "privacyTitle": "Switch to Private Mode?",
+    "privacyMessage": "By switching to private mode, you will no longer appear in the public feed and other users will need to search for you to find your profile. Only your friends will be able to see your profile and accomplished skills. Are you sure you want to continue?",
+    "confirmPrivate": "Yes, Make Private"
+  },
+  "notifications": {
+    "privacyUpdated": "Privacy settings updated successfully!",
+    "accountUpdated": "Account settings updated successfully!",
+    "passwordUpdated": "Password updated successfully!"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "buttons": {
+    "getStarted": "Get Started",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "continue": "Continue",
+    "search": "Search",
+    "addFriend": "Add Friend",
+    "accept": "Accept",
+    "reject": "Reject",
+    "remove": "Remove",
+    "logout": "Logout",
+    "create": "Create",
+    "view": "View",
+    "share": "Share"
+  },
+  "labels": {
+    "username": "Username",
+    "email": "Email",
+    "password": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Operation successful"
+  }
+}

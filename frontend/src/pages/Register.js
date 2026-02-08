@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { register as registerService } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 import FlyingBirds from '../components/FlyingBirds';
@@ -9,6 +10,7 @@ import WindEffect from '../components/WindEffect';
 import './Auth.css';
 
 const Register = () => {
+  const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
@@ -108,8 +110,8 @@ const Register = () => {
         transition={{ duration: 0.3 }}
       >
         <div className="auth-card">
-        <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Start your skill learning journey today</p>
+        <h1 className="auth-title">{t('auth:register.title')}</h1>
+        <p className="auth-subtitle">{t('auth:register.subtitle')}</p>
 
         {error && (
           <motion.div
@@ -123,14 +125,14 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">{t('auth:register.username')}</label>
             <input
               type="text"
               id="username"
               name="username"
               value={username}
               onChange={handleChange}
-              placeholder="Choose a username (letters, numbers, _ or -)"
+              placeholder={t('auth:register.usernamePlaceholder')}
               required
               autoComplete="username"
               minLength="2"
@@ -138,28 +140,28 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('auth:register.email')}</label>
             <input
               type="email"
               id="email"
               name="email"
               value={email}
               onChange={handleChange}
-              placeholder="your.email@example.com"
+              placeholder={t('auth:register.emailPlaceholder')}
               required
               autoComplete="email"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('auth:register.password')}</label>
             <input
               type="password"
               id="password"
               name="password"
               value={password}
               onChange={handleChange}
-              placeholder="Minimum 6 characters"
+              placeholder={t('auth:register.passwordPlaceholder')}
               required
               autoComplete="new-password"
               minLength="6"
@@ -167,14 +169,14 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
+            <label htmlFor="confirmPassword">{t('auth:register.confirmPassword')}</label>
             <input
               type="password"
               id="confirmPassword"
               name="confirmPassword"
               value={confirmPassword}
               onChange={handleChange}
-              placeholder="Re-enter your password"
+              placeholder={t('auth:register.confirmPasswordPlaceholder')}
               required
               autoComplete="new-password"
               minLength="6"
@@ -188,14 +190,14 @@ const Register = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? t('auth:register.creating') : t('auth:register.createAccount')}
           </motion.button>
         </form>
 
         <p className="auth-footer">
-          Already have an account?{' '}
+          {t('auth:register.hasAccount')}{' '}
           <Link to="/login" className="auth-link">
-            Sign in
+            {t('auth:register.signIn')}
           </Link>
         </p>
       </div>

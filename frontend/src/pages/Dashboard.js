@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSkills } from '../context/SkillsContext';
@@ -28,6 +29,7 @@ const getRandomSuggestedSkills = (count = 5) => {
 };
 
 const Dashboard = () => {
+  const { t } = useTranslation(['dashboard', 'common']);
   const { user } = useAuth();
   const { skills, removeSkill, getRoadmapId } = useSkills();
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ const Dashboard = () => {
         </div>
 
         <div className="skills-section">
-          <h2 className="skills-title">Your Skills</h2>
+          <h2 className="skills-title">{t('dashboard:skillsInProgress')}</h2>
 
           <div className="skills-grid">
             {sortedSkills.map((skill, index) => {

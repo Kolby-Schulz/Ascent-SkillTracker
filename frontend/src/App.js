@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import './i18n/config'; // Initialize i18n
 import { AuthProvider } from './context/AuthContext';
 import { SkillsProvider } from './context/SkillsContext';
 import { ThemeProvider } from './context/ThemeContext';
