@@ -118,9 +118,7 @@ const Profile = () => {
           <div className="profile-info">
             <h1 className="profile-username">{userDisplayName}</h1>
             <p className="profile-stats">
-              {roadmaps.length} {roadmaps.length !== 1 ? t('profile:stats.roadmapsCreatedPlural') : t('profile:stats.roadmapsCreated')} {t('profile:stats.created')}
-              {' • '}
-              {roadmaps.reduce((sum, r) => sum + r.studentsCount, 0)} {t('profile:stats.totalStudents')}
+              {roadmaps.length} {roadmaps.length !== 1 ? t('profile:stats.guidesCreatedPlural') : t('profile:stats.guidesCreated')} {t('profile:stats.created')}
             </p>
           </div>
         </div>

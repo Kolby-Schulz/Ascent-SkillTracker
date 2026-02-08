@@ -1,7 +1,7 @@
 {
   "title": "Profile",
-  "createNewRoadmap": "Create New Roadmap",
-  "myRoadmaps": "My Created Roadmaps",
+  "createNewRoadmap": "Create New Guide",
+  "myRoadmaps": "My Created Guides",
   "achievements": "Achievements & Streaks",
   "timeline": {
     "tab": "Timeline",
@@ -23,16 +23,17 @@
     "drafts": "Drafts"
   },
   "stats": {
-    "created": "created",
+    "created": "Created",
     "roadmapsCreated": "roadmap",
     "roadmapsCreatedPlural": "roadmaps",
-    "totalStudents": "total students"
+    "guidesCreated": "Guide",
+    "guidesCreatedPlural": "Guides"
   },
   "roadmap": {
     "published": "✓ Published",
     "draft": "📝 Draft",
     "subSkills": "sub-skills",
-    "students": "students",
+    "students": "learners",
     "created": "Created",
     "updated": "Updated",
     "view": "👁️ View",

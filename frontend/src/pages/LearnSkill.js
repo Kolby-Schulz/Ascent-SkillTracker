@@ -21,7 +21,7 @@ const TAG_OPTIONS = [
 ];
 
 const LearnSkill = () => {
-  const { addSkill } = useSkills();
+  const { addSkill, skills } = useSkills();
   const navigate = useNavigate();
   const [selectedTag, setSelectedTag] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -68,7 +68,7 @@ const LearnSkill = () => {
   const handleAddSkill = (e, skill) => {
     e.stopPropagation();
     addSkill(skill.name, skill.id);
-    navigate('/dashboard');
+    if (!skills.includes(skill.name)) navigate('/dashboard');
   };
 
   const handleLike = async (e, skill) => {
@@ -176,12 +176,12 @@ const LearnSkill = () => {
               </div>
               <motion.button
                 type="button"
-                className="learn-skill-add-button"
+                className={`add-to-my-skills-button ${skills.includes(skill.name) ? 'in-my-skills' : ''}`}
                 onClick={(e) => handleAddSkill(e, skill)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Add to My Skills
+                {skills.includes(skill.name) ? 'In My Skills' : 'Add to My Skills'}
               </motion.button>
             </motion.div>
           ))}
