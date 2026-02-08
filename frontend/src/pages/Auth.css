@@ -162,6 +162,19 @@
   cursor: not-allowed;
 }
 
+/* DEMO BUTTON REMOVE BEFORE DEVPOST */
+.auth-button-demo {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.6);
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.auth-button-demo:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
 .auth-footer {
   text-align: center;
   margin-top: 24px;
