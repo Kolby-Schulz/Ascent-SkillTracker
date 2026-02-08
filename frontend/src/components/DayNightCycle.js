@@ -1,9 +1,12 @@
 import React from 'react';
+import { useTheme } from '../context/ThemeContext';
 import './DayNightCycle.css';
 
 const DayNightCycle = () => {
+  const { theme } = useTheme();
+
   return (
-    <div className="day-night-cycle">
+    <div className={`day-night-cycle theme-${theme}`}>
       {/* Sun/Moon that moves across the sky */}
       <div className="sun-moon" />
       
