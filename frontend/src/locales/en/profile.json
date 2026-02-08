@@ -3,6 +3,20 @@
   "createNewRoadmap": "Create New Roadmap",
   "myRoadmaps": "My Created Roadmaps",
   "achievements": "Achievements & Streaks",
+  "timeline": {
+    "tab": "Timeline",
+    "title": "Learning Timeline",
+    "subtitle": "Your journey through {{count}} completed skills",
+    "empty": {
+      "title": "No Skills Completed Yet",
+      "description": "Complete your first skill to see it appear on your timeline!"
+    }
+  },
+  "theme": {
+    "tab": "Theme",
+    "title": "Customize Profile Theme",
+    "description": "Choose a color theme for your profile avatar and elements"
+  },
   "filters": {
     "all": "All",
     "published": "Published",

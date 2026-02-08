@@ -301,6 +301,10 @@
 }
 
 /* Step Completion Checkbox */
+.code-playground-section {
+  margin: 1.5rem 0;
+}
+
 .step-completion {
   margin-top: auto;
   padding-top: 20px;
