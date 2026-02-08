@@ -13,6 +13,7 @@ const Friends = () => {
   const [requests, setRequests] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -49,21 +50,17 @@ const Friends = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (searchQuery.length < 2) {
+    if (searchQuery.trim().length < 2) {
       alert(t('friends:messages.searchError'));
       return;
     }
 
     setLoading(true);
+    setHasSearched(true);
     try {
-      const response = await friendService.searchUsers(searchQuery);
-      console.log('Search results:', response.data); // Debug log
+      const response = await friendService.searchUsers(searchQuery.trim());
       const users = response.data?.data?.users || response.data?.users || [];
       setSearchResults(users);
-      if (users.length === 0) {
-        // No results found - this is normal, not an error
-        console.log('No users found matching:', searchQuery);
-      }
     } catch (error) {
       console.error('Error searching users:', error);
       const errorMessage = error.response?.data?.error || error.message || t('friends:messages.searchError');
@@ -77,15 +74,15 @@ const Friends = () => {
   const handleSendRequest = async (userId) => {
     try {
       await friendService.sendFriendRequest(userId);
-      // Update search results
       const updatedResults = searchResults.map((u) =>
-        u.id === userId ? { ...u, relationshipStatus: 'pending' } : u
+        (u.id === userId || u._id === userId) ? { ...u, relationshipStatus: 'pending' } : u
       );
       setSearchResults(updatedResults);
       alert(t('friends:messages.requestSent'));
     } catch (error) {
       console.error('Error sending friend request:', error);
-      alert(error.response?.data?.error || t('friends:messages.requestSent'));
+      const msg = error.response?.data?.error || error.message || t('friends:messages.requestFailed');
+      alert(msg);
     }
   };
 
@@ -244,6 +241,7 @@ const Friends = () => {
 
         {!loading && activeTab === 'search' && (
           <div className="search-section">
+            <p className="search-hint">{t('friends:search.hint')}</p>
             <form onSubmit={handleSearch} className="search-form">
               <input
                 type="text"
@@ -251,17 +249,25 @@ const Friends = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('friends:search.placeholder')}
                 className="search-input"
+                minLength={2}
+                autoComplete="off"
               />
-              <button type="submit" className="search-button">
+              <button type="submit" className="search-button" disabled={searchQuery.trim().length < 2}>
                 {t('friends:search.search')}
               </button>
             </form>
+
+            {hasSearched && searchResults.length === 0 && (
+              <div className="search-empty">
+                <p>{t('friends:search.noResults')}</p>
+              </div>
+            )}
 
             {searchResults.length > 0 && (
               <div className="search-results">
                 {searchResults.map((user) => (
                   <motion.div
-                    key={user.id}
+                    key={user.id || user._id}
                     className="user-card glass-panel"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -271,7 +277,7 @@ const Friends = () => {
                         <img src={user.profilePicture} alt={user.username} />
                       ) : (
                         <div className="avatar-placeholder">
-                          {user.username.charAt(0).toUpperCase()}
+                          {user.username?.charAt(0).toUpperCase()}
                         </div>
                       )}
                     </div>
@@ -286,7 +292,7 @@ const Friends = () => {
                       {user.relationshipStatus === null && (
                         <button
                           className="add-friend-button"
-                          onClick={() => handleSendRequest(user.id)}
+                          onClick={() => handleSendRequest(user.id || user._id)}
                         >
                           {t('friends:search.addFriend')}
                         </button>

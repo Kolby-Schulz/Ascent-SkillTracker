@@ -18,7 +18,8 @@
   "search": {
     "placeholder": "Buscar por nombre de usuario o correo electrónico...",
     "search": "Buscar",
-    "noResults": "No se encontraron usuarios",
+    "hint": "Escribe al menos 2 caracteres para buscar usuarios por nombre o correo y agregarlos como amigos.",
+    "noResults": "No se encontraron usuarios. Prueba otra búsqueda.",
     "addFriend": "Agregar Amigo",
     "requestSent": "Solicitud Enviada",
     "friends": "Amigos",
@@ -29,6 +30,7 @@
     "requestAccepted": "¡Solicitud de amistad aceptada!",
     "friendRemoved": "Amigo eliminado",
     "removeConfirm": "¿Estás seguro de que quieres eliminar este amigo?",
-    "searchError": "Por favor ingresa al menos 2 caracteres para buscar"
+    "searchError": "Por favor ingresa al menos 2 caracteres para buscar",
+    "requestFailed": "No se pudo enviar la solicitud. Intenta de nuevo."
   }
 }

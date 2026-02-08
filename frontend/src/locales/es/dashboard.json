@@ -9,5 +9,6 @@
   "completed": "¡Completado!",
   "inProgress": "En progreso",
   "clickToView": "Haz clic para ver",
-  "removeSkillTitle": "Eliminar habilidad"
+  "removeSkillTitle": "Eliminar habilidad",
+  "friendsOnPath": "{{count}} amigo(s) en esta ruta"
 }
