@@ -8,6 +8,18 @@ This README serves as the authoritative architecture and generation guide. Follo
 
 ---
 
+## Quick Start (Local Development)
+
+**To avoid login 500 errors**, use the recommended local setup:
+
+1. See **[LOCAL-DEV-SETUP.md](./LOCAL-DEV-SETUP.md)** for step-by-step instructions
+2. Or run: `scripts/start-local-dev.bat` (Windows) / `./scripts/start-local-dev.sh` (Mac/Linux)
+3. Having issues? See **[TROUBLESHOOTING-500-LOGIN.md](./TROUBLESHOOTING-500-LOGIN.md)**
+
+**TL;DR:** Use Docker only for MongoDB. Run backend and frontend with `npm start`.
+
+---
+
 ## Project Overview
 
 We are building a responsive web application (desktop + mobile) that provides users with a visual, interactive roadmap for learning new skills.

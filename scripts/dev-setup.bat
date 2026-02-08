@@ -1,5 +1,8 @@
 @echo off
 REM Skill Roadmap Platform - Development Setup Script (Windows)
+REM NOTE: This starts backend on port 5001. For login to work, the frontend
+REM expects backend on 5000. Prefer scripts\start-local-dev.bat instead.
+REM See LOCAL-DEV-SETUP.md for the recommended setup.
 
 echo ======================================
 echo Skill Roadmap Platform - Dev Setup

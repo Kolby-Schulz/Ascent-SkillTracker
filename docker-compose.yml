@@ -1,5 +1,10 @@
 version: '3.8'
 
+# WARNING: If you run `docker-compose up`, the backend will be on port 5001.
+# The frontend proxy expects backend on port 5000. Use scripts/start-local-dev.bat
+# (Windows) or scripts/start-local-dev.sh (Mac/Linux) for the recommended setup.
+# See LOCAL-DEV-SETUP.md for details.
+
 services:
   # MongoDB Database
   mongodb:
