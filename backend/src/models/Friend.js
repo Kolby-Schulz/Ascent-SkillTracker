@@ -1,0 +1,37 @@
+const mongoose = require('mongoose');
+
+const friendSchema = new mongoose.Schema(
+  {
+    requester: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    recipient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'accepted', 'blocked'],
+      default: 'pending',
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// Ensure one friend relationship per pair
+friendSchema.index({ requester: 1, recipient: 1 }, { unique: true });
+
+// Prevent self-friending
+friendSchema.pre('save', function (next) {
+  if (this.requester.toString() === this.recipient.toString()) {
+    return next(new Error('Cannot friend yourself'));
+  }
+  next();
+});
+
+module.exports = mongoose.model('Friend', friendSchema);

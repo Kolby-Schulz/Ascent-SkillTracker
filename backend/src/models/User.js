@@ -34,6 +34,20 @@ const userSchema = new mongoose.Schema(
       default: ['user'],
       enum: ['user', 'admin'],
     },
+    privacy: {
+      type: String,
+      enum: ['public', 'private'],
+      default: 'public',
+    },
+    bio: {
+      type: String,
+      trim: true,
+      maxlength: [500, 'Bio cannot exceed 500 characters'],
+    },
+    profilePicture: {
+      type: String,
+      trim: true,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

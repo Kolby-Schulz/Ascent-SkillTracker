@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import roadmapService from '../services/roadmapService';
+import postService from '../services/postService';
 import './Profile.css';
 
 const Profile = () => {
@@ -59,9 +60,21 @@ const Profile = () => {
   };
 
   const handleViewRoadmap = (roadmapId) => {
-    // TODO: Navigate to view/detail mode
-    console.log('View roadmap:', roadmapId);
     navigate(`/roadmap/${roadmapId}`);
+  };
+
+  const handleShareToFeed = async (roadmapId, e) => {
+    e.stopPropagation();
+    const caption = window.prompt('Add a caption (optional):');
+    if (caption === null) return; // User cancelled
+
+    try {
+      await postService.createPost(roadmapId, caption || '');
+      alert('Roadmap shared to feed!');
+    } catch (error) {
+      console.error('Error sharing to feed:', error);
+      alert(error.response?.data?.error || 'Failed to share roadmap. Make sure it is published.');
+    }
   };
 
   const handleDeleteRoadmap = async (roadmapId) => {
@@ -211,6 +224,15 @@ const Profile = () => {
                   >
                     👁️ View
                   </button>
+                  {roadmap.status === 'published' && (
+                    <button
+                      className="action-button share-button"
+                      onClick={(e) => handleShareToFeed(roadmap.id, e)}
+                      title="Share to feed"
+                    >
+                      📤 Share
+                    </button>
+                  )}
                   <button
                     className="action-button edit-button"
                     onClick={() => handleEditRoadmap(roadmap.id)}

@@ -272,6 +272,41 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+/* Privacy Toggle */
+.privacy-toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 0.25rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.privacy-option {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.privacy-option:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.privacy-option.active {
+  background: rgba(168, 85, 247, 0.3);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .settings-page {

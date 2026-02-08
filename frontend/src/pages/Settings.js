@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { updateProfile } from '../services/authService';
 import './Settings.css';
 
 const Settings = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('account');
+  const [privacy, setPrivacy] = useState(user?.privacy || 'public');
   
   // Edit mode states
   const [isEditingAccount, setIsEditingAccount] = useState(false);
@@ -24,7 +26,23 @@ const Settings = () => {
     // Update form fields when user changes
     setUsername(user?.username || '');
     setEmail(user?.email || '');
+    setPrivacy(user?.privacy || 'public');
   }, [user]);
+
+  const handlePrivacyChange = async (newPrivacy) => {
+    try {
+      setPrivacy(newPrivacy);
+      const response = await updateProfile({ privacy: newPrivacy });
+      if (response.success && response.data.user) {
+        setUser(response.data.user);
+      }
+    } catch (error) {
+      console.error('Error updating privacy:', error);
+      // Revert on error
+      setPrivacy(user?.privacy || 'public');
+      alert('Failed to update privacy setting. Please try again.');
+    }
+  };
 
   const handleEditAccount = () => {
     setIsEditingAccount(true);
@@ -246,6 +264,30 @@ const Settings = () => {
                     {theme === 'auto' && 'The sun will move across the screen in a day/night cycle'}
                     {theme === 'light' && 'The dashboard will stay in day time mode'}
                     {theme === 'dark' && 'The dashboard will stay in night time mode with twinkling stars'}
+                  </p>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="privacy">Privacy Setting</label>
+                  <div className="privacy-toggle">
+                    <button
+                      type="button"
+                      className={`privacy-option ${privacy === 'public' ? 'active' : ''}`}
+                      onClick={() => handlePrivacyChange('public')}
+                    >
+                      Public
+                    </button>
+                    <button
+                      type="button"
+                      className={`privacy-option ${privacy === 'private' ? 'active' : ''}`}
+                      onClick={() => handlePrivacyChange('private')}
+                    >
+                      Private
+                    </button>
+                  </div>
+                  <p className="field-description">
+                    {privacy === 'public'
+                      ? 'Your profile and accomplished skills are visible to everyone'
+                      : 'Your profile and skills are only visible to your friends'}
                   </p>
                 </div>
               </div>

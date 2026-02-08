@@ -11,6 +11,8 @@ const guideRoutes = require('./routes/guideRoutes');
 const metricsRoutes = require('./routes/metricsRoutes');
 const userSkillProgressRoutes = require('./routes/userSkillProgressRoutes');
 const roadmapRoutes = require('./routes/roadmapRoutes');
+const friendRoutes = require('./routes/friendRoutes');
+const postRoutes = require('./routes/postRoutes');
 
 const app = express();
 
@@ -49,6 +51,8 @@ app.use('/api/v1/guides', guideRoutes);
 app.use('/api/v1/metrics', metricsRoutes);
 app.use('/api/v1/user-skills', userSkillProgressRoutes);
 app.use('/api/v1/roadmaps', roadmapRoutes);
+app.use('/api/v1/friends', friendRoutes);
+app.use('/api/v1/posts', postRoutes);
 
 // 404 handler
 app.use((req, res) => {
