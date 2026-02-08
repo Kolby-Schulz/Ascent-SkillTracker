@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PeakReached from '../components/PeakReached';
 import roadmapService from '../services/roadmapService';
+import { recordCompletedRoadmap } from '../utils/skillProgress';
 import './SkillDetail.css';
 
 const RoadmapView = () => {
@@ -67,10 +68,11 @@ const RoadmapView = () => {
     if (roadmap && totalSteps > 0 && isSkillMastered && !wasCompletedRef.current) {
       wasCompletedRef.current = true;
       setShowCelebration(true);
+      recordCompletedRoadmap(id);
     } else if (roadmap && totalSteps > 0 && !isSkillMastered) {
       wasCompletedRef.current = false;
     }
-  }, [isSkillMastered, roadmap, totalSteps]);
+  }, [isSkillMastered, roadmap, totalSteps, id]);
 
   // Persist roadmap step count so metrics can count completed roadmaps
   useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { getMyMetrics } from '../services/metricsService';
 import { useSkills } from '../context/SkillsContext';
-import { getSkillsProgressCounts } from '../utils/skillProgress';
+import { getSkillsProgressCounts, getTotalCompletedCount, getSkillOrRoadmapStatus, getSkillId, recordCompletedSkill, recordCompletedRoadmap } from '../utils/skillProgress';
 import './MetricsTab.css';
 
 // Color palette: 254c5d, 011c2f, d9bba3, aea79d, 546672
@@ -18,11 +18,19 @@ const MetricsTab = () => {
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  // Local progress from localStorage: built-in skills + user-created roadmaps (both count towards Learning Progress)
-  const { learned: localSkillsLearned, inProgress: localSkillsInProgress } = getSkillsProgressCounts(
-    skills,
-    getRoadmapId
-  );
+  // Backfill: ensure any currently completed skill/roadmap is in the persistent list (so existing completions count)
+  (skills || []).forEach((name) => {
+    const status = getSkillOrRoadmapStatus(name, getRoadmapId);
+    if (status === 'completed') {
+      const roadmapId = typeof getRoadmapId === 'function' ? getRoadmapId(name) : null;
+      if (roadmapId) recordCompletedRoadmap(roadmapId);
+      else recordCompletedSkill(getSkillId(name));
+    }
+  });
+  // Persistent total completed (never decreases when cards are removed)
+  const totalCompleted = getTotalCompletedCount();
+  // In-progress count from current dashboard list only
+  const { inProgress: localSkillsInProgress } = getSkillsProgressCounts(skills, getRoadmapId);
 
   const fetchMetrics = useCallback(async () => {
     const token = localStorage.getItem('token')?.trim();
@@ -106,11 +114,11 @@ const MetricsTab = () => {
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // For Learning Progress section only (from localStorage)
-  const skillsLearned = localSkillsLearned ?? 0;
+  // Learning Progress: completed = persistent total; in progress = current list only
+  const skillsLearned = totalCompleted;
   const skillsInProgress = localSkillsInProgress ?? 0;
-  const totalSkills = skillsLearned + skillsInProgress;
-  const learnedPercent = totalSkills > 0 ? Math.round((skillsLearned / totalSkills) * 100) : 0;
+  const totalForBar = skillsLearned + skillsInProgress;
+  const learnedPercent = totalForBar > 0 ? Math.round((skillsLearned / totalForBar) * 100) : 0;
 
   if (loading) {
     return (
@@ -157,31 +165,29 @@ const MetricsTab = () => {
         ))}
       </div>
 
-      {/* Learning Progress Bar */}
-      {totalSkills > 0 && (
-        <motion.div
-          className="metrics-progress-section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <h4 className="metrics-progress-title">Learning Progress</h4>
-          <div className="metrics-progress-bar-wrapper">
-            <div className="metrics-progress-bar">
-              <motion.div
-                className="metrics-progress-fill"
-                initial={{ width: 0 }}
-                animate={{ width: `${learnedPercent}%` }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-              />
-            </div>
-            <p className="metrics-progress-text">
-              {skillsLearned} / {totalSkills} skills completed
-            </p>
-            <p className="metrics-progress-sub">{skillsInProgress} skills in progress</p>
+      {/* Learning Progress Bar - always visible; completed count persists when cards are removed */}
+      <motion.div
+        className="metrics-progress-section"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h4 className="metrics-progress-title">Learning Progress</h4>
+        <div className="metrics-progress-bar-wrapper">
+          <div className="metrics-progress-bar">
+            <motion.div
+              className="metrics-progress-fill"
+              initial={{ width: 0 }}
+              animate={{ width: `${learnedPercent}%` }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            />
           </div>
-        </motion.div>
-      )}
+          <p className="metrics-progress-text">
+            {skillsLearned} skill{skillsLearned !== 1 ? 's' : ''} completed
+          </p>
+          <p className="metrics-progress-sub">{skillsInProgress} skill{skillsInProgress !== 1 ? 's' : ''} in progress</p>
+        </div>
+      </motion.div>
 
       {error && (
         <div className="metrics-error-row">

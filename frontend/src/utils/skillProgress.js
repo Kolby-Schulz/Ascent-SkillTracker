@@ -3,6 +3,54 @@
  * to determine completion status. Must match how SkillDetail stores progress.
  */
 
+const STORAGE_KEY_COMPLETED_IDS = 'metrics-completed-ids';
+
+function getCompletedIdsSet() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_COMPLETED_IDS);
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function setCompletedIdsSet(idsSet) {
+  localStorage.setItem(STORAGE_KEY_COMPLETED_IDS, JSON.stringify([...idsSet]));
+}
+
+/**
+ * Record a built-in skill as completed (all steps done). Persists so metrics never decrease when a card is removed.
+ * @param {string} skillId - e.g. 'guitar', 'web-development'
+ */
+export function recordCompletedSkill(skillId) {
+  if (!skillId) return;
+  const key = `skill:${skillId}`;
+  const set = getCompletedIdsSet();
+  set.add(key);
+  setCompletedIdsSet(set);
+}
+
+/**
+ * Record a user-created roadmap as completed. Persists so metrics never decrease when a card is removed.
+ * @param {string} roadmapId - MongoDB id or roadmap id
+ */
+export function recordCompletedRoadmap(roadmapId) {
+  if (!roadmapId) return;
+  const key = `roadmap:${roadmapId}`;
+  const set = getCompletedIdsSet();
+  set.add(key);
+  setCompletedIdsSet(set);
+}
+
+/**
+ * Get total number of skills/roadmaps ever completed (persistent; not affected by removing cards).
+ * @returns {number}
+ */
+export function getTotalCompletedCount() {
+  return getCompletedIdsSet().size;
+}
+
 const SKILL_NAME_TO_ID = {
   'Guitar': 'guitar',
   'Fishing': 'fishing',

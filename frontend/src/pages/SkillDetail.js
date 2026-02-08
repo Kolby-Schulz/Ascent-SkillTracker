@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PeakReached from '../components/PeakReached';
+import { recordCompletedSkill } from '../utils/skillProgress';
 import './SkillDetail.css';
 
 // Mock data for skills - in the future this will come from the API
@@ -167,14 +168,15 @@ const SkillDetail = () => {
   // Detect when skill becomes completed
   useEffect(() => {
     if (skill && isSkillMastered && !wasCompletedRef.current) {
-      // Skill just became completed - show celebration
+      // Skill just became completed - show celebration and record for metrics (persists even if card removed)
       wasCompletedRef.current = true;
       setShowCelebration(true);
+      recordCompletedSkill(skillId);
     } else if (skill && !isSkillMastered) {
       // Skill is not completed - reset flag
       wasCompletedRef.current = false;
     }
-  }, [isSkillMastered, skill]);
+  }, [isSkillMastered, skill, skillId]);
 
   if (!skill) {
     return (
