@@ -4,13 +4,14 @@ const {
   getRoadmaps,
   getMyRoadmaps,
   getRoadmapById,
+  getMyRoadmapForView,
   updateRoadmap,
   deleteRoadmap,
   publishRoadmap,
   unpublishRoadmap,
   toggleLike,
 } = require('../controllers/roadmapController');
-const { protect } = require('../middlewares/auth');
+const { protect, optionalProtect } = require('../middlewares/auth');
 const {
   createRoadmapValidation,
   updateRoadmapValidation,
@@ -21,11 +22,13 @@ const router = express.Router();
 
 // Public routes
 router.get('/', getRoadmaps);
-router.get('/:id', roadmapIdValidation, getRoadmapById);
+// More specific routes before /:id to avoid "user" being matched as id
+router.get('/user/my-roadmaps', protect, getMyRoadmaps);
+router.get('/user/view/:id', protect, roadmapIdValidation, getMyRoadmapForView);
+router.get('/:id', optionalProtect, roadmapIdValidation, getRoadmapById);
 
 // Protected routes (require authentication)
 router.post('/', protect, createRoadmapValidation, createRoadmap);
-router.get('/user/my-roadmaps', protect, getMyRoadmaps);
 router.put('/:id', protect, updateRoadmapValidation, updateRoadmap);
 router.delete('/:id', protect, roadmapIdValidation, deleteRoadmap);
 router.put('/:id/publish', protect, roadmapIdValidation, publishRoadmap);
