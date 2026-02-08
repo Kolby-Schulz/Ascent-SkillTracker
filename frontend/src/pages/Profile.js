@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import roadmapService from '../services/roadmapService';
 import postService from '../services/postService';
 import Achievements from '../components/Achievements';
+import SkillTimeline from '../components/SkillTimeline';
 import './Profile.css';
 
 const Profile = () => {
@@ -15,7 +16,7 @@ const Profile = () => {
   const [roadmaps, setRoadmaps] = useState([]);
   const [filter, setFilter] = useState('all'); // all, published, draft
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('roadmaps'); // roadmaps, achievements
+  const [activeTab, setActiveTab] = useState('roadmaps'); // roadmaps, achievements, timeline
 
   const userDisplayName = user?.username || user?.email?.split('@')[0] || 'User';
 
@@ -141,6 +142,12 @@ const Profile = () => {
           onClick={() => setActiveTab('achievements')}
         >
           {t('profile:achievements')}
+        </button>
+        <button
+          className={`profile-tab ${activeTab === 'timeline' ? 'active' : ''}`}
+          onClick={() => setActiveTab('timeline')}
+        >
+          {t('profile:timeline.tab')}
         </button>
       </div>
 
@@ -279,6 +286,12 @@ const Profile = () => {
       {activeTab === 'achievements' && (
         <div className="achievements-section">
           <Achievements />
+        </div>
+      )}
+
+      {activeTab === 'timeline' && (
+        <div className="timeline-section">
+          <SkillTimeline />
         </div>
       )}
     </div>
