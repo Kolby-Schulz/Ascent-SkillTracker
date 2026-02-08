@@ -29,11 +29,28 @@ const RoadmapView = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await roadmapService.getRoadmapById(id);
-        const data = res.data ?? res;
-        setRoadmap(data);
+        let data = null;
+        try {
+          const res = await roadmapService.getRoadmapById(id);
+          data = res?.data ?? res;
+        } catch (firstErr) {
+          // If first attempt failed and user is logged in, try owner endpoint (for drafts)
+          if (localStorage.getItem('token')) {
+            try {
+              const res = await roadmapService.getMyRoadmapForView(id);
+              data = res?.data ?? res;
+            } catch (e) {
+              throw firstErr;
+            }
+          } else {
+            throw firstErr;
+          }
+        }
+        if (data) setRoadmap(data);
+        else setError('Failed to load roadmap');
       } catch (err) {
-        setError(err.message || 'Failed to load roadmap');
+        const msg = err?.error || err?.message || err?.response?.data?.error || 'Failed to load roadmap';
+        setError(msg);
         setRoadmap(null);
       } finally {
         setLoading(false);

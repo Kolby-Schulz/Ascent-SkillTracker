@@ -33,10 +33,20 @@ const roadmapService = {
     }
   },
 
-  // Get a single roadmap by ID
+  // Get a single roadmap by ID (works for published; for drafts requires auth)
   getRoadmapById: async (id) => {
     try {
       const response = await api.get(`/roadmaps/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  // Get own roadmap for view (owner only - use when viewing drafts from Profile)
+  getMyRoadmapForView: async (id) => {
+    try {
+      const response = await api.get(`/roadmaps/user/view/${id}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || error;
