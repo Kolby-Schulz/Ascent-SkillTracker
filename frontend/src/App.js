@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './i18n/config'; // Initialize i18n
 import { AuthProvider } from './context/AuthContext';
@@ -21,19 +21,9 @@ import Leaderboard from './pages/Leaderboard';
 import RoadmapView from './pages/RoadmapView';
 import DevLogin from './pages/DevLogin';
 import Analytics from './pages/Analytics';
-import { resetProgressKeepGuitarOnly } from './utils/skillProgress';
 import './App.css';
 
-const RESET_KEEP_GUITAR_FLAG = 'ascent-reset-keep-guitar-done';
-
 function App() {
-  useEffect(() => {
-    if (typeof localStorage === 'undefined') return;
-    if (localStorage.getItem(RESET_KEEP_GUITAR_FLAG)) return;
-    resetProgressKeepGuitarOnly();
-    localStorage.setItem(RESET_KEEP_GUITAR_FLAG, '1');
-  }, []);
-
   return (
     <AuthProvider>
       <SkillsProvider>
