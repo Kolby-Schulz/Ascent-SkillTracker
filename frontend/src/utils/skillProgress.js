@@ -51,6 +51,31 @@ export function getTotalCompletedCount() {
   return getCompletedIdsSet().size;
 }
 
+const BUILT_IN_SKILL_IDS = ['guitar', 'web-development', 'photography', 'cooking', 'fishing', 'singing'];
+
+/**
+ * Remove all learned skills/guides from timeline and "skills learned" except Guitar.
+ * Clears metrics-completed-ids to only skill:guitar, and clears step progress for non-guitar built-in skills.
+ */
+export function resetProgressKeepGuitarOnly() {
+  if (typeof localStorage === 'undefined') return;
+  const set = getCompletedIdsSet();
+  const keep = new Set(set.has('skill:guitar') ? ['skill:guitar'] : []);
+  setCompletedIdsSet(keep);
+
+  for (const skillId of BUILT_IN_SKILL_IDS) {
+    if (skillId === 'guitar') continue;
+    try {
+      localStorage.removeItem(`skill-progress-${skillId}`);
+      localStorage.removeItem(`skill-completed-${skillId}`);
+    } catch (e) {}
+  }
+
+  try {
+    window.dispatchEvent(new CustomEvent('ascent-timeline-invalidate'));
+  } catch (e) {}
+}
+
 const SKILL_NAME_TO_ID = {
   'Guitar': 'guitar',
   'Fishing': 'fishing',

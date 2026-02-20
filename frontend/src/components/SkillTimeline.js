@@ -5,40 +5,60 @@ import { useAuth } from '../context/AuthContext';
 import { getCompletedSkillsCount } from '../utils/achievements';
 import './SkillTimeline.css';
 
+const STORAGE_KEY = 'metrics-completed-ids';
+
 const SkillTimeline = () => {
   const { t } = useTranslation(['profile', 'common']);
   const { user } = useAuth();
   const [completedSkills, setCompletedSkills] = useState([]);
   const [timelineData, setTimelineData] = useState([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
-    // Get completed skills from localStorage
-    const STORAGE_KEY = 'metrics-completed-ids';
+    const onTimelineInvalidate = () => setRefreshTrigger((t) => t + 1);
+    window.addEventListener('ascent-timeline-invalidate', onTimelineInvalidate);
+    return () => window.removeEventListener('ascent-timeline-invalidate', onTimelineInvalidate);
+  }, []);
+
+  useEffect(() => {
+    // Get completed skills and guides (roadmaps) from localStorage
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const arr = raw ? JSON.parse(raw) : [];
-      const completedIds = arr.filter(id => id && id.startsWith('skill:'));
-      
-      const skills = completedIds
-        .map(id => id.replace('skill:', ''))
-        .map(skillId => ({
-          id: skillId,
+      const skillIds = (arr || []).filter((id) => id && id.startsWith('skill:'));
+      const roadmapIds = (arr || []).filter((id) => id && id.startsWith('roadmap:'));
+
+      const skillItems = skillIds
+        .map((id) => id.replace('skill:', ''))
+        .map((skillId) => ({
+          id: `skill-${skillId}`,
           name: formatSkillName(skillId),
           completedAt: getSkillCompletionDate(skillId),
-        }))
-        .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+        }));
 
-      setCompletedSkills(skills);
-      
-      // Group by month/year for timeline
-      const grouped = groupByMonth(skills);
+      const roadmapItems = roadmapIds.map((id) => id.replace('roadmap:', '')).map((roadmapId) => {
+        const metaKey = `roadmap-completed-${roadmapId}`;
+        const stored = localStorage.getItem(metaKey);
+        const data = stored ? (() => { try { return JSON.parse(stored); } catch { return null; } })() : null;
+        return {
+          id: `roadmap-${roadmapId}`,
+          name: (data && data.name) || t('profile:timeline.guideLabel', 'Guide'),
+          completedAt: data && data.completedAt ? new Date(data.completedAt) : new Date(),
+        };
+      });
+
+      const all = [...skillItems, ...roadmapItems].sort(
+        (a, b) => new Date(b.completedAt) - new Date(a.completedAt)
+      );
+      setCompletedSkills(all);
+      const grouped = groupByMonth(all);
       setTimelineData(grouped);
     } catch (error) {
       console.error('Error loading timeline data:', error);
       setCompletedSkills([]);
       setTimelineData([]);
     }
-  }, []);
+  }, [refreshTrigger, t]);
 
   const formatSkillName = (skillId) => {
     return skillId

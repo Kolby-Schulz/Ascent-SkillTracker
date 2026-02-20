@@ -177,6 +177,10 @@ const SkillDetail = () => {
       wasCompletedRef.current = true;
       setShowCelebration(true);
       recordCompletedSkill(skillId);
+      try {
+        localStorage.setItem(`skill-completed-${skillId}`, new Date().toISOString());
+      } catch (e) {}
+      window.dispatchEvent(new CustomEvent('ascent-timeline-invalidate'));
       
       // Track achievements and streaks
       const userId = user?.id || user?._id || 'default';

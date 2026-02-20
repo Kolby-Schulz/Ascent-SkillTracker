@@ -7,6 +7,7 @@
     "tab": "Línea de Tiempo",
     "title": "Línea de Tiempo de Aprendizaje",
     "subtitle": "Tu viaje a través de {{count}} habilidades completadas",
+    "guideLabel": "Guía",
     "empty": {
       "title": "Aún No Has Completado Habilidades",
       "description": "¡Completa tu primera habilidad para verla aparecer en tu línea de tiempo!"
