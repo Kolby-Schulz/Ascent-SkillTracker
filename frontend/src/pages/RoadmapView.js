@@ -97,6 +97,16 @@ const RoadmapView = () => {
         wasCompletedRef.current = true;
         setShowCelebration(true);
         recordCompletedRoadmap(id);
+        try {
+          localStorage.setItem(
+            `roadmap-completed-${id}`,
+            JSON.stringify({
+              name: roadmap.name || 'Guide',
+              completedAt: new Date().toISOString(),
+            })
+          );
+        } catch (e) {}
+        window.dispatchEvent(new CustomEvent('ascent-timeline-invalidate'));
         
         // Record completion in backend for leaderboard
         try {
