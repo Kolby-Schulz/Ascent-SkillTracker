@@ -61,8 +61,6 @@ cd backend && npm install && cd ..
 cd frontend && npm install && cd ..
 ```
 
-Having issues? See [TROUBLESHOOTING-500-LOGIN.md](TROUBLESHOOTING-500-LOGIN.md).
-
 ---
 
 ## Project structure
@@ -81,7 +79,6 @@ For details, see [TECH_STACK.md](TECH_STACK.md) and [docs/architecture.md](docs/
 ## Documentation
 
 - [LOCAL-DEV-SETUP.md](LOCAL-DEV-SETUP.md) — Recommended local development setup
-- [TROUBLESHOOTING-500-LOGIN.md](TROUBLESHOOTING-500-LOGIN.md) — Login and proxy issues
 - [TECH_STACK.md](TECH_STACK.md) — Full tech stack and architecture
 - [docs/](docs/) — Architecture, API spec, auth flow, Docker setup
 

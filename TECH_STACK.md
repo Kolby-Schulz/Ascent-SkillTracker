@@ -1,11 +1,11 @@
 # Full Tech Stack - Ascent Platform
 
-## 🎯 Project Overview
+## Project Overview
 **Ascent** - A skill learning platform that helps users "Reach New Heights" through structured learning roadmaps with a mountain/climbing theme.
 
 ---
 
-## 🖥️ Frontend Stack
+## Frontend Stack
 
 ### Core Framework
 - **React** `^18.2.0` - UI library
@@ -73,7 +73,7 @@ frontend/src/
 
 ---
 
-## 🔧 Backend Stack
+## Backend Stack
 
 ### Runtime & Framework
 - **Node.js** - JavaScript runtime
@@ -137,7 +137,7 @@ backend/src/
 
 ---
 
-## 🗄️ Database
+## Database
 
 ### MongoDB Collections
 - **Users** - User accounts, authentication, profiles
@@ -155,7 +155,7 @@ backend/src/
 
 ---
 
-## 🐳 DevOps & Infrastructure
+## DevOps & Infrastructure
 
 ### Containerization
 - **Docker** - Container platform
@@ -186,7 +186,7 @@ backend/src/
 
 ---
 
-## 🎨 UI/UX Technologies
+## UI/UX Technologies
 
 ### CSS Features
 - **CSS3 Animations** - Keyframe animations
@@ -205,7 +205,7 @@ backend/src/
 
 ---
 
-## 🔐 Security Features
+## Security Features
 
 - JWT-based authentication
 - Password hashing with bcrypt
@@ -218,7 +218,7 @@ backend/src/
 
 ---
 
-## 📦 Key Features Implemented
+## Key Features Implemented
 
 ### User Features
 - User registration & login
@@ -249,7 +249,7 @@ backend/src/
 
 ---
 
-## 🛠️ Development Tools
+## Development Tools
 
 ### Version Control
 - **Git** - Source control
@@ -267,7 +267,7 @@ backend/src/
 
 ---
 
-## 📱 Platform Support
+## Platform Support
 
 ### Browsers
 - Chrome (latest)
@@ -282,7 +282,7 @@ backend/src/
 
 ---
 
-## 🌐 API Architecture
+## API Architecture
 
 ### Base URL
 - Development: `http://localhost:5001/api/v1`
@@ -315,7 +315,7 @@ backend/src/
 
 ---
 
-## 🎯 Design Patterns Used
+## Design Patterns Used
 
 - **MVC Architecture** - Model-View-Controller
 - **RESTful API** - REST principles
@@ -327,7 +327,7 @@ backend/src/
 
 ---
 
-## 📊 Data Flow
+## Data Flow
 
 ```
 User Action
@@ -349,7 +349,7 @@ MongoDB
 
 ---
 
-## 🚀 Deployment Ready
+## Deployment Ready
 
 - Dockerized for easy deployment
 - Environment variable configuration
@@ -360,7 +360,7 @@ MongoDB
 
 ---
 
-## 📝 Additional Libraries & Tools
+## Additional Libraries & Tools
 
 ### Frontend Utilities
 - **LocalStorage** - Client-side data persistence
@@ -374,7 +374,7 @@ MongoDB
 
 ---
 
-## 🎨 Theme & Styling
+## Theme & Styling
 
 - **Color Scheme**: Dark theme with purple/gold accents
 - **Typography**: System fonts with custom weights
