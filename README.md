@@ -41,6 +41,20 @@ See [TECH_STACK.md](TECH_STACK.md) for a full breakdown.
 
 ---
 
+## Gallery
+
+<img width="1919" height="909" alt="Screenshot 2026-02-20 182208" src="https://github.com/user-attachments/assets/c628934f-2e62-464c-9ec0-a96f3c622fdd" />
+
+<img width="1919" height="910" alt="Screenshot 2026-02-20 183110" src="https://github.com/user-attachments/assets/48cc2331-0fcb-4fff-a41b-4f96c0366797" />
+
+<img width="1919" height="910" alt="Screenshot 2026-02-20 183138" src="https://github.com/user-attachments/assets/3e7f5b37-a92a-431f-bb51-a06e860f8f44" />
+
+<img width="1919" height="910" alt="Screenshot 2026-02-20 183304" src="https://github.com/user-attachments/assets/9e5c3ee1-84a0-44db-8339-aca16e21348d" />
+
+<img width="1919" height="913" alt="Screenshot 2026-02-20 183351" src="https://github.com/user-attachments/assets/7de31777-b443-4ec6-83ce-6a95ba797771" />
+
+---
+
 ## Getting started
 
 ### Prerequisites
