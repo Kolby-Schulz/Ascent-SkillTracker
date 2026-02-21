@@ -84,18 +84,6 @@ For details, see [TECH_STACK.md](TECH_STACK.md) and [docs/architecture.md](docs/
 
 ---
 
-## Contributing
-
-Contributions are welcome. Open an issue or submit a pull request.
-
----
-
-## License
-
-See the repository for license information.
-
----
-
 ## Acknowledgments
 
 Built for **Hacklahoma 2026**.
